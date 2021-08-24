@@ -23,7 +23,7 @@
   "bugs": {
     "url": "https://github.com/kunalkeshan/easy-forms/issues"
   },
-  "homepage": "https://github.com/kunalkeshan/easy-forms#readme",
+  "homepage": "https://easy-forms-td.herokuapp.com/",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.5",
