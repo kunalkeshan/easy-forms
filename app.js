@@ -11,6 +11,10 @@ app.get("/", (req, res) => {
     res.end("Initialized!");
 });
 
+const register = require("./routes/register");
+
+app.use("/", register)
+
 const PORT = process.env.PORT;
 
 app.listen(PORT, (req, res) => {
