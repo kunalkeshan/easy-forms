@@ -29,7 +29,8 @@ Router.post("/signup", async(req, res) => {
             const signUpUser = `INSERT INTO user_details (userid, name, email, username, password) VALUES ('${userid}', '${name}', '${email}', '${username}', '${hashedPassword}');`;
             const response = await query(signUpUser);
             if(response.affectedRows > 0){
-                const payload = req.body;
+                const user_details = req.body
+                const payload = {user_details};
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
                 res.cookie("easy_forms_auth_token", token, {httpOnly: true});
                 res.status(201).json({msg: "User Created Successfully"});

@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
     if(!token) res.status(401).json({msg: "Please Authorize!"});
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
-        req.user = decode.payload.user_details;
+        req.user = decoded.payload.user_details;
         delete req.user.passwords;
         return next();
     } catch (error) {
