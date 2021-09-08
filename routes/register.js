@@ -14,6 +14,7 @@ const auth = require("../middleware/auth");
 
 const query = util.promisify(con.query).bind(con);
 
+//Sign-Up Route
 Router.post("/signup", async(req, res) => {
     const {name, username, email, password} = req.body;
 
@@ -30,6 +31,7 @@ Router.post("/signup", async(req, res) => {
             const response = await query(signUpUser);
             if(response.affectedRows > 0){
                 const user_details = req.body
+                //Generating JWT Cookie
                 const payload = {user_details};
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
                 res.cookie("easy_forms_auth_token", token, {httpOnly: true});
@@ -40,6 +42,59 @@ Router.post("/signup", async(req, res) => {
     } catch (error) {
         console.log({signUpRoute: error});
         res.status(400).json({msg: "An error has occured!"});
+    }
+});
+
+
+/* --------------------------------
+
+POSSIBLE CASES. 
+
+
+*/
+
+//Sign-In Route
+Router.post("/signin",  async (req, res) => {
+    const {user, password, type} = req.body;
+    try {
+        if(type === 0){
+            //Email Sign In
+            const emailSignIn = `SELECT * FROM user_details WHERE email='${user}'`;
+            const response = await query(emailSignIn);
+            const user_details = app_functions.parseData(response)[0];
+
+            //Validating Passoword
+            const valid_password = await bcrypt.compare(password, user_details.password);
+            if(valid_password){
+                //Generating JWT Cookie
+                const payload = {user_details};
+                const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
+                res.cookie("easy_forms_auth_token", token, {httpOnly: true});
+                res.status(200).json({message: "Email Sign In Successful!"});
+            } else  {
+                throw new Error();
+            }
+        } else {
+            //Username Sign In
+            const usernameSignIn = `SELECT * FROM user_details WHERE username='${user}'`;
+            const response  = await query(usernameSignIn);
+            const user_details = app_functions.parseData(response)[0];
+
+            //Validating Password
+            const valid_password = await bcrypt.compare(password, user_details.password);
+            if(valid_password){
+                //Generating JWT Cookie
+                const payload = {user_details};
+                const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
+                res.cookie("easy_forms_auth_token", token, {httpOnly: true});
+                res.status(200).json({message: "Username Sign In Successful!"});
+            } else {
+                throw new Error();
+            }
+        }
+    } catch (error) {
+        console.log({signInRoute: error});
+        res.status(400).json({msg: "Invalid Credentials!"})
     }
 });
 
