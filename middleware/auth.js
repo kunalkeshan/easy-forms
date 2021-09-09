@@ -9,7 +9,7 @@ const auth = (req, res, next) => {
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded.payload.user_details;
-        delete req.user.passwords;
+        delete req.user.password;
         return next();
     } catch (error) {
         console.log({Auth_Middleware: error});
