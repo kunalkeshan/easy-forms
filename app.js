@@ -14,11 +14,11 @@ const form_admin = require("./routes/form_admin");
 const form_client = require("./routes/form_client");
 const routes = require("./routes/routes");
 
+app.use("/", routes);
 app.use("/", register);
 app.use("/", user);
 app.use("/", form_admin);
 app.use("/", form_client);
-app.use("/", routes);
 
 const PORT = process.env.PORT;
 
