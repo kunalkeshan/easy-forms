@@ -6,6 +6,8 @@ const jwt = require("jsonwebtoken");
 const shortid = require("shortid");
 const bcrypt = require("bcryptjs");
 
+Router.use(cookieParser());
+
 //Importing Middleware
 const con = require("../database/database");
 const app_functions = require("../middleware/app_functions");
@@ -44,14 +46,6 @@ Router.post("/signup", async(req, res) => {
         res.status(400).json({msg: "An error has occured!"});
     }
 });
-
-
-/* --------------------------------
-
-POSSIBLE CASES. 
-
-
-*/
 
 //Sign-In Route
 Router.post("/signin",  async (req, res) => {
@@ -96,6 +90,12 @@ Router.post("/signin",  async (req, res) => {
         console.log({signInRoute: error});
         res.status(400).json({msg: "Invalid Credentials!"})
     }
+});
+
+//Sign Out Route
+Router.get("/signout", auth, (req, res) => {
+    res.clearCookie("easy_forms_auth_token");
+    res.redirect("/");
 });
 
 module.exports = Router;
