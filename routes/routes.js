@@ -13,11 +13,12 @@ const query = util.promisify(con.query).bind(con);
 
 //Index Route
 Router.get("/", async (req, res) => {
-    if(req.user) {
-        res.render("home", {page: "home", user: req.user});
-    } else {
-        res.render("index", {page: "index"});
-    }
+    // if(req.user) {
+    //     res.render("home", {page: "home", user: req.user});
+    // } else {
+    //     res.render("index", {page: "index"});
+    // }
+    res.send("Default")
 });
 
 module.exports = Router;
