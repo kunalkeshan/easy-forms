@@ -9,6 +9,7 @@ const con = require("../database/database");
 const auth = require("../middleware/auth");
 const app_functions = require("../middleware/app_functions");
 
+//Connecting Database and sending Queries
 const query = util.promisify(con.query).bind(con);
 
 //Index Route
