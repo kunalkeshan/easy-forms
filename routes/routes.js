@@ -18,7 +18,7 @@ Router.get("/", async (req, res) => {
     // } else {
     //     res.render("index", {page: "index"});
     // }
-    res.send("Default");
+        res.render("index", {page: "index"});
 });
 
 module.exports = Router;
