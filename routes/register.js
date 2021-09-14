@@ -13,7 +13,7 @@ const con = require("../database/database");
 const app_functions = require("../middleware/app_functions");
 const auth = require("../middleware/auth");
 
-
+//Connecting Database and sending Queries
 const query = util.promisify(con.query).bind(con);
 
 //Sign-Up Route
