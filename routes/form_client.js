@@ -41,17 +41,21 @@ Router.post("/form/create", auth, async (req, res) => {
 
 
 //Create a new Section within a form. Takes in formid.
-Router.post("form/create/section", auth, async(req, res) => {
+Router.post("form/create/section/:id", auth, async(req, res) => {
     const userid = req.user.userid;
-    const {formid} = req.body;
+    const formid = req.params.id;
     const newSectionID = shortid.generate();
 
     //Queries
     const setNewSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${newSectionID}', ''${formid})`;
     try {
-        
+        const newSection = await query(setNewSection);
+        if(newSection.affectedRows > 0){
+            res.status(200).json({newSectionID});
+        }
     } catch (error) {
-        
+        console.log({newSectionRoute: error});
+        res.status(400).json({msg: "An error has Occured"});
     }
 
 });
