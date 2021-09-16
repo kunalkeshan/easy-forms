@@ -102,10 +102,72 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
     
 });
 
+//Get all the forms of a specific user.
+Router.get("/forms", auth, async (req, res) => {
+   const userid = req.user.userid;
+   
+   //Queries
+   const getForm = `SELECT * FROM form_details WHERE userid='${userid}'`;
+
+   try {
+       const allForms = await query(getForm);
+       if(allForms.length > 0){
+            const formCollection = app_functions.parseData(allForms);
+            formCollection.forEach((form, index) => {
+                form.created_at = app_functions.convertDate(form.created_at);
+                if(index === formCollection.length - 1){
+                    res.status(200).json(formCollection);
+                }
+            })
+       } else {
+           res.status(200).json({msg: "No forms created"});
+       }
+   } catch (error) {
+       console.log({getAllFormsRouter: error});
+       res.status(400).json({msg: "An error has occured!"});
+   }
+});
+
+
+//Get a Single Form of a specific user.
+Router.get("/form/:id", auth, async (req, res) => {
+    const userid = req.user.userid;
+    const formid = req.params.id;
+
+    //Queries
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+    try {
+        const Form = await query(getForm);
+        const specificForm = app_functions.parseData(Form);
+        if(specificForm.length > 0){
+            specificForm[0].created_at = app_functions.convertDate(specificForm[0].created_at);
+            res.status(200).json(specificForm);
+        } else throw new Error();
+    } catch (error) {
+        console.log({getSingleFormRoute: error});
+        res.status(400).json({msg: "An error has occured!"});
+    }
+});
+
+
 //Edit an Already Existing Form.
 Router.post("/form/edit/:id", auth, async (req, res) => {
     const userid = req.user.userid;
     const formid = req.params.id;
+    const {title, description} = req.body;
+
+    //Queries
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+
+    try {
+        const Form = await query(getForm);
+        if(Form.length > 0){
+            
+        }
+    } catch (error) {
+        console.log({editFormRoute: error});
+        res.status(400).json({msg: "An error has occured"});
+    }
 });
 
 module.exports = Router;
