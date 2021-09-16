@@ -137,19 +137,26 @@ Router.get("/form/:id", auth, async (req, res) => {
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
 
-    const getFormAndSections = `SELECT form_details.*, form_sections.* FROM form_details INNER JOIN form_sections ON form_details.formid = form_sections.formid WHERE form_details.userid = '${userid}'`;
+    const getFormAndSections = `SELECT form_details.*, form_sections.* FROM form_details INNER JOIN form_sections ON form_details.formid = form_sections.formid WHERE form_details.formid = '${formid}'`;
 
-    const getSectionAndQuestions = ``;
+    const getSectionsAndQuestions = `SELECT form_sections.*, from_questions.* FROM form_sections INNER JOIN ON form_sections.formid = from_questions.formid WHERE form_sections.formid = '${formid}'`;
 
-    //const getQuestionAndOptions;
+    const getQuestionsAndOptions = `SELECT form_questions.*, form_question_mcqs.* FROM form_questions INNER JOIN ON form_questions.formid = form_question_mcqs.formid WHERE form_questions.formid = '${formid}'`;
 
     try {
-        const Form = await query(getForm);
-        const specificForm = app_functions.parseData(Form);
-        if(specificForm.length > 0){
-            specificForm[0].created_at = app_functions.convertDate(specificForm[0].created_at);
-            res.status(200).json(specificForm);
-        } else throw new Error();
+        // const Form = await query(getForm);
+        // const specificForm = app_functions.parseData(Form);
+        // if(specificForm.length > 0){
+        //     specificForm[0].created_at = app_functions.convertDate(specificForm[0].created_at);
+        //     res.status(200).json(specificForm);
+        // } else throw new Error();
+
+        const formAndSections = await query(getFormAndSections);
+        const sectionsAndQuestions = await query(getSectionsAndQuestions);
+        const questionsAndOptions = await query(getQuestionsAndOptions);
+
+        res.status(200).json({formAndSections, sectionsAndQuestions, questionsAndOptions});
+
     } catch (error) {
         console.log({getSingleFormRoute: error});
         res.status(400).json({msg: "An error has occured!"});
