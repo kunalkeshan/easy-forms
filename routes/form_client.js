@@ -136,6 +136,13 @@ Router.get("/form/:id", auth, async (req, res) => {
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+
+    const getFormAndSections = `SELECT form_details.*, form_sections.* FROM form_details INNER JOIN form_sections ON form_details.formid = form_sections.formid WHERE form_details.userid = '${userid}'`;
+
+    const getSectionAndQuestions = ``;
+
+    //const getQuestionAndOptions;
+
     try {
         const Form = await query(getForm);
         const specificForm = app_functions.parseData(Form);
