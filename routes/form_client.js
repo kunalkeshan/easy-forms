@@ -41,13 +41,12 @@ Router.post("/form/create", auth, async (req, res) => {
 
 
 //Create a new Section within a form. Takes in formid.
-Router.post("form/create/section/:id", auth, async(req, res) => {
-    const userid = req.user.userid;
+Router.post("/form/create/section/:id", auth, async (req, res) => {
     const formid = req.params.id;
     const newSectionID = shortid.generate();
 
     //Queries
-    const setNewSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${newSectionID}', ''${formid})`;
+    const setNewSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${newSectionID}', '${formid}')`;
     try {
         const newSection = await query(setNewSection);
         if(newSection.affectedRows > 0){
@@ -61,13 +60,52 @@ Router.post("form/create/section/:id", auth, async(req, res) => {
 });
 
 //Create Question within a form, takes in formid and sectionid.
-Router.post("/form/create/question", auth, async(req, res) => {
+Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) => {
+    const {sectionid, formid} = req.params;
+    const {type, is_required, question_description} = req.body;
+    const questionid = shortid.generate();
+
+    //Queries
+    const setNewQuestion = `INSERT INTO form_questions(questionid, formid, sectionid, type, question_description, is_required) VALUES('${questionid}', '${formid}', '${sectionid}', '${type}', '${question_description}', '${is_required}')`;
+
+    try {
+        if(type === "mcq"){
+            const {options} = req.body;
+            const MCQ_OPTIONS = JSON.parse(options);
+            const newQuestion = await query(setNewQuestion);
+            if(newQuestion.affectedRows > 0){
+                let OPTN = {};
+                MCQ_OPTIONS.forEach(async (option, index) => {
+                    const optionid = shortid.generate();
+                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value) VALUES('${optionid}', '${formid}', '${questionid}', '${option}')`;
+                    const newOption = await query(setNewOption);
+                    if(newOption.affectedRows > 0){
+                        OPTN[index] = optionid;
+                        if(index === MCQ_OPTIONS.length - 1){
+                            const optionsid = JSON.stringify(OPTN);
+                            res.status(200).json({questionid, optionsid})
+                        }
+                    } else throw new Error();
+
+                });
+            } else throw new Error();
+        } else {
+            const newQuestion = await query(setNewQuestion);
+            if(newQuestion.affectedRows > 0){
+                res.status(200).json({questionid});
+            } else throw new Error();
+        }
+    } catch (error) {
+        console.log({createQuestionRoute: error});
+        res.status(400).json({msg: "An error has Occured!"})
+    }
     
 });
 
 //Edit an Already Existing Form.
-Router.post("/form/edit", auth, async(req, res) => {
-
+Router.post("/form/edit/:id", auth, async (req, res) => {
+    const userid = req.user.userid;
+    const formid = req.params.id;
 });
 
 module.exports = Router;
