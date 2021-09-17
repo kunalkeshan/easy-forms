@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu&display=swap');
+/* font-family: 'Ubuntu', sans-serif; */
+
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Ubuntu', sans-serif;
+}
+
+:root{
+    snow: #fffeff;
+    trueBlue: #3066be;
+    frenchSkyBlue: #60afff;
+    oliveDrab7: #2f2504;
+    blackOlive: #433e37;
+}
+
+body{
+    background: var(trueBlue);
+}
