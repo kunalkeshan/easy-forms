@@ -10,15 +10,19 @@ app.use(express.urlencoded({ extended: false }));
 //Imporing All Routes
 const register = require("./routes/register");
 const user = require("./routes/user");
-const form_admin = require("./routes/form_admin");
-const form_client = require("./routes/form_client");
+const form_edit = require("./routes/form_edit");
+const form_create = require("./routes/form_create");
+const form_retrieve = require("./routes/form_retrieve");
+const form_response = require("./routes/form_response");
 const routes = require("./routes/routes");
 
 app.use("/", routes);
 app.use("/", register);
 app.use("/", user);
-app.use("/", form_admin);
-app.use("/", form_client);
+app.use("/", form_edit);
+app.use("/", form_create);
+app.use("/", form_retrieve);
+app.use("/", form_response);
 
 const PORT = process.env.PORT;
 
