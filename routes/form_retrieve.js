@@ -49,13 +49,13 @@ Router.get("/form/:id", auth, async (req, res) => {
     const formid = req.params.id;
 
     //Queries
-    const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
 
-    const getFormAndSections = `SELECT form_details.*, form_sections.* FROM form_details INNER JOIN form_sections ON form_details.formid = form_sections.formid WHERE form_details.formid = '${formid}'`;
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}'`;
 
-    const getSectionsAndQuestions = `SELECT form_sections.*, from_questions.* FROM form_sections INNER JOIN ON form_sections.formid = from_questions.formid WHERE form_sections.formid = '${formid}'`;
+    const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}'`;
 
-    const getQuestionsAndOptions = `SELECT form_questions.*, form_question_mcqs.* FROM form_questions INNER JOIN ON form_questions.formid = form_question_mcqs.formid WHERE form_questions.formid = '${formid}'`;
+    const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' AND form_questions.type = 'mcq'`;
 
     try {
         // const Form = await query(getForm);
@@ -65,11 +65,32 @@ Router.get("/form/:id", auth, async (req, res) => {
         //     res.status(200).json(specificForm);
         // } else throw new Error();
 
-        const formAndSections = await query(getFormAndSections);
-        const sectionsAndQuestions = await query(getSectionsAndQuestions);
-        const questionsAndOptions = await query(getQuestionsAndOptions);
+        const form = await query(getForm);
+        if(form.length > 0){
+            const sections = await query(getSections);
+            const questions = await query(getQuestions);
 
-        res.status(200).json({formAndSections, sectionsAndQuestions, questionsAndOptions});
+            const AllQuestions = app_functions.parseData(questions);
+
+            let isMCQ = false;
+            AllQuestions.forEach(async (question, index) => {
+                if(question.type === "mcq"){
+                    isMCQ = true
+                }
+                if(index === AllQuestions.length - 1){
+                    if(isMCQ){
+                        const questionsAndOptions = await query(getQuestionsAndOptions);
+                        res.status(200).json({form, sections, questions, questionsAndOptions});
+                    } else {
+                        res.status(200).json({form, sections, questions});
+                    }
+                }
+            });
+
+        } else {
+            res.status(400).json({msg: "Form Does not exist!"})
+        }
+
 
     } catch (error) {
         console.log({getSingleFormRoute: error});
