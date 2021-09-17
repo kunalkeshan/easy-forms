@@ -44,54 +44,54 @@ Router.get("/forms", auth, async (req, res) => {
 
 
 //Get a Single Form of a specific user.
-Router.get("/form/:id", auth, async (req, res) => {
+Router.get("/form/:id", async (req, res) => {
     const userid = req.user.userid;
     const formid = req.params.id;
+    
+    let isCurrentUser = false;
+    if(req.user){
+        isCurrentUser = true;
+    }
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
 
-    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}'`;
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at ASC`;
 
-    const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}'`;
+    const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}' ORDER BY created_at ASC`;
 
     const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' AND form_questions.type = 'mcq'`;
 
+
+    // Error handling, add created_at for form sections for sorting
     try {
-        // const Form = await query(getForm);
-        // const specificForm = app_functions.parseData(Form);
-        // if(specificForm.length > 0){
-        //     specificForm[0].created_at = app_functions.convertDate(specificForm[0].created_at);
-        //     res.status(200).json(specificForm);
-        // } else throw new Error();
 
         const form = await query(getForm);
         if(form.length > 0){
             const sections = await query(getSections);
             const questions = await query(getQuestions);
 
-            const AllQuestions = app_functions.parseData(questions);
-
-            let isMCQ = false;
-            AllQuestions.forEach(async (question, index) => {
-                if(question.type === "mcq"){
-                    isMCQ = true
-                }
-                if(index === AllQuestions.length - 1){
-                    if(isMCQ){
-                        const questionsAndOptions = await query(getQuestionsAndOptions);
-                        res.status(200).json({form, sections, questions, questionsAndOptions});
-                    } else {
-                        res.status(200).json({form, sections, questions});
+            if(sections.length > 0 || question.length > 0){
+                const AllQuestions = app_functions.parseData(questions);
+    
+                let isMCQ = false;
+                AllQuestions.forEach(async (question, index) => {
+                    if(question.type === "mcq"){
+                        isMCQ = true
                     }
-                }
-            });
-
-        } else {
-            res.status(400).json({msg: "Form Does not exist!"})
-        }
-
-
+                    if(index === AllQuestions.length - 1){
+                        if(isMCQ){
+                            const questionsAndOptions = await query(getQuestionsAndOptions);
+                            if(questionsAndOptions.length > 0){
+                                res.status(200).json({form, sections, questions, questionsAndOptions, isCurrentUser});
+                            } else throw new Error();
+                        } else {
+                            res.status(200).json({form, sections, questions, isCurrentUser});
+                        }
+                    }
+                });
+            } else throw new Error();
+        } else throw new Error();
     } catch (error) {
         console.log({getSingleFormRoute: error});
         res.status(400).json({msg: "An error has occured!"});
