@@ -14,10 +14,14 @@ const auth = require("../middleware/auth");
 //Connecting Database and sending Queries
 const query = util.promisify(con.query).bind(con);
 
-//Submitting a response
-Router.post("/form/response/:id", async (req, res) => {
-    
+//upload image route
+Router.post("/image/upload", auth, async (req, res) => {
+
 });
 
+//delete image route
+Router.post("/image/delete/:id", auth, async (req, res) => {
+
+});
 
 module.exports = Router;

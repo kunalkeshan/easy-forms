@@ -14,6 +14,8 @@ const form_edit = require("./routes/form_edit");
 const form_create = require("./routes/form_create");
 const form_retrieve = require("./routes/form_retrieve");
 const form_response = require("./routes/form_response");
+const form_delete = require("./routes/form_delete");
+const images = require("./routes/images");
 const routes = require("./routes/routes");
 
 app.use("/", routes);
@@ -23,6 +25,12 @@ app.use("/", form_edit);
 app.use("/", form_create);
 app.use("/", form_retrieve);
 app.use("/", form_response);
+app.use("/", form_delete);
+app.use("/", images);
+
+app.use((req, res) => {
+  res.status(404).render("404", {page: "404"});
+});
 
 const PORT = process.env.PORT;
 
