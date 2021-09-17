@@ -154,13 +154,14 @@ Router.get("/form/:id", auth, async (req, res) => {
 Router.post("/form/edit/:id", auth, async (req, res) => {
     const userid = req.user.userid;
     const formid = req.params.id;
-    const {title, description} = req.body;
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
 
     try {
         const Form = await query(getForm);
+        const specificForm = app_functions.parseData(Form);
+        const editedForm = {...specificForm, ...req.body}
         if(Form.length > 0){
             
         }
