@@ -52,14 +52,10 @@ Router.get("/form/:id", async (req, res) => {
 
   //Queries
   const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`;
-
   const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at ASC`;
-
   const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}' ORDER BY created_at ASC`;
-
   const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' AND form_questions.type = 'mcq'`;
 
-  // Error handling, add created_at for form sections for sorting
   try {
     const form = await query(getForm);
     if (form.length > 0) {

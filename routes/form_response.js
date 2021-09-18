@@ -16,7 +16,8 @@ const query = util.promisify(con.query).bind(con);
 
 //Submitting a response
 Router.post("/form/response/:id", async (req, res) => {
-    
+    const formid = req.params.id;
+    const responseid = shortid.generate();
 });
 
 
