@@ -3,6 +3,7 @@ const Router = require("express").Router();
 const util = require("util");
 const cookieParser = require("cookie-parser");
 const shortid = require("shortid");
+const multer = require("multer");
 
 Router.use(cookieParser());
 
