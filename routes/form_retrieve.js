@@ -40,7 +40,7 @@ Router.get("/forms", auth, async (req, res) => {
   }
 });
 
-//Get a Single Form of a specific user.
+//Get a Single Form.
 Router.get("/form/:id", async (req, res) => {
   const userid = req.user.userid;
   const formid = req.params.id;

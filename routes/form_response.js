@@ -17,7 +17,14 @@ const query = util.promisify(con.query).bind(con);
 //Submitting a response
 Router.post("/form/response/:id", async (req, res) => {
     const formid = req.params.id;
-    const responseid = shortid.generate();
+    const {response} = req.body;
+
+    try {
+        
+    } catch (error) {
+        console.log({formResponseRoute: error});
+        res.status(400).json({msg: "An error has Occured"});
+    }
 });
 
 
