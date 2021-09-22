@@ -1,4 +1,25 @@
-<form action="/image/upload" method="POST" enctype="multipart/form-data">
-    <input type="file" name="image" id="input_image" required>
+<form id="imageForm" enctype="multipart/form-data">
+    <input type="file" id="file" name="image" id="input_image" required>
     <button type="submit">Upload</button>
 </form>
+
+<script>
+    const imageForm = document.getElementById("imageForm");
+    const fileField = document.getElementById("file")
+    imageForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const body = {
+            type: "question",
+            image: fileField.file[0]
+        }
+        const response = await fetch("/image/upload", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: body
+        })
+        const data = await response.json();
+        console.log(data);
+    })
+</script>
