@@ -19,20 +19,11 @@ const query = util.promisify(con.query).bind(con);
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb){
-        cb(null, 'public/images');
+        cb(null, 'public/images/assets');
     },
     filename: function(req, file, cb){
-        console.log(file);
         const FILENAME = Date.now() + "_" + file.originalname;
-        if(req.body.type === "user_image"){
-            req.user.image_path = `/images/user/${FILENAME}`;
-        } else if (req.body.type === "question"){
-            //for user image
-            req.body.image_path = `/images/question/${FILENAME}`;
-        } else if(req.body.type === "response"){
-            //for question and response
-            req.body.imagePathFQR = `/images/response/${FILENAME}`;
-        } else cb( new Error("Provide a valid type"));
+        req.body.imagePath = `/images/assets/${FILENAME}`
         cb(null, FILENAME);
     }
 });
@@ -45,54 +36,33 @@ Router.get("/image", (req, res) => {
 
 //upload image route
 Router.post("/image/upload", upload.single("image"), async (req, res) => {
+    const {imagePath} = req.body;
+    if(imagePath){
+        res.status(200).json({msg: "Image Uploaded Successfully", imagePath});
+    } else {
+        res.status(400).json({msg: "Uploading Error"});
+    }
+});
+
+Router.post("/image/upload/db", async (req, res) => {
     const imageid = shortid.generate();
-    const {type, imagePathFQR} = req.body;
-    console.log(req.body)
-    /*
-        imagePathFQR = for question and response;
-        image_path = for user images
-    */
-    
-    let setUploadImage = "";
-    let setUpdateUser = "";
+    const {userid} = req.user;
+    const {type, imagePath} = req.body;
+
+    //Queries
+    let setUploadImage = `INSERT INTO image(imageid, image_type, image_path) VALUES('${imageid}', '${type}', '${imagePath}');`;
+    let setUpadteUser = `UPDATE user_details SET image_type='custom', image_path='${imagePath}' WHERE userid='${userid}';`;
 
     try {
-        if(type === "user_image"){
-            const {userid, image_path} = req.user;
-            //Queries
-            setUploadImage = `INSERT INTO images(imageid, image_type, image_path) VALUES ('${imageid}', '${type}', '${image_path}');`;
-            setUpdateUser = `UPDATE TABLE user_details SET user_image='custom' WHERE userid='${userid}';`;
-
+        if(type === "user_details"){
             const uploadImage = await query(setUploadImage);
             if(uploadImage.affectedRows > 0){
-                const updateUser = await query(setUpdateUser);
-                if(updateUser.affectedRows > 0){
-                    res.status(200).json({msg: "User image updated Successsfully", image_path});
-                } else throw new Error();
-            } else throw new Error();
-
-        } else if(type === "question"){
-            //Queries
-            setUploadImage = `INSERT INTO images(imageid, image_type, image_path) VALUES('${imageid}', '${type}', '${imagePathFQR}');`
-
-            const uploadImage = await query(setUploadImage);
-            if(uploadImage.affectedRows > 0){
-                res.status(200).json({msg: "Question Image uploaded successfully", imagePathFQR})
-            } else throw new Error();
-
-        } else if(type === "response"){
-            //Queries
-            setUploadImage = `INSERT INTO images(imageid, image_type, image_path) VALUES('${imageid}', '${type}', '${imagePathFQR}');`
-
-            const uploadImage = await query(setUploadImage);
-            if(uploadImage.affectedRows > 0){
-                res.status(200).json({msg: "Response Image uploaded successfully", imagePathFQR})
-            } else throw new Error();
-
-        } else res.status(400).json({msg: "Provide a valid type!"});
+                co
+            }
+        }
     } catch (error) {
-        console.log({uploadImageRoute: error});
-        res.status(400).json({msg: "An error has occured"});
+        console.log({updateDBImageRoute: error});
+        res.status(400).json({msg: "An error has occured!"});
     }
 });
 
