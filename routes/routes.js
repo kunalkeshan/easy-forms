@@ -14,6 +14,7 @@ const query = util.promisify(con.query).bind(con);
 
 //Index Route
 Router.get("/", async (req, res) => {
+    console.log(req.query)
     // if(req.user) {
     //     res.render("home", {page: "home", user: req.user});
     // } else {

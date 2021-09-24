@@ -38,28 +38,40 @@ Router.get("/image", (req, res) => {
 Router.post("/image/upload", upload.single("image"), async (req, res) => {
     const {imagePath} = req.body;
     if(imagePath){
-        res.status(200).json({msg: "Image Uploaded Successfully", imagePath});
+        // res.redirect(`/image/upload/db?image_path=${JSON.stringify(imagePath)}`);
+        res.send("Works")
     } else {
         res.status(400).json({msg: "Uploading Error"});
     }
 });
 
-Router.post("/image/upload/db", async (req, res) => {
+Router.post("/image/upload/db?", async (req, res) => {
     const imageid = shortid.generate();
     const {userid} = req.user;
     const {type, imagePath} = req.body;
 
     //Queries
-    let setUploadImage = `INSERT INTO image(imageid, image_type, image_path) VALUES('${imageid}', '${type}', '${imagePath}');`;
-    let setUpadteUser = `UPDATE user_details SET image_type='custom', image_path='${imagePath}' WHERE userid='${userid}';`;
+    const setUploadImage = `INSERT INTO image(imageid, image_type, image_path) VALUES('${imageid}', '${type}', '${imagePath}');`;
+    const setUpadteUser = `UPDATE user_details SET image_type='custom', image_path='${imagePath}' WHERE userid='${userid}';`;
+    
 
     try {
-        if(type === "user_details"){
-            const uploadImage = await query(setUploadImage);
-            if(uploadImage.affectedRows > 0){
-                co
-            }
-        }
+        const uploadImage = await query(setUploadImage);
+        if(uploadImage.affectedRows > 0){
+            if(type === "user_image"){
+                if(uploadImage.affectedRows > 0){
+                    const updateUser = await query(setUpadteUser);
+                    if(updateUser.affectedRows > 0){
+                        res.status(200).json({msg: "DB Updated"});
+                    } else throw new Error();
+                }
+            } else if(type === "question"){
+
+            } else if(type === "response"){
+
+            } else res.status(400).json({msg: "Please enter valid type"});
+        } else throw new Error();
+
     } catch (error) {
         console.log({updateDBImageRoute: error});
         res.status(400).json({msg: "An error has occured!"});
