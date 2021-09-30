@@ -17,12 +17,23 @@ const query = util.promisify(con.query).bind(con);
 //Delete Form route
 Router.post("/form/delete/:id", auth, async (req, res) => {
     const formid = req.params.id;
+    
 
     //Queries
-    const getForm = `SELECT * FROM form_details WHERE formid='${fromid}'`;
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid} AND userid='${userid}'`;
+    const setDeleteForm = `DELETE * FROM form_details WHERE formid='${formid}'`;
     
     try {
         
+        let Form  = await query(getForm);
+        Form = app_functions.parseData(Form);
+        if(Form.formid === formid){
+            const deleteForm = await query(setDeleteForm);
+            if(deleteForm.affectedRows > 0){
+                res.status(200).json({msg: "Form Deleted Successfully"});
+            } else throw new Error();
+        } else throw new Error();
+
     } catch (error) {
         console.log({deleteFormRoute: error});
         res.status(400).json({msg: "An error has Occured!"});
@@ -36,8 +47,15 @@ Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) =>
 
     //Queries
     const getSection = `SELECT * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
+    const getQuestionsFromSection = `SELECT * FROM form_questions WHERE sectionid='${sectionid}' AND formid='${formid}'`;
+    const deleteSection
 
     try {
+
+        let Section = await query(getSection);
+        if(Section.length === 1){
+
+        }
         
     } catch (error) {
         console.log({deleteSectionRoute: error});

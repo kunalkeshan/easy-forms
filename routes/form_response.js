@@ -17,16 +17,36 @@ const query = util.promisify(con.query).bind(con);
 //Submitting a response
 Router.post("/form/response/:id", async (req, res) => {
     const formid = req.params.id;
-    const {response} = req.body;
+    const {submission} = req.body;
+    // const {formdetails, sections, questions, options} = response;
+    const {formdetails, responses} = submission;
 // Expected response to be, form details, sections array, questions array,
 // options array (if any), responses associated will be with the questions
+
+//or alternatively we can return formdetails and response object
+//response will have response.sections, response.questions, 
+// response.options and response.response (or) response.questions[n].response
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`;
     try {
-        const Form = await query(getForm);
+        let Form = await query(getForm);
         if(Form.length > 0){
-            const {formdetails, sections, questions, options} = response;
+            Form = app_functions.parseData(Form);
+            Form = Form[0];
+            if(formdetails.formid === Form.formid){
+                const count = 0;
+                for(let response in responses){
+                    const setNewResponse = `INSERT INTO form_responses (formid, sectionid, questionid, response_description) VALUES('${Form.formid}', '${response.section.sectionid}', '${response.question.questionid}', '${response.response_description}')`;
+                    count++;
+
+                    //Queries
+                    const newResponse = await query(setNewResponse);
+                    if(count === responses.length - 1){
+
+                    }
+                }
+            } else res.status(400).json({msg: "Wrong Form"});
         } else res.status(400).json({msg: "Form does not exist"});
     } catch (error) {
         console.log({formResponseRoute: error});
@@ -35,4 +55,4 @@ Router.post("/form/response/:id", async (req, res) => {
 });
 
 
-module.exports = Router;
+module.exports = Router;;
