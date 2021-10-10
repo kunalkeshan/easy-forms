@@ -63,15 +63,23 @@ Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) =>
     }
 });
 
-//Delete Section route
+//Delete Question route
 Router.post("/form/delete/question/:questionid/:formid", auth, async (req, res) => {
-    const {fomrid, questionid} = req.params;
+    const {formid, questionid} = req.params;
 
     //Queries
     const getQuestion = `SELECT * FROM form_questions WHERE questionid='${questionid}' AND formid='${formid}'`;
+    const setDeleteQuestion = `DELETE * FROM form_questions WHERE questionid='${questionid}' AND formid='${formid}'`
 
     try {
-        
+        let question = await query(getQuestion);
+        if(question.length > 0) {
+            const deleteQuestion = await query(setDeleteQuestion);
+            if(deleteQuestion.affectedRows > 0){
+                res.status(200).json({msg: "Question Deleted"});
+            } else throw new Error();
+        } else throw new Error();
+        question = app_functions.parseData(question);
     } catch (error) {
         console.log({deleteQuestionRoute: error});
         res.status(400).json({msg: "An error has Occured"});
