@@ -35,15 +35,16 @@ Router.post("/form/response/:id", async (req, res) => {
             Form = app_functions.parseData(Form);
             Form = Form[0];
             if(formdetails.formid === Form.formid){
-                const count = 0;
+                let count = 0;
                 for(let response in responses){
-                    const setNewResponse = `INSERT INTO form_responses (formid, sectionid, questionid, response_description) VALUES('${Form.formid}', '${response.section.sectionid}', '${response.question.questionid}', '${response.response_description}')`;
-                    count++;
-
                     //Queries
+                    const setNewResponse = `INSERT INTO form_responses (formid, sectionid, questionid, response_description) VALUES('${Form.formid}', '${response.section.sectionid}', '${response.question.questionid}', '${response.response_description}')`;
                     const newResponse = await query(setNewResponse);
-                    if(count === responses.length - 1){
-
+                    if(newResponse.affectedRows > 0){
+                        count++;
+                        if(count === responses.length - 1){
+                            res.status(200).json({msg: "Response Accepted!"})
+                        }
                     }
                 }
             } else res.status(400).json({msg: "Wrong Form"});

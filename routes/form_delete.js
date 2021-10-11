@@ -18,7 +18,6 @@ const query = util.promisify(con.query).bind(con);
 Router.post("/form/delete/:id", auth, async (req, res) => {
     const formid = req.params.id;
     
-
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid} AND userid='${userid}'`;
     const setDeleteForm = `DELETE * FROM form_details WHERE formid='${formid}'`;
@@ -48,13 +47,23 @@ Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) =>
     //Queries
     const getSection = `SELECT * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
     const getQuestionsFromSection = `SELECT * FROM form_questions WHERE sectionid='${sectionid}' AND formid='${formid}'`;
-    const deleteSection
+    const setDeleteSection = `DELETE * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
 
     try {
 
         let Section = await query(getSection);
         if(Section.length === 1){
-
+            const deleteSection = await query(setDeleteSection);
+            if(deleteSection.affectedRows > 0){
+                res.status(200).json({msg: "Section Deleted Successfully!"});
+            } else throw new Error();
+        } else {
+            let questionsFromSection = await query(getQuestionsFromSection);
+            if(questionsFromSection){
+                Section = app_functions.parseData(Section);
+                questionsFromSection = app_functions.parseData(questionsFromSection);
+            }
+            const updateQuestionSections = ``;
         }
         
     } catch (error) {
@@ -92,9 +101,16 @@ Router.post("/form/delete/option/:optionid/:questionid", auth, async (req, res) 
 
     //Queries
     const getOption = `SELECT * FROM form_question_mcqs WHERE questionid='${questionid}' AND optionid='${optionid}'`;
+    const setDeleteOption = `DELETE * FROM form_question_mcqs WHERE questionid='${questionid}' AND optionid='${optionid}'`;
 
     try {
-        
+        const Option = await query(getOption);
+        if(Option.length > 0){
+            const deleteOption = await query(setDeleteOption);
+            if(deleteOption.affectedRows > 0){
+                res.status(200).json({msg: "Option Successfully Deleted!"})
+            } else throw new Error();
+        }
     } catch (error) {
         console.log({deleteOptionRoute: error});
         res.status(400).json({msg: "An error has occured!"});

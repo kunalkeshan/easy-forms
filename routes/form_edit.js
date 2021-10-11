@@ -40,6 +40,7 @@ Router.post("/form/edit/:id", auth, async (req, res) => {
 Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
     const userid = req.user.userid;
     const {formid, sectionid} = req.params;
+    const {title, description} = req.body;
 
 
     try {
