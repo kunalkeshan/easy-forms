@@ -10,11 +10,11 @@
 }
 
 :root{
-    snow: #fffeff;
-    trueBlue: #3066be;
-    frenchSkyBlue: #60afff;
-    oliveDrab7: #2f2504;
-    blackOlive: #433e37;
+    --snow: #fffeff;
+    --trueBlue: #3066be;
+    --frenchSkyBlue: #60afff;
+    --oliveDrab7: #2f2504;
+    --blackOlive: #433e37;
 }
 
 body{
