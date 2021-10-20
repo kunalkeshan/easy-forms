@@ -28,7 +28,7 @@ a{
 
 /* GLOBAL CLASSES ------------------------------------------------*/
 
-.flex{
+/* .flex{
     display: flex;
 }
 
@@ -40,10 +40,10 @@ a{
 .flex-between-center{
     align-items: center;
     justify-content: space-between;
-}
+} */
 
 /* NAVBAR STYLING ------------------------------------------------*/
-
+/* 
 nav{
     display: flex;
     padding: 1em;
@@ -51,4 +51,4 @@ nav{
 
 #nav__list{
     list-style: none;
-}
+} */

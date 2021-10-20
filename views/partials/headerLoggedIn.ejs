@@ -4,18 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="./css/common.css">
-    <link rel="stylesheet" href="./css/<%-page%>.css">
+    <%- include("./headLinks.ejs") %> 
 </head>
 <body>
-    <nav id="nav">
+    <nav id="nav" class="flex items-center justify-between p-4 text-lg">
         <div id="nav__logo">
             <img src="" alt=""/>
         </div>
-        <ul id="nav__list">
-            <li class="nav__item"><a href="/home" class="nav__link">Home</a></li>
-            <li class="nav__item"><a href="/dashboard" class="nav__link">Dashboard</a></li>
-            <li class="nav__item"><a href="/profile" class="nav__link">Profile</a></li>
-            <li class="nav__item"><a href="#" class="nav__link">Logout</a></li>
+        <ul id="nav__list" class="flex">
+            <li class="nav__item mx-2"><a href="/home" class="nav__link">Home</a></li>
+            <li class="nav__item mx-2"><a href="/dashboard" class="nav__link">Dashboard</a></li>
+            <li class="nav__item mx-2"><a href="/profile" class="nav__link">Profile</a></li>
+            <li class="nav__item mx-2"><a href="#" class="nav__link">Logout</a></li>
         </ul>
     </nav>
