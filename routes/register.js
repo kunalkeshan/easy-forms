@@ -50,6 +50,7 @@ Router.post("/signup", async(req, res) => {
 //Sign-In Route
 Router.post("/signin",  async (req, res) => {
     const {user, password, type} = req.body;
+    console.log(user, password, type);
     try {
         if(type === 0){
             //Email Sign In
