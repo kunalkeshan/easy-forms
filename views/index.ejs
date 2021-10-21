@@ -4,12 +4,14 @@
     <img src="/images/default_user_image.png"> -->
 
     <div class="container mx-auto p-4 flex justify-between items-center" id="index">
-        <div id="index__app-info">
+        <div id="index__app-info" class="w-1/2">
 
         </div>
-        <div id="index__app-forms">
+        <div id="index__app-forms" class="w-1/2">
+
             <!-- Sing In Form -->
-            <form action="/signin" id="index__singin" method="POST">
+
+            <form action="/signin" id="index__singin" method="POST" class="index__form">
                 <label for="singin__user">Username or Email
                     <input type="text" id="singin__user" name="user"/>
                 </label>
@@ -18,9 +20,25 @@
                 </label>
                 <button type="submit" id="singin__button">Sing In</button>
             </form>
+
             <!-- Sign Up Form -->
-            <form action="/singup" id="index__signup">
-                
+
+            <form action="/singup" id="index__signup" method="POST" class="index__form">
+                <label for="signup__name">Name
+                    <input type="text" id="signup__name" />
+                </label>
+                <label for="signup__username">Username
+                    <input type="text" id="signup__username" />
+                </label>
+                <label for="signup__email">Email
+                    <input type="email" id="signup__email" />
+                </label>
+                <label for="signup__password">Password
+                    <input type="password" id="singup__password" />
+                </label>
+                <label for="confirm__password">Reenter Password
+                    <input type="password" id="confirm__password" />
+                </label>
             </form>
         </div>
     </div>
