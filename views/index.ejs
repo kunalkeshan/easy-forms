@@ -11,34 +11,41 @@
 
             <!-- Sing In Form -->
 
-            <form action="/signin" id="index__signin" method="POST" class="index__form">
-                <label for="singin__user">Username or Email
-                    <input type="text" id="signin__user"/>
+            <form id="index__signin" class="index__form">
+                <label for="singin__user" class="index__label">Username or Email
+                    <input type="text" id="signin__user" class="index__input"/>
                 </label>
-                <label for="singin__password">Password
-                    <input type="password" id="signin__password"/>
+                <label for="singin__password" class="index__label">Password
+                    <input type="password" id="signin__password" class="index__input"/>
                 </label>
-                <button type="submit" id="singin__button">Sing In</button>
+                <button type="submit" id="singin__button" class="index__button">Sing In</button>
+                <div class="index__cta">
+                    <a href="/?signup" class="index__link">New User? Click here to Sign Up!</a>
+                </div>
             </form>
 
             <!-- Sign Up Form -->
 
             <form id="index__signup" class="index__form">
-                <label for="signup__name">Name
-                    <input type="text" id="signup__name" />
+                <label for="signup__name" class="index__label">Name
+                    <input type="text" id="signup__name" class="index__input"/>
                 </label>
-                <label for="signup__username">Username
-                    <input type="text" id="signup__username" />
+                <label for="signup__username" class="index__label">Username
+                    <input type="text" id="signup__username" class="index__input"/>
                 </label>
-                <label for="signup__email">Email
-                    <input type="email" id="signup__email" />
+                <label for="signup__email" class="index__label">Email
+                    <input type="email" id="signup__email" class="index__input"/>
                 </label>
-                <label for="signup__password">Password
-                    <input type="password" id="singup__password" />
+                <label for="signup__password" class="index__label">Password
+                    <input type="password" id="singup__password" class="index__input"/>
                 </label>
-                <label for="confirm__password">Reenter Password
-                    <input type="password" id="confirm__password" />
+                <label for="confirm__password" class="index__label">Reenter Password
+                    <input type="password" id="confirm__password" class="index__input"/>
                 </label>
+                <button type="submit" id="signup__button" class="index__button">Sign Up</button>
+                <div class="index__cta">
+                    <a href="/" class="index__link">Already Have An Account. Click Here!</a>
+                </div>
             </form>
         </div>
     </div>

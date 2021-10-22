@@ -14,17 +14,22 @@ const query = util.promisify(con.query).bind(con);
 
 //Index Route
 Router.get("/", async (req, res) => {
-    console.log(req.query)
-    // if(req.user) {
-    //     res.render("home", {page: "home", user: req.user});
-    // } else {
-    //     res.render("index", {page: "index"});
-    // }
+    // console.log(req.query);
+    //If req for "/?key=val&key2=val2"
+    // req.query = {key: val, key2: val2}
     const page = {
         link: "index",
-        title: "Easy-Forms"
+        title: "Easy-Forms",
     }
-        res.render("index", {page});
+    res.render("index", {page});
 });
+
+Router.get("/home", auth, (req, res) => {
+    const page = {
+        link: "home",
+        title: "Home | Easy-Forms",
+    }
+    res.render("home", {page, user: req.user});
+})
 
 module.exports = Router;
