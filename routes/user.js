@@ -17,7 +17,13 @@ const query = util.promisify(con.query).bind(con);
 Router.get("/profile", auth, async (req, res) => {
   const user = req.user;
   user.created_at = app_functions.convertDate(user.created_at);
-  res.render("profile", {user, page: "profile"});
+  const page = {
+    link: "profile",
+    title: `${user.name} | Easy-Forms`
+  }
+
+  console.log(page)
+  res.render("profile", {user, page});
 });
 
 //Edit User Profile
