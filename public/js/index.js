@@ -10,7 +10,7 @@ const fetchData = async (url = "", method = "", data = {}) => {
         body: JSON.stringify(data)
     });
     
-    return response.json();
+    return response;
 }
 
 if(signInForm){
@@ -43,8 +43,12 @@ if(signInForm){
 
             try {
                 
-                const singin = await fetchData("/signin", "POST", body);
-                alert(singin.message)
+                // const signin = await fetchData("/signin", "POST", body);
+                const signin = await axios.post("/signin", {body})
+                console.log(signin)
+                if(signin.status = 200){
+
+                }
                 
             } catch (error) {
                 console.log(error);
