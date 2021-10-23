@@ -1,17 +1,23 @@
 const signInForm = document.getElementById("index__signin") || null;
 const signUpForm = document.getElementById("index__signup") || null;
 
-const fetchData = async (url = "", method = "", data = {}) => {
-    const response = await fetch(url, {
-        method: method,
-        headers: {
-            "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data)
-    });
-    
-    return response;
+const updateFormStyles = (singInFormStyle = "", signUpFormStyle = "") => {
+    signInForm.style.display = singInFormStyle;
+    signUpForm.style.display = signUpFormStyle;
 }
+
+const updateForm = () => {
+    const currentForm = window.location.search;
+    if(currentForm === ""){
+        updateFormStyles("block", "none");
+    } else if (currentForm === "?signup") {
+        updateFormStyles("none", "block");
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    updateForm();
+})
 
 if(signInForm){
     signInForm.addEventListener("submit", async (event) => {
@@ -43,11 +49,10 @@ if(signInForm){
 
             try {
                 
-                // const signin = await fetchData("/signin", "POST", body);
-                const signin = await axios.post("/signin", {body})
+                const signin = await axios.post("/signin", body)
                 console.log(signin)
                 if(signin.status = 200){
-
+                    window.location.replace("/home")
                 }
                 
             } catch (error) {
