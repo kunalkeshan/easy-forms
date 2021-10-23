@@ -1,13 +1,112 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="css/common.css">
-    <script src="js/common.js"></script>
-</head>
-<body>
-    <h1>This is Index</h1>
-</body>
-</html>
+<%- include ("./partials/headerLoggedOut.ejs") %> 
+
+    <!-- <h1>This is Index</h1>
+    <img src="/images/default_user_image.png"> -->
+
+    <div class="container mx-auto p-4 flex justify-between items-center" id="index">
+
+        <div id="index__app-info" class="w-1/2">
+            <div class="carousel">
+                <button class="carousel__button carousel__button--left">
+                    <i class="fas fa-arrow-circle-left"></i>
+                </button>
+                <div class="carousel__track-container">
+                    <ul class="carousel__track">
+                        <li class="carousel__slide">
+                            <img class="carousel__image" src="./images/assets/index/form.png" alt="Easy Forms info images"/>
+                        </li>
+                        <li class="carousel__slide">
+                            <img class="carousel__image" src="./images/assets/index/form1.jpg" alt="Easy Forms info images"/>
+                        </li>
+                        <li class="carousel__slide">
+                            <img class="carousel__image" src="./images/assets/index/form2.jpg" alt="Easy Forms info images"/>
+                        </li>
+                    </ul>
+                </div>
+                <button class="carousel__button carousel__button--right">
+                    <i class="fas fa-arrow-circle-right"></i>
+                </button>
+
+                <div class="carousel__nav">
+                    <button class="carousel__indicator current-slide"></button>
+                    <button class="carousel__indicator"></button>
+                    <button class="carousel__indicator"></button>
+                </div>
+            </div>
+        </div>
+
+        <div id="index__app-forms" class="w-1/2">
+
+            <!-- Sing In Form -->
+
+<<<<<<< HEAD
+            <form action="/signin" id="index__signin" method="POST" class="index__form">
+                <label for="singin__user">Username or Email
+                    <input type="text" id="signin__user"/>
+                </label>
+                <label for="singin__password">Password
+                    <input type="password" id="signin__password"/>
+                </label>
+                <button type="submit" id="singin__button">Sing In</button>
+=======
+            <form id="index__signin" class="index__form">
+                <h2 class="index__heading">Sign In</h2>
+                <label for="singin__user" class="index__label">Username or Email
+                    <input type="text" id="signin__user" class="index__input"/>
+                </label>
+                <label for="singin__password" class="index__label">Password
+                    <input type="password" id="signin__password" class="index__input"/>
+                </label>
+                <button type="submit" id="singin__button" class="index__button">Sing In</button>
+                <div class="index__cta">
+                    <a href="/?signup" class="index__link">New User? Click here to Sign Up!</a>
+                </div>
+>>>>>>> kunal
+            </form>
+
+            <!-- Sign Up Form -->
+
+            <form id="index__signup" class="index__form">
+<<<<<<< HEAD
+                <label for="signup__name">Name
+                    <input type="text" id="signup__name" />
+                </label>
+                <label for="signup__username">Username
+                    <input type="text" id="signup__username" />
+                </label>
+                <label for="signup__email">Email
+                    <input type="email" id="signup__email" />
+                </label>
+                <label for="signup__password">Password
+                    <input type="password" id="singup__password" />
+                </label>
+                <label for="confirm__password">Reenter Password
+                    <input type="password" id="confirm__password" />
+                </label>
+=======
+                <h2 class="index__heading">Sign Up</h2>
+                <label for="signup__name" class="index__label">Name
+                    <input type="text" id="signup__name" class="index__input"/>
+                </label>
+                <label for="signup__username" class="index__label">Username
+                    <input type="text" id="signup__username" class="index__input"/>
+                </label>
+                <label for="signup__email" class="index__label">Email
+                    <input type="email" id="signup__email" class="index__input"/>
+                </label>
+                <label for="signup__password" class="index__label">Password
+                    <input type="password" id="singup__password" class="index__input"/>
+                </label>
+                <label for="confirm__password" class="index__label">Reenter Password
+                    <input type="password" id="confirm__password" class="index__input"/>
+                </label>
+                <button type="submit" id="signup__button" class="index__button">Sign Up</button>
+                <div class="index__cta">
+                    <a href="/" class="index__link">Already Have An Account. Click Here!</a>
+                </div>
+>>>>>>> kunal
+            </form>
+        </div>
+    </div>
+
+<%- include ("./partials/footer.ejs") %>

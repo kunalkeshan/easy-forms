@@ -49,6 +49,7 @@ Router.post("/signup", async(req, res) => {
 
 //Sign-In Route
 Router.post("/signin",  async (req, res) => {
+    console.log(req.body)
     const {user, password, type} = req.body;
     try {
         if(type === 0){
@@ -72,7 +73,9 @@ Router.post("/signin",  async (req, res) => {
             //Username Sign In
             const usernameSignIn = `SELECT * FROM user_details WHERE username='${user}'`;
             const response  = await query(usernameSignIn);
-            const user_details = app_functions.parseData(response)[0];
+            console.log(response);
+            let user_details = app_functions.parseData(response);
+            user_details = user_details[0]
 
             //Validating Password
             const valid_password = await bcrypt.compare(password, user_details.password);
