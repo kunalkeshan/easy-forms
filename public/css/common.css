@@ -1,0 +1,56 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu&display=swap');
+/* font-family: 'Ubuntu', sans-serif; */
+
+/* DEFALUT STYLING ------------------------------------------------*/
+
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --snow: #fffeff;
+    --trueBlue: #3066be;
+    --frenchSkyBlue: #60afff;
+    --oliveDrab7: #2f2504;
+    --blackOlive: #433e37;
+}
+
+body{
+    background: var(trueBlue);
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    height: 100vh;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* GLOBAL CLASSES ------------------------------------------------*/
+
+/* .flex{
+    display: flex;
+}
+
+.flex-center{
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-between-center{
+    align-items: center;
+    justify-content: space-between;
+} */
+
+/* NAVBAR STYLING ------------------------------------------------*/
+/* 
+nav{
+    display: flex;
+    padding: 1em;
+}
+
+#nav__list{
+    list-style: none;
+} */

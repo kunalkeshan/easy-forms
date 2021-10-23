@@ -1,0 +1,46 @@
+<%- include ("./partials/headerLoggedOut.ejs") %> 
+
+    <!-- <h1>This is Index</h1>
+    <img src="/images/default_user_image.png"> -->
+
+    <div class="container mx-auto p-4 flex justify-between items-center" id="index">
+        <div id="index__app-info" class="w-1/2">
+
+        </div>
+        <div id="index__app-forms" class="w-1/2">
+
+            <!-- Sing In Form -->
+
+            <form action="/signin" id="index__signin" method="POST" class="index__form">
+                <label for="singin__user">Username or Email
+                    <input type="text" id="signin__user"/>
+                </label>
+                <label for="singin__password">Password
+                    <input type="password" id="signin__password"/>
+                </label>
+                <button type="submit" id="singin__button">Sing In</button>
+            </form>
+
+            <!-- Sign Up Form -->
+
+            <form id="index__signup" class="index__form">
+                <label for="signup__name">Name
+                    <input type="text" id="signup__name" />
+                </label>
+                <label for="signup__username">Username
+                    <input type="text" id="signup__username" />
+                </label>
+                <label for="signup__email">Email
+                    <input type="email" id="signup__email" />
+                </label>
+                <label for="signup__password">Password
+                    <input type="password" id="singup__password" />
+                </label>
+                <label for="confirm__password">Reenter Password
+                    <input type="password" id="confirm__password" />
+                </label>
+            </form>
+        </div>
+    </div>
+
+<%- include ("./partials/footer.ejs") %>

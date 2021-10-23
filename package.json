@@ -1,0 +1,43 @@
+{
+  "name": "easy-forms",
+  "version": "1.0.0",
+  "description": "An application that allows user to create forms and get responses in a user friendly environment and minimalist approach.",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js",
+    "heroku": "git push heroku main"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kunalkeshan/easy-forms.git"
+  },
+  "keywords": [
+    "forms",
+    "easy forms",
+    "create new form",
+    "quiz form",
+    "form responses"
+  ],
+  "author": "Kunal Keshan S, Varshit, Sagar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kunalkeshan/easy-forms/issues"
+  },
+  "homepage": "https://easy-forms-td.herokuapp.com/",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "jsonwebtoken": "^8.5.1",
+    "multer": "^1.4.3",
+    "mysql": "^2.18.1",
+    "nodemon": "^2.0.12",
+    "shortid": "^2.2.16",
+    "util": "^0.12.4"
+  },
+  "engines": {
+    "node": "14.17"
+  }
+}
