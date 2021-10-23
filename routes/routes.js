@@ -35,6 +35,14 @@ Router.get("/home", auth, (req, res) => {
         title: "Home | Easy-Forms",
     }
     res.render("home", {page, user: req.user});
+});
+
+Router.get("/dashboard", auth, (req, res) => {
+    const page = {
+        link: "dashboard",
+        title: "Dashboard | Easy-Forms",
+    }
+    res.render("dashboard", {page, user: req.user})
 })
 
 module.exports = Router;

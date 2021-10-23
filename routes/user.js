@@ -22,7 +22,6 @@ Router.get("/profile", auth, async (req, res) => {
     title: `${user.name} | Easy-Forms`
   }
 
-  console.log(page)
   res.render("profile", {user, page});
 });
 
