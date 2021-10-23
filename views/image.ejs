@@ -1,0 +1,33 @@
+<form id="imageForm">
+    <input type="file" id="file" name="image" id="file" required>
+    <button type="submit">Upload</button>
+</form>
+
+<script>
+    const imageForm = document.getElementById("imageForm");
+
+    
+    imageForm.addEventListener("submit", async (e) => {
+        console.log(imageForm, fileFilled);
+        e.preventDefault();
+        const fileFilled = document.getElementById("file");
+        const file = fileFilled.files[0];
+        const formData = new FormData();
+        formData.append("type", "user_image");
+        formData.append("image", file);
+
+        try {
+            const sendImage = await fetch("/image/upload", {
+                method: "POST",
+                body: formData
+            });
+            const response = await sendImage.json();
+            console.log(response);
+            
+        } catch (error) {
+            console.log(error);
+        }
+    })
+    
+    
+</script>

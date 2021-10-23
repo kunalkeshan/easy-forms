@@ -14,12 +14,41 @@ const query = util.promisify(con.query).bind(con);
 
 //Index Route
 Router.get("/", async (req, res) => {
+<<<<<<< HEAD
+    console.log(req.query)
     // if(req.user) {
     //     res.render("home", {page: "home", user: req.user});
     // } else {
     //     res.render("index", {page: "index"});
     // }
-        res.render("index", {page: "index"});
+    const page = {
+        link: "index",
+        title: "Easy-Forms"
+    }
+        res.render("index", {page});
+=======
+    // console.log(req.query);
+    //If req for "/?key=val&key2=val2"
+    // req.query = {key: val, key2: val2}
+    const isAuthenticated = req.cookies.easy_forms_auth_token;
+    if(isAuthenticated) {
+        res.redirect("/home");
+        return;
+    }
+    const page = {
+        link: "index",
+        title: "Easy-Forms",
+    }
+    res.render("index", {page});
+>>>>>>> kunal
 });
+
+Router.get("/home", auth, (req, res) => {
+    const page = {
+        link: "home",
+        title: "Home | Easy-Forms",
+    }
+    res.render("home", {page, user: req.user});
+})
 
 module.exports = Router;
