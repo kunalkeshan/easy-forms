@@ -1,11 +1,13 @@
 const express = require("express");
 const app = express();
+const cookieParser = require("cookie-parser");
 require("dotenv").config();
 
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.static(__dirname + "/public"));
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 //Imporing All Routes
 const register = require("./routes/register");
@@ -29,7 +31,14 @@ app.use("/", form_delete);
 app.use("/", images);
 
 app.use((req, res) => {
-  res.status(404).render("404", {page: "404"});
+  const page = {
+    link: "404", 
+    title: "404! No Page Found!", 
+    isLoggedIn: false
+  }
+  const isAuthenticated = req.cookies.easy_forms_auth_token;
+  if(isAuthenticated) page.isLoggedIn = true;
+  res.status(404).render("404", {page});
 });
 
 const PORT = process.env.PORT;
