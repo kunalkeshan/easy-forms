@@ -18,38 +18,49 @@ const query = util.promisify(con.query).bind(con);
 
 //Sign-Up Route
 Router.post("/signup", async(req, res) => {
-    const {name, username, email, password} = req.body;
-
+    const {name, username, email, password, isSaved} = req.body;
+    const check = {
+        username: false, email: false
+    }
     //Queries
     const checkEmail = `SELECT * FROM user_details WHERE email='${email}';`
     const checkUsername = `SELECT * FROM user_details WHERE username='${username}'`
     try {
         const emailExist = await query(checkEmail);
         const usernameExist = await query(checkUsername);
-        if(app_functions.parseData(emailExist).length == 0 && app_functions.parseData(usernameExist).length == 0){
+
+        if(emailExist.length) check.email = true;
+        if(usernameExist.length) check.username = true;
+
+        if(emailExist.length == 0 && usernameExist.length == 0 && isSaved){
             const userid = shortid.generate()
             const hashedPassword = await bcrypt.hash(password, parseInt(process.env.SALT));
             const signUpUser = `INSERT INTO user_details (userid, name, email, username, password) VALUES ('${userid}', '${name}', '${email}', '${username}', '${hashedPassword}');`;
             const response = await query(signUpUser);
             if(response.affectedRows > 0){
-                const user_details = req.body
+                const getNewUser = `SELECT * FROM user_details WHERE userid = '${userid}'`;
+                let newUser = await query(getNewUser)
+                newUser = app_functions.parseData(newUser);
+                console.log(newUser)
+                const user_details = newUser
                 //Generating JWT Cookie
                 const payload = {user_details};
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
                 res.cookie("easy_forms_auth_token", token, {httpOnly: true});
-                res.status(201).json({msg: "User Created Successfully"});
+                res.status(201).json({message: "User Created Successfully"});
             } else throw new Error();
-
-        } else res.status(400).json({msg: "User Already Exists"});
+            
+        } else {
+            res.status(200).json({message: "User Already Exists", check});
+        }
     } catch (error) {
         console.log({signUpRoute: error});
-        res.status(400).json({msg: "An error has occured!"});
+        res.status(400).json({message: "An error has occured!"});
     }
 });
 
 //Sign-In Route
 Router.post("/signin",  async (req, res) => {
-    console.log(req.body)
     const {user, password, type} = req.body;
     try {
         if(type === 0){
@@ -91,7 +102,7 @@ Router.post("/signin",  async (req, res) => {
         }
     } catch (error) {
         console.log({signInRoute: error});
-        res.status(400).json({msg: "Invalid Credentials!"})
+        res.status(400).json({message: "Invalid Credentials!"})
     }
 });
 

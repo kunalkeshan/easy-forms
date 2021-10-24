@@ -18,7 +18,6 @@
 }
 
 body{
-    background: var(trueBlue);
     font-family: 'Ubuntu', sans-serif;
     width: 100%;
     height: 100vh;
@@ -34,4 +33,7 @@ a{
 
 /* NAVBAR STYLING ------------------------------------------------*/
 
-
+nav{
+    background: var(--trueBlue);
+    color: var(--snow);
+}

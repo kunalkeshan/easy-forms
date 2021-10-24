@@ -5,21 +5,21 @@
 
     <div class="container mx-auto p-4 flex-col-reverse flex md:flex-row justify-between items-center" id="index">
 
-        <div id="index__app-info" class="w-1/2 mx-auto p-5">
+        <div id="index__app-info" class="w-full md:w-3/5 mx-auto p-5">
             <div class="carousel">
-                <button class="carousel__button carousel__button--left">
+                <button class="carousel__button carousel__button--left is-hidden">
                     <i class="fas fa-arrow-circle-left"></i>
                 </button>
                 <div class="carousel__track-container">
                     <ul class="carousel__track">
-                        <li class="carousel__slide">
-                            <img class="carousel__image" src="./images/assets/index/form.png" alt="Easy Forms info images"/>
+                        <li class="carousel__slide currentSlide">
+                            <img class="carousel__image object-contain md:object-cover lg:object-contain" src="./images/assets/index/form.png" alt="Easy Forms info images"/>
                         </li>
                         <li class="carousel__slide">
-                            <img class="carousel__image" src="./images/assets/index/form1.jpg" alt="Easy Forms info images"/>
+                            <img class="carousel__image object-contain md:object-cover lg:object-contain" src="./images/assets/index/form1.jpg" alt="Easy Forms info images"/>
                         </li>
                         <li class="carousel__slide">
-                            <img class="carousel__image" src="./images/assets/index/form2.jpg" alt="Easy Forms info images"/>
+                            <img class="carousel__image object-contain md:object-cover lg:object-contain" src="./images/assets/index/form2.jpg" alt="Easy Forms info images"/>
                         </li>
                     </ul>
                 </div>
@@ -35,46 +35,39 @@
             </div>
         </div>
 
-        <div id="index__app-forms" class="w-1/2 mx-auto p-5">
+        <div id="index__app-forms" class="w-full md:w-2/5 mx-auto p-5">
 
             <!-- Sing In Form -->
 
-            <form id="index__signin" class="index__form">
+            <form id="index__signin" class="index__form flex flex-col justify-center items-center">
                 <h2 class="index__heading">Sign In</h2>
-                <label for="singin__user" class="index__label">Username or Email
-                    <input type="text" id="signin__user" class="index__input"/>
-                </label>
-                <label for="singin__password" class="index__label">Password
-                    <input type="password" id="signin__password" class="index__input"/>
-                </label>
+                <label for="singin__user" class="index__label">Username or Email</label>
+                <input type="text" id="signin__user" class="index__input"/>
+                <label for="singin__password" class="index__label">Password</label>
+                <input type="password" id="signin__password" class="index__input"/>
                 <button type="submit" id="singin__button" class="index__button">Sing In</button>
-                <div class="index__cta">
-                    <a href="/?signup" class="index__link">New User? Click here to Sign Up!</a>
+                <div class="index__cta text-center hover:underline">
+                    <a href="#" id="signup" class="index__link">New User? Click here to Sign Up!</a>
                 </div>
             </form>
 
             <!-- Sign Up Form -->
 
-            <form id="index__signup" class="index__form">
+            <form id="index__signup" class="index__form flex flex-col justify-center items-center">
                 <h2 class="index__heading">Sign Up</h2>
-                <label for="signup__name" class="index__label">Name
-                    <input type="text" id="signup__name" class="index__input"/>
-                </label>
-                <label for="signup__username" class="index__label">Username
-                    <input type="text" id="signup__username" class="index__input"/>
-                </label>
-                <label for="signup__email" class="index__label">Email
-                    <input type="email" id="signup__email" class="index__input"/>
-                </label>
-                <label for="signup__password" class="index__label">Password
-                    <input type="password" id="singup__password" class="index__input"/>
-                </label>
-                <label for="confirm__password" class="index__label">Reenter Password
-                    <input type="password" id="confirm__password" class="index__input"/>
-                </label>
+                <label for="signup__name" class="index__label">Name</label>
+                <input type="text" id="signup__name" class="index__input"/>
+                <label for="signup__username" class="index__label">Username</label>
+                <input type="text" id="signup__username" class="index__input"/>
+                <label for="signup__email" class="index__label">Email</label>
+                <input type="email" id="signup__email" class="index__input"/>
+                <label for="signup__password" class="index__label">Password</label>
+                <input type="password" id="signup__password" class="index__input"/>
+                <label for="confirm__password" class="index__label">Reenter Password</label>
+                <input type="password" id="confirm__password" class="index__input"/>
                 <button type="submit" id="signup__button" class="index__button">Sign Up</button>
-                <div class="index__cta">
-                    <a href="/" class="index__link">Already Have An Account. Click Here!</a>
+                <div class="index__cta text-center hover:underline">
+                    <a href="#" id="signin" class="index__link">Already Have An Account. Click Here!</a>
                 </div>
             </form>
         </div>
