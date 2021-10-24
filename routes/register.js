@@ -41,8 +41,7 @@ Router.post("/signup", async(req, res) => {
                 const getNewUser = `SELECT * FROM user_details WHERE userid = '${userid}'`;
                 let newUser = await query(getNewUser)
                 newUser = app_functions.parseData(newUser);
-                console.log(newUser)
-                const user_details = newUser
+                const user_details = newUser[0]
                 //Generating JWT Cookie
                 const payload = {user_details};
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
@@ -96,7 +95,7 @@ Router.post("/signin",  async (req, res) => {
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
                 res.cookie("easy_forms_auth_token", token, {httpOnly: true});
                 res.status(200).json({message: "Username Sign In Successful!"});
-            } else res.status(200).json({message: "Wrong Password!"})
+            } else res.status(400).json({message: "Wrong Password!"})
         }
     } catch (error) {
         console.log({signInRoute: error});

@@ -43,11 +43,11 @@
 }
 
 .carousel__button--left{
-    left: -20px;
+    left: 20px;
 }
 
 .carousel__button--right{
-    right: -20px;
+    right: 20px;
 }
 
 .carousel__button i {
@@ -79,7 +79,11 @@
     font-size: 1.5rem;
 }
 
-.index__form > input, .index__button{
+.input__form{
+    width: 100%;
+}
+
+.index__form input, .index__button{
     margin: 0.3em 0;
     padding: 0.2em;
     border-radius: 5px;
@@ -116,7 +120,20 @@
     transform: translateY(-2px);
 }
 
+#index__signup{
+    display: none;
+}
+
 .is-hidden{
     display: none;
 }
 
+.index__line{
+    border-top: 2px solid #000;
+    width: clamp(100px, 100%, 200px);
+    margin: 0.75em 0;
+}
+
+.form__field-container > label{
+    display: inline;
+}

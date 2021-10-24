@@ -16,6 +16,128 @@ const updateFormStyles = (singInFormStyle = "", signUpFormStyle = "") => {
     signUpForm.style.display = signUpFormStyle;
 }
 
+const handleSignIn = async (event) => {
+    event.preventDefault();
+
+    const user = document.getElementById("signin__user") || null;
+    const password = document.getElementById("signin__password") || null;
+
+    if(user || password){
+        const body = {
+            user: user.value,
+            password: password.value,
+            type: null
+        }
+        
+        if(user.value === "") {
+            alert("Username or Email cannot be empty");
+            return;
+        }
+        if(password.value === ""){
+            alert("Password Cannot be empty");
+            return;
+        }
+        const checkEmail = user.value.includes("@");
+        
+        if(checkEmail) body.type = 0;
+        else body.type = 1;
+
+        try {
+            
+            const signin = await axios.post("/signin", body)
+            console.log(signin)
+            if(signin.status = 200){
+                window.location.replace("/home")
+            }
+            
+        } catch (error) {
+            alert("Wrong username or password")
+            console.log(error);
+        }
+    }
+}
+
+const handleSignUp = async (event) => {
+    event.preventDefault();
+    const name = document.getElementById("signup__name");
+    const username = document.getElementById("signup__username");
+    const email = document.getElementById("signup__email");
+    const password = document.getElementById("signup__password");
+    const confirmPassword = document.getElementById("confirm__password");
+    
+    const body = {
+        name: name.value, 
+        username: username.value, 
+        email: email.value, 
+        password: password.value,  
+        isSaved: true
+    }
+
+    if(password.value !== confirmPassword.value) {
+        alert("Passwords do not match");
+        return;
+    }
+
+    if(name.value === "" || username.value === "" || email.value === "" || password.value === ""){
+        alert("Input fields cannot be empty");
+        return;
+    }
+
+    try {
+        const signup = await axios.post("/signup", body);
+        if(signup.status === 201){
+            alert(signup.data.message);
+            window.location.replace("/home")
+        }
+    } catch (error) {
+        alert("Account Already Exists")
+        console.log(error)
+    }
+}
+
+const checkSignUpFields = () => {
+    const usernameInput = document.getElementById("signup__username");
+    const emailInput = document.getElementById("signup__email");
+
+    let body = {
+        name: "", 
+        username: "", 
+        email: "", 
+        password: "",  
+        isSaved: false
+    }
+
+    let timeout = null
+    usernameInput.addEventListener("keyup", () => {
+        body.username = usernameInput.value;
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+            try {
+                const checkUsername = await axios.post("/signup", body);
+                if(checkUsername.status === 200 && checkUsername.data.check.username){
+                    alert(checkUsername.data.message);
+                }
+            } catch (error) {
+                alert("something went wrong please try again");
+                console.log(error)
+            }
+        }, 800);
+    })
+    emailInput.addEventListener("keyup", () => {
+        body.email = emailInput.value;
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+            try {
+                const checkUsername = await axios.post("/signup", body);
+                if(checkUsername.status === 200 && checkUsername.data.check.email){
+                    alert(checkUsername.data.message);
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }, 800);
+    })
+}
 
 //get width of the first slide
 const slideWidth = slides[0].getBoundingClientRect().width;
@@ -93,140 +215,16 @@ dotsNav.addEventListener("click", (e) => {
     hideShowArrows(slides, prevButton, nextButton, targetIndex);
 })
 
-
-if(signUpLink || signInLink) {
-    signUpLink.onclick = () => updateFormStyles("none", "flex");
-    signInLink.onclick = () => updateFormStyles("flex", "none");
-}
-
-
-if(signInForm){
-    signInForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-
-        const user = document.getElementById("signin__user") || null;
-        const password = document.getElementById("signin__password") || null;
-
-        if(user || password){
-            const body = {
-                user: user.value,
-                password: password.value,
-                type: null
-            }
-            
-            if(user.value === "") {
-                alert("Username or Email cannot be empty");
-                return;
-            }
-            if(password.value === ""){
-                alert("Password Cannot be empty");
-                return;
-            }
-            const checkEmail = user.value.includes("@");
-            
-            if(checkEmail) body.type = 0;
-            else body.type = 1;
-
-            try {
-                
-                const signin = await axios.post("/signin", body)
-                console.log(signin)
-                if(signin.status = 200){
-                    window.location.replace("/home")
-                }
-                
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-    })
-}
-
-if(signUpForm){
-    const usernameInput = document.getElementById("signup__username");
-    const emailInput = document.getElementById("signup__email");
-
-    let body = {
-        name: "", 
-        username: "", 
-        email: "", 
-        password: "",  
-        isSaved: false
-    }
-
-    signUpForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        const name = document.getElementById("signup__name");
-        const username = document.getElementById("signup__username");
-        const email = document.getElementById("signup__email");
-        const password = document.getElementById("signup__password");
-        const confirmPassword = document.getElementById("confirm__password");
-        
-        body = {
-            name: name.value, 
-            username: username.value, 
-            email: email.value, 
-            password: password.value,  
-            isSaved: true
-        }
-
-        if(password.value !== confirmPassword.value) {
-            alert("Passwords do not match");
-            return;
-        }
-
-        if(name.value === "" || username.value === "" || email.value === "" || password.value === ""){
-            alert("Input fields cannot be empty");
-            return;
-        }
-
-        try {
-            const signup = await axios.post("/signup", body);
-            console.log(signup)
-            if(signup.status === 201){
-                alert(signup.data.message);
-                // window.location.replace("/home")
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    });
-    let timeout = null
-    usernameInput.addEventListener("keyup", () => {
-        body.username = usernameInput.value;
-        clearTimeout(timeout)
-        timeout = setTimeout(async () => {
-            try {
-                const checkUsername = await axios.post("/signup", body);
-                if(checkUsername.status === 200 && checkUsername.data.check.username){
-                    alert(checkUsername.data.message);
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }, 800);
-    })
-    emailInput.addEventListener("keyup", () => {
-        body.email = emailInput.value;
-        clearTimeout(timeout)
-        timeout = setTimeout(async () => {
-            try {
-                const checkUsername = await axios.post("/signup", body);
-                if(checkUsername.status === 200 && checkUsername.data.check.email){
-                    alert(checkUsername.data.message);
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }, 800);
-    })
-
-
-    
-}
-
-
 document.addEventListener("DOMContentLoaded", () => {
+    if(signUpLink || signInLink) {
+        signUpLink.onclick = () => {
+            updateFormStyles("none", "flex");
+            checkSignUpFields();
+        };
+        signInLink.onclick = () => updateFormStyles("flex", "none");
+    }
     updateFormStyles("flex", "none");
+    signInForm.addEventListener("submit", (event) => handleSignIn(event));
+    signUpForm.addEventListener("submit", (event) => handleSignUp(event));
+
 })
