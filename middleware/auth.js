@@ -16,8 +16,10 @@ const auth = async (req, res, next) => {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded.payload.user_details;
+    req.user = req.user[0]
     delete req.user.password;
-
+    console.log(req.user);
+    
     //Get User Image Query
     const getUserImage = `SELECT * FROM images WHERE imageid='${req.user.user_image}'`;
     const userImage = await query(getUserImage);

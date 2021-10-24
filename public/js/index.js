@@ -144,9 +144,85 @@ if(signInForm){
 }
 
 if(signUpForm){
-    signUpForm.addEventListener("submit", (event) => {
+    const usernameInput = document.getElementById("signup__username");
+    const emailInput = document.getElementById("signup__email");
+
+    let body = {
+        name: "", 
+        username: "", 
+        email: "", 
+        password: "",  
+        isSaved: false
+    }
+
+    signUpForm.addEventListener("submit", async (event) => {
         event.preventDefault();
+        const name = document.getElementById("signup__name");
+        const username = document.getElementById("signup__username");
+        const email = document.getElementById("signup__email");
+        const password = document.getElementById("signup__password");
+        const confirmPassword = document.getElementById("confirm__password");
+        
+        body = {
+            name: name.value, 
+            username: username.value, 
+            email: email.value, 
+            password: password.value,  
+            isSaved: true
+        }
+
+        if(password.value !== confirmPassword.value) {
+            alert("Passwords do not match");
+            return;
+        }
+
+        if(name.value === "" || username.value === "" || email.value === "" || password.value === ""){
+            alert("Input fields cannot be empty");
+            return;
+        }
+
+        try {
+            const signup = await axios.post("/signup", body);
+            if(signup.status === 201){
+                alert(signup.data.message);
+                window.location.replace("/home")
+            }
+        } catch (error) {
+            console.log(error)
+        }
+    });
+    let timeout = null
+    usernameInput.addEventListener("keyup", () => {
+        body.username = usernameInput.value;
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+            try {
+                const checkUsername = await axios.post("/signup", body);
+                if(checkUsername.status === 200 && checkUsername.data.check.username){
+                    alert(checkUsername.data.message);
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }, 800);
     })
+    emailInput.addEventListener("keyup", () => {
+        body.email = emailInput.value;
+        clearTimeout(timeout)
+        timeout = setTimeout(async () => {
+            try {
+                const checkUsername = await axios.post("/signup", body);
+                if(checkUsername.status === 200 && checkUsername.data.check.email){
+                    alert(checkUsername.data.message);
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }, 800);
+    })
+
+
+    
 }
 
 
