@@ -96,9 +96,7 @@ Router.post("/signin",  async (req, res) => {
                 const token = jwt.sign({payload}, process.env.JWT_SECRET, {expiresIn: "1d"});
                 res.cookie("easy_forms_auth_token", token, {httpOnly: true});
                 res.status(200).json({message: "Username Sign In Successful!"});
-            } else {
-                throw new Error();
-            }
+            } else res.status(200).json({message: "Wrong Password!"})
         }
     } catch (error) {
         console.log({signInRoute: error});

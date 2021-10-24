@@ -183,9 +183,10 @@ if(signUpForm){
 
         try {
             const signup = await axios.post("/signup", body);
+            console.log(signup)
             if(signup.status === 201){
                 alert(signup.data.message);
-                window.location.replace("/home")
+                // window.location.replace("/home")
             }
         } catch (error) {
             console.log(error)
