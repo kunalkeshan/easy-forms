@@ -22,13 +22,16 @@ Router.post("/form/edit/:id", auth, async (req, res) => {
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+    const setUpdateForm = `UPDATE form_details SET title='${title}', description='${description}' WHERE formid='${formid}';`;
 
     try {
         const Form = await query(getForm);
         if(Form.length > 0){
-            const specificForm = app_functions.parseData(Form);
-
-        }
+            const updatedForm = await query(setUpdateForm);
+            if(updatedForm.affectedRows > 0){
+                res.status(200).json({message: "Form Updated Successfully"});
+            } else throw new Error();
+        } else throw new Error();
     } catch (error) {
         console.log({editFormRoute: error});
         res.status(400).json({msg: "An error has occured"});
@@ -42,9 +45,20 @@ Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
     const {formid, sectionid} = req.params;
     const {title, description} = req.body;
 
+    //Queries
+    const getSection = `SELECT * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}';`;
+    const setUpdateSection = `UPDATE form_sections SET title='${title}', description='${description}' WHERE sectionid='${sectionid}';`;
 
     try {
         
+        const Section = await query(getSection);
+        if(Section.length > 0){
+            const updatedSection = await query(setUpdateSection);
+            if(updatedSection.affectedRows > 0){
+                res.status(200).json({message: "Section updated successfully"});
+            } else throw new Error();
+        } else throw new Error();
+
     } catch (error) {
         console.log({editSectionRoute: error});
         res.status(400).json({msg: "An error has occured"});
@@ -56,7 +70,7 @@ Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
 Router.post("/form/edit/question/:questionid/:formid", auth, async (req, res) =>{
     const user = req.user.userid;
     const {questionid, formid} = req.params;
-
+    const {title, description, is_required}
 
     try {
         
