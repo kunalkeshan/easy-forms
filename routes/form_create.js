@@ -68,7 +68,7 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
     const setNewQuestion = `INSERT INTO form_questions(questionid, formid, sectionid, type, question_description, is_required) VALUES('${questionid}', '${formid}', '${sectionid}', '${type}', '${question_description}', '${is_required}')`;
 
     try {
-        if(type === "mcq"){
+        if(type === "mcq" || type === "box"){
             const {options} = req.body;
             const MCQ_OPTIONS = JSON.parse(options);
             const newQuestion = await query(setNewQuestion);
@@ -76,7 +76,7 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
                 let OPTN = {};
                 MCQ_OPTIONS.forEach(async (option, index) => {
                     const optionid = shortid.generate();
-                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value) VALUES('${optionid}', '${formid}', '${questionid}', '${option}')`;
+                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type})`;
                     const newOption = await query(setNewOption);
                     if(newOption.affectedRows > 0){
                         OPTN[index] = optionid;

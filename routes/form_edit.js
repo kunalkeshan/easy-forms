@@ -97,9 +97,22 @@ Router.post("/form/edit/question/:questionid/:formid", auth, async (req, res) =>
 Router.post("/form/edit/option/:optionid/:questionid/:formid", auth, async (req, res) => {
     const user = req.user.userid;
     const {optionid, questionid, formid} = req.params;
+    const {option_value} = req.body;
+
+    //Queries
+    const getOption = `SELECT * FROM form_question_mcqs WHERE optionid='${optionid}' AND formid='${formid}';`;
+    const setUpdateOption = `UPDATE form_question_mcqs SET option_value='${option_value}' WHERE optionid='${optionid}';`;
 
     try {
         
+        const Option = await query(getOption);
+        if(Option.length > 1){
+            const updatedOption = await query(setUpdateOption);
+            if(updatedOption.affectedRows > 0){
+                res.status(200).json({message: "Option updated successfully"});
+            } else throw new Error();
+        } else throw new Error();
+
     } catch (error) {
         console.log({editOptionRoute: error});
         res.status(400).json({msg: "An error has occured"});
