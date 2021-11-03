@@ -70,9 +70,21 @@ Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
 Router.post("/form/edit/question/:questionid/:formid", auth, async (req, res) =>{
     const user = req.user.userid;
     const {questionid, formid} = req.params;
-    const {title, description, is_required}
+    const {type, question_description, answer_key, is_required}
+
+    //Queries
+    const getQuestion = `SELECT * FROM form_questions WHERE questionid='${questionid} AND formid='${formid}'`
+    const setUpdateQuestion = `UPDATE form_questions SET type='${type}', question_description='${question_description}', answer_key='${answer_key}', is_required='${is_required}';`;
 
     try {
+
+        const Question = await query(getQuestion);
+        if(Question.length > 0){
+            const updatedQuestion = await query(setUpdateQuestion);
+            if(updatedQuestion.affectedRows > 0){
+                res.status(200).json({message: "Question Updated Successfully"})
+            } else throw new Error();
+        } else throw new Error();
         
     } catch (error) {
         console.log({editQuestionRoute: error});
