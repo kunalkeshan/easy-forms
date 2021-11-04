@@ -16,6 +16,7 @@ if(sidebar){
             } else {
                 para.style.display = "block";
             }
+
         })
         
         sidebar.classList.toggle(CLASS)
