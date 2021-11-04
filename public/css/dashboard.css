@@ -1,0 +1,26 @@
+.content__title{
+    font-size: x-large;
+    padding: 1em;
+}
+
+#create-form-form{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 1em;
+    width: clamp(250px, 100%, 500px);
+    margin: 20px auto;
+    border: 1px solid #808080;
+    backdrop-filter: blur(15px);
+    border-radius: 10px;
+    background-color: var(--trueBlueLight);
+    box-shadow: 0 0 30px 2px #808080;
+}
+
+#create-form-desc{
+    padding: 1em;
+}
+
+#create-form-submit{
+    margin: 1em auto;
+}

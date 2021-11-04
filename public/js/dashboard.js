@@ -6,6 +6,8 @@ const createFormPage = document.getElementById("create-form-page") || null;
 const activeFormsPage = document.getElementById("active-forms-page") || null;
 const archivedFormsPage = document.getElementById("archived-forms-page") || null;
 
+const createForm = document.getElementById("create-form-form") || null;
+
 const pages = {
     createFormPage,
     activeFormsPage,
@@ -23,7 +25,35 @@ const buttons = [{
 {
     btn: archivedFormsBtn,
     page: "archivedFormsPage",
-}]
+}];
+
+const handleCreateForm = async (e) => {
+    e.preventDefault();
+    const formTitle = document.getElementById("create-form-title") || null;
+    const formDesc = document.getElementById("create-form-desc") || null;
+
+    const body = {
+        title: formTitle.value,
+        description: formDesc.value,
+    }
+
+    if(body.title === "" || body.description === ""){
+        alert("Title and Descrition is required!");
+        return;
+    }
+
+    try {
+        
+        const newForm = await axios.post("/form/create", body);
+        if(newForm.status === 200){
+            const {formid, sectionid} = newForm.data.form;
+            window.location.replace(`/form/create?formid=${formid}&sectionid=${sectionid}`)
+        } else throw new Error();
+
+    } catch (error) {
+        console.log(error);
+    }
+}
 
 const hideAllPages = () => {
     for(let page in pages){
@@ -47,5 +77,7 @@ const changeMainContent = (currentPage) => {
 document.addEventListener("DOMContentLoaded", () => {
     hideAllPages();
     buttonFunc();
-    pages["createFormPage"].style.display = "block"
+    pages["createFormPage"].style.display = "block";
+
+    createForm.addEventListener("submit", (e) => handleCreateForm(e));
 })

@@ -27,8 +27,12 @@
     </div>
     <div class="sidebar__container" class="">
         <div class="sidebar__profile flex items-center justify-center w-full">
-            <img src="<%= user.image_path%>" alt="<%= user.name%>" class="w-16 h-16">
-            <p class="sidebar__para"><%= user.name %> </p>
+            <img src="<%= user.image_path%>" alt="<%= user.name%>">
+            <p class="sidebar__para"><%= user.name %></p>
+            <i class="fas fa-ellipsis-v text-sm sidebar__para" id="profile-edit"></i>
+            <div class="profile-cta hidden">
+                <button><i class="fas fa-user-edit"></i>Edit Profile</button>
+            </div>
         </div>
     </div>
 </div>

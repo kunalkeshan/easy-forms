@@ -3,6 +3,10 @@ const sidebarItems = document.querySelectorAll(".sidebar__box") || null;
 const sidebarToggle = document.querySelector(".sidebar__toggle");
 const sidebarPara = document.querySelectorAll(".sidebar__para");
 
+const editProfileBtn = document.getElementById("profile-edit") || null;
+const editProfileCta = document.querySelector(".profile-cta") || null;
+const editProfile = document.querySelector(".profile-cta button") || null;
+
 if(sidebar){
 
     const CLASS = "active";
@@ -31,6 +35,14 @@ if(sidebar){
             item.className = "sidebar__box active"
         }
     });
+
+    editProfileBtn.onclick = () => {
+        editProfileCta.classList.toggle("visible")
+    }
+    editProfile.onclick = () => {
+        window.location.replace("/profile");
+    }
+
 }
 
 

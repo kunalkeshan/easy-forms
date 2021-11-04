@@ -17,11 +17,12 @@ const query = util.promisify(con.query).bind(con);
 //Create Form Route, Returns Formid and Sectionid
 Router.post("/form/create", auth, async (req, res) => {
     const userid = req.user.userid;
+    const {title, description} = req.body;
     const formid = shortid.generate();
     const sectionid = shortid.generate();
 
     //Queries
-    const setCreateForm = `INSERT INTO form_details(formid, userid) VALUES('${formid}', '${userid}')`; 
+    const setCreateForm = `INSERT INTO form_details(formid, userid, title, description) VALUES('${formid}', '${userid}', '${title}', '${description}')`; 
     const setCreateSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${sectionid}', '${formid}')`;
 
     try {
@@ -29,7 +30,10 @@ Router.post("/form/create", auth, async (req, res) => {
         if(createForm.affectedRows > 0){
             const createSection = await query(setCreateSection);
             if(createSection.affectedRows > 0){
-                res.status(200).json({formid, sectionid})
+                const form = {
+                    formid, sectionid
+                }
+                res.status(200).json({message: "Form created successfully", form})
             } else throw new Error();
         } else throw new Error();
     } catch (error) {

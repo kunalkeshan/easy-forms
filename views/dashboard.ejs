@@ -4,23 +4,23 @@
     <%- include ("./partials/sidebar.ejs") %> 
     <div id="content">
 
-        <div id="create-form-page">
+        <div id="create-form-page" class="content__page">
             <h1 class="content__title">Create New Form.</h1>
-           <form id="create-form-form">
-                <label for="create-form-name" class="">Title</label>
-                <input type="text" id="create-form-name" class=""/>
-                <label for="create-form-desc" class="">Description</label>
-                <input type="text" id="create-form-desc" class=""/>
-                <button id="create-form-submit">Create</button>
+           <form id="create-form-form" class="index__form">
+                <label for="create-form-title" class="index__label">Title</label>
+                <input type="text" id="create-form-title" class="index__input"/>
+                <label for="create-form-desc" class="index__label">Description</label>
+                <textarea id="create-form-desc" cols="30" rows="4" class="index__input"></textarea>
+                <button id="create-form-submit" class="index__button mx-auto mt-4">Create</button>
            </form> 
         </div>
 
-        <div id="active-forms-page">
+        <div id="active-forms-page" class="content__page">
             <h1 class="content__title">Active Forms.</h1>
             
         </div>
 
-        <div id="archived-forms-page">
+        <div id="archived-forms-page" class="content__page">
             <h1 class="content__title">Archived Forms.</h1>
             
         </div>
