@@ -1,0 +1,124 @@
+/* MAIN > SIDEBAR STYLING ------------------------------------------------ */
+
+#sidebar{
+    flex: 0.2;
+    background: var(--frenchSkyBlue);
+    color: var(--snow);
+    border-radius: 0 15px 15px 0;
+    transition: all 250ms;
+    border-left: 10px solid var(--frenchSkyBlue);
+    overflow: hidden;
+}
+
+#sidebar.active{
+    flex: 0.07;
+}
+
+#sidebar.active .sidebar__container img{
+    transform: scale(0.9);
+}
+
+.sidebar__container img{
+    width: clamp(25px, 100%, 50px);
+    height: auto;
+}
+
+.sidebar__container{
+    width: 100%;
+}
+
+.sidebar__box{
+    position: relative;
+    transition: all 250ms;
+    width: 100%;
+    border-radius: 20px 0 0 20px;
+}
+
+.sidebar__box.active{
+    background: var(--snow);
+}
+
+.sidebar__box.active a{
+    color: var(--frenchSkyBlue)
+}
+
+.sidebar__box.active b:nth-child(1){
+    position: absolute;
+    top: -20px;
+    height: 20px;
+    width: 100%;
+    background-color: var(--snow);
+}
+
+.sidebar__box.active b:nth-child(1)::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-bottom-right-radius: 20px;
+    background: var(--frenchSkyBlue);
+}
+
+.sidebar__box.active b:nth-child(2){
+    position: absolute;
+    bottom: -20px;
+    height: 20px;
+    width: 100%;
+    background-color: var(--snow);
+}
+
+.sidebar__box.active b:nth-child(2)::before{
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-top-right-radius: 20px;
+    background: var(--frenchSkyBlue);
+}
+
+.sidebar__box-link {
+    transition: all 250ms;
+    display: flex;
+    align-items: center;
+    margin: 1em 0;
+    padding: 0.5em 0;
+}
+
+.sidebar__box i {
+    transition: all 250ms;
+    padding: 0 20px;
+}
+
+.sidebar__toggle{
+    transition: all 250ms;
+    position: fixed;
+    top: 75px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background: var(--frenchSkyBlue);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.sidebar__toggle i {
+    color: var(--snow);
+}
+
+.sidebar__toggle i.open,
+.sidebar__toggle.active i.close{
+    display: block;
+}
+
+.sidebar__toggle i.close,
+.sidebar__toggle.active i.open{
+    display: none;
+}
+
+.sidebar__toggle.active{
+    background: var(--oliveDrab7)
+}
