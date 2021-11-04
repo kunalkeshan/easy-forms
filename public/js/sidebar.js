@@ -3,7 +3,6 @@ const sidebarItems = document.querySelectorAll(".sidebar__box") || null;
 const sidebarToggle = document.querySelector(".sidebar__toggle");
 const sidebarPara = document.querySelectorAll(".sidebar__para");
 
-console.log(sidebar)
 if(sidebar){
 
     const CLASS = "active";
