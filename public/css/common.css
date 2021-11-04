@@ -103,6 +103,11 @@ nav{
     padding: 0 20px;
 }
 
+.sidebar__box-link{
+    display: flex;
+    align-items: center;
+}
+
 .sidebar__toggle{
     transition: all 500ms;
     position: fixed;
