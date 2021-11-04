@@ -109,16 +109,45 @@
     color: var(--snow);
 }
 
-.sidebar__toggle i.open,
-.sidebar__toggle.active i.close{
+.sidebar__toggle i.close,
+.sidebar__toggle.active i.open{
     display: block;
 }
 
-.sidebar__toggle i.close,
-.sidebar__toggle.active i.open{
+.sidebar__toggle i.open,
+.sidebar__toggle.active i.close{
     display: none;
 }
 
 .sidebar__toggle.active{
     background: var(--oliveDrab7)
 }
+
+.sidebar__profile{
+    margin-right: .5em;
+    font-size: 1rem;
+    position: relative;
+}
+
+.sidebar__profile > * {
+    padding: .5em;
+}
+
+.profile-cta{
+    position: absolute;
+    background: var(--snow);
+    top: -50px;
+    right: 5px;
+    color: var(--blackOlive);
+    border-radius: 10px;
+    padding: 1em;
+}
+
+#profile-edit{
+    cursor: pointer;
+}
+
+.visible{
+    display: block;
+}
+

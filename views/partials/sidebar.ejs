@@ -5,21 +5,21 @@
     <div class="sidebar__container">
         <div class="sidebar__box active">
             <b></b><b></b>
-            <a href="#" class="sidebar__box-link">
+            <a href="#" class="sidebar__box-link" id="create-form">
                 <i class="far fa-plus-square"></i> 
                 <p class="sidebar__para">Create New Form</p>
             </a>
         </div>
         <div class="sidebar__box">
             <b></b><b></b>
-            <a href="#" class="sidebar__box-link">
+            <a href="#" class="sidebar__box-link" id="active-forms">
                 <i class="fas fa-globe-asia"></i> 
                 <p class="sidebar__para">Active Forms</p>
             </a>
         </div>
         <div class="sidebar__box">
             <b></b><b></b>
-            <a href="#" class="sidebar__box-link">
+            <a href="#" class="sidebar__box-link" id="archived-forms">
                 <i class="fas fa-archive"></i> 
                 <p class="sidebar__para">Archived Forms</p>
             </a>
@@ -27,8 +27,12 @@
     </div>
     <div class="sidebar__container" class="">
         <div class="sidebar__profile flex items-center justify-center w-full">
-            <img src="<%= user.image_path%>" alt="<%= user.name%>" class="w-16 h-16">
-            <p class="sidebar__para"><%= user.name %> </p>
+            <img src="<%= user.image_path%>" alt="<%= user.name%>">
+            <p class="sidebar__para"><%= user.name %></p>
+            <i class="fas fa-ellipsis-v text-sm sidebar__para" id="profile-edit"></i>
+            <div class="profile-cta hidden">
+                <button><i class="fas fa-user-edit"></i>Edit Profile</button>
+            </div>
         </div>
     </div>
 </div>
