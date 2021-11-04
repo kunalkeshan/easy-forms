@@ -93,7 +93,8 @@ nav{
 
 .sidebar__box a {
     transition: all 500ms;
-    display: block;
+    display: flex;
+    align-items: center;
     margin: 1em 0;
     padding: 0.5em 0;
 }
@@ -101,11 +102,6 @@ nav{
 .sidebar__box i {
     transition: all 500ms;
     padding: 0 20px;
-}
-
-.sidebar__box-link{
-    display: flex;
-    align-items: center;
 }
 
 .sidebar__toggle{
