@@ -25,17 +25,17 @@ Router.post("/form/delete/:id", auth, async (req, res) => {
     try {
         
         let Form  = await query(getForm);
-        Form = app_functions.parseData(Form);
+        Form = app_functions.parseData(Form)[0];
         if(Form.formid === formid){
             const deleteForm = await query(setDeleteForm);
             if(deleteForm.affectedRows > 0){
-                res.status(200).json({msg: "Form Deleted Successfully"});
+                res.status(200).json({message: "Form Deleted Successfully"});
             } else throw new Error();
         } else throw new Error();
 
     } catch (error) {
         console.log({deleteFormRoute: error});
-        res.status(400).json({msg: "An error has Occured!"});
+        res.status(400).json({message: "An error has Occured!"});
     }
 
 });
@@ -55,7 +55,7 @@ Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) =>
         if(Section.length === 1){
             const deleteSection = await query(setDeleteSection);
             if(deleteSection.affectedRows > 0){
-                res.status(200).json({msg: "Section Deleted Successfully!"});
+                res.status(200).json({message: "Section Deleted Successfully!"});
             } else throw new Error();
         } else {
             let questionsFromSection = await query(getQuestionsFromSection);
@@ -68,7 +68,7 @@ Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) =>
         
     } catch (error) {
         console.log({deleteSectionRoute: error});
-        res.status(400).json({msg: "An error has occured"});
+        res.status(400).json({message: "An error has occured"});
     }
 });
 
@@ -85,13 +85,13 @@ Router.post("/form/delete/question/:questionid/:formid", auth, async (req, res) 
         if(question.length > 0) {
             const deleteQuestion = await query(setDeleteQuestion);
             if(deleteQuestion.affectedRows > 0){
-                res.status(200).json({msg: "Question Deleted"});
+                res.status(200).json({message: "Question Deleted"});
             } else throw new Error();
         } else throw new Error();
         question = app_functions.parseData(question);
     } catch (error) {
         console.log({deleteQuestionRoute: error});
-        res.status(400).json({msg: "An error has Occured"});
+        res.status(400).json({message: "An error has Occured"});
     }
 });
 
@@ -108,12 +108,12 @@ Router.post("/form/delete/option/:optionid/:questionid", auth, async (req, res) 
         if(Option.length > 0){
             const deleteOption = await query(setDeleteOption);
             if(deleteOption.affectedRows > 0){
-                res.status(200).json({msg: "Option Successfully Deleted!"})
+                res.status(200).json({message: "Option Successfully Deleted!"})
             } else throw new Error();
         }
     } catch (error) {
         console.log({deleteOptionRoute: error});
-        res.status(400).json({msg: "An error has occured!"});
+        res.status(400).json({message: "An error has occured!"});
     }
 });
 

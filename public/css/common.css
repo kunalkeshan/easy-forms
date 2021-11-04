@@ -60,7 +60,79 @@ nav{
     flex: 0.2;
     background: var(--frenchSkyBlue);
     color: var(--snow);
+    border-radius: 0 15px 15px 0;
+    transition: all 500ms;
+    border-left: 10px solid var(--frenchSkyBlue);
 }
+
+#sidebar.active{
+    flex: 0;
+}
+
+#sidebar.active .sidebar__container img{
+    transform: scale(0.9);
+}
+
+.sidebar__container{
+    width: 100%;
+}
+
+.sidebar__box{
+    transition: all 500ms;
+    width: 100%;
+    border-radius: 20px 0 0 20px;
+}
+
+.sidebar__box.active{
+    background: var(--snow);
+}
+
+.sidebar__box.active a{
+    color: var(--frenchSkyBlue)
+}
+
+.sidebar__box a {
+    transition: all 500ms;
+    display: block;
+    margin: 1em 0;
+    padding: 0.5em 0;
+}
+
+.sidebar__box i {
+    transition: all 500ms;
+    padding: 0 20px;
+}
+
+.sidebar__toggle{
+    transition: all 500ms;
+    position: fixed;
+    top: 75px;
+    right: 25px;
+    width: 50px;
+    height: 50px;
+    background: var(--frenchSkyBlue);
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+.sidebar__toggle i {
+    color: var(--snow);
+}
+
+.sidebar__toggle i.open,
+.sidebar__toggle.active i.close{
+    display: block;
+}
+
+.sidebar__toggle i.close,
+.sidebar__toggle.active i.open{
+    display: none;
+}
+
+.sidebar__toggle.active{
+    background: var(--oliveDrab7)
+}
+
 
 /* MAIN > CONTENT STYLING ------------------------------------------------ */
 
