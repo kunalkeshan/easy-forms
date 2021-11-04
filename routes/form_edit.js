@@ -70,7 +70,7 @@ Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
 Router.post("/form/edit/question/:questionid/:formid", auth, async (req, res) =>{
     const user = req.user.userid;
     const {questionid, formid} = req.params;
-    const {type, question_description, answer_key, is_required}
+    const {type, question_description, answer_key, is_required} = req.body
 
     //Queries
     const getQuestion = `SELECT * FROM form_questions WHERE questionid='${questionid} AND formid='${formid}'`

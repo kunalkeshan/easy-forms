@@ -1,13 +1,21 @@
-<div id="sidebar" class="h-full p-4 flex items-center justify-between flex-col">
+<div id="sidebar" class="h-full flex items-center justify-between flex-col md:text-lg text-sm">
     <div class="sidebar__container">
-        <div class="sidebar__box"><a href="" class="sidebar__box-link">Create New Form</a></div>
-        <div class="sidebar__box"><a href="" class="sidebar__box-link">Active Forms</a></div>
-        <div class="sidebar__box"><a href="" class="sidebar__box-link">Archived Forms</a></div>
+        <div class="sidebar__box active"><a href="#" class="sidebar__box-link"><i class="far fa-plus-square"></i> <p class="sidebar__para">Create New Form</p></a></div>
+        <div class="sidebar__box"><a href="#" class="sidebar__box-link"><i class="fas fa-globe-asia"></i> <p class="sidebar__para">Active Forms</p></a></div>
+        <div class="sidebar__box"><a href="#" class="sidebar__box-link"><i class="fas fa-archive"></i> <p class="sidebar__para">Archived Forms</p></a></div>
     </div>
     <div class="sidebar__container" class="">
-        <div class="sidebar__profile flex items-center content-between">
+        <div class="sidebar__profile flex items-center justify-center w-full">
             <img src="<%= user.image_path%>" alt="<%= user.name%>" class="w-16 h-16">
-            <p><%= user.name %> </p>
+            <p class="sidebar__para"><%= user.name %> </p>
         </div>
     </div>
 </div>
+
+<div class="sidebar__toggle grid place-items-center">
+    <i class="fas fa-bars open"></i>
+    <i class="fas fa-window-close close"></i>
+</div>
+
+<script src="./js/sidebar.js"></script>
+
