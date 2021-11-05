@@ -1,3 +1,5 @@
+import { callMessageModal, durationTime } from "./common.js";
+
 const signInForm = document.getElementById("index__signin") || null;
 const signUpForm = document.getElementById("index__signup") || null;
 
@@ -30,11 +32,11 @@ const handleSignIn = async (event) => {
         }
         
         if(user.value === "") {
-            alert("Username or Email cannot be empty");
+            callMessageModal("modal-error", "Error", "Please Enter your Username");
             return;
         }
         if(password.value === ""){
-            alert("Password Cannot be empty");
+            callMessageModal("modal-error", "Error", "Please Enter Your Password");
             return;
         }
         const checkEmail = user.value.includes("@");
@@ -47,12 +49,16 @@ const handleSignIn = async (event) => {
             const signin = await axios.post("/signin", body)
             console.log(signin)
             if(signin.status = 200){
-                window.location.replace("/home")
+                callMessageModal("modal-success", "Sign In Success", "Redirecting you to home now.")
+                setTimeout(() => {
+                    window.location.replace("/home")
+                }, durationTime*1000);
             }
             
         } catch (error) {
-            alert("Wrong username or password")
+            callMessageModal("modal-error", "Try Again", "Wrong Username or Password")
             console.log(error);
+            return;
         }
     }
 }
@@ -74,23 +80,26 @@ const handleSignUp = async (event) => {
     }
 
     if(password.value !== confirmPassword.value) {
-        alert("Passwords do not match");
+        callMessageModal("modal-error", "Try againg", "Passowrds do not match")
         return;
     }
 
     if(name.value === "" || username.value === "" || email.value === "" || password.value === ""){
-        alert("Input fields cannot be empty");
+        callMessageModal("modal-error", "Try again", "Input fields cannot be empty");
         return;
     }
 
     try {
         const signup = await axios.post("/signup", body);
         if(signup.status === 201){
-            alert(signup.data.message);
-            window.location.replace("/home")
+            callMessageModal("modal-success", "Account created Successfully", signup.data.message);
+            setTimeout(() => {
+                window.location.replace("/home")
+            }, durationTime*1000);
         }
     } catch (error) {
-        alert("Account Already Exists")
+        callMessageModal("modal-error", "Try again", "Account Already Exists, try someother details")
+        // alert("Account Already Exists")
         console.log(error)
     }
 }
@@ -115,11 +124,11 @@ const checkSignUpFields = () => {
             try {
                 const checkUsername = await axios.post("/signup", body);
                 if(checkUsername.status === 200 && checkUsername.data.check.username){
-                    alert(checkUsername.data.message);
+                    callMessageModal("modal-error", "Try again", checkUsername.data.message)
                 }
             } catch (error) {
-                alert("something went wrong please try again");
-                console.log(error)
+                callMessageModal("modal-error", "Error", "Something went wrong please try again");
+                console.log(error);
             }
         }, 800);
     })
@@ -130,9 +139,10 @@ const checkSignUpFields = () => {
             try {
                 const checkUsername = await axios.post("/signup", body);
                 if(checkUsername.status === 200 && checkUsername.data.check.email){
-                    alert(checkUsername.data.message);
+                    callMessageModal("modal-error", "Try again", checkUsername.data.message)
                 }
             } catch (error) {
+                alert("something went wrong please try again");
                 console.log(error)
             }
         }, 800);
