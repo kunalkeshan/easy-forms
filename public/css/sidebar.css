@@ -143,6 +143,15 @@
     padding: 1em;
 }
 
+.profile-cta button{
+    padding: 0 0.25em;
+    transition: all 250ms;
+}
+
+.profile-cta button:hover{
+    background: #80808075;
+}
+
 #profile-edit{
     cursor: pointer;
 }

@@ -10,11 +10,11 @@
     padding: 1em;
     width: clamp(250px, 100%, 500px);
     margin: 20px auto;
-    border: 1px solid #808080;
+    border: 1px solid #8080809c;
     backdrop-filter: blur(15px);
     border-radius: 10px;
     background-color: var(--trueBlueLight);
-    box-shadow: 0 0 30px 2px #808080;
+    box-shadow: 0 0 130px 2px #808080;
 }
 
 #create-form-desc{

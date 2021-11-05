@@ -1,0 +1,148 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&family=Ubuntu&display=swap');
+/* font-family: 'Ubuntu', sans-serif; */
+
+/* DEFALUT STYLING ------------------------------------------------*/
+
+*, *::after, *::before{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root{
+    --snow: #fffeff;
+    --trueBlue: #3066be;
+    --frenchSkyBlue: #60afff;
+    --oliveDrab7: #2f2504;
+    --blackOlive: #433e37;
+    --trueBlueLight: #2a7bfd52;
+}
+
+body{
+    font-family: 'Ubuntu', sans-serif;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+body > * {
+    width: 100%;
+}
+
+a{
+    text-decoration: none;
+}
+
+/* GLOBAL CLASSES ------------------------------------------------*/
+
+
+
+/* NAVBAR STYLING ------------------------------------------------*/
+
+nav{
+    background: var(--trueBlue);
+    color: var(--snow);
+}
+
+/* FORMS STYLING */
+
+.index__heading{
+    font-size: 1.5rem;
+}
+
+.input__form{
+    width: 100%;
+}
+
+.index__form input, .index__button{
+    margin: 0.3em 0;
+    padding: 0.2em;
+    border-radius: 5px;
+}
+
+.index__label{
+    display: block;
+}
+
+.index__input{
+    background: #80808030;
+    outline: none;
+}
+
+.index__input:hover{
+    background: #80808040;
+    border: 1px solid var(--trueBlue);
+}
+
+.index__input:focus{
+    background: #80808050;
+    border: 2px solid var(--trueBlue);
+}
+
+.index__button{
+    background: var(--frenchSkyBlue);
+    width: clamp(100px, 100%, 150px);
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    transition: all 250ms;
+}
+
+.index__button:hover{
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.4);
+    transform: translateY(-2px);
+}
+
+#index__signup{
+    display: none;
+}
+
+.is-hidden{
+    display: none;
+}
+
+.index__line{
+    border-top: 2px solid #000;
+    width: clamp(100px, 100%, 200px);
+    margin: 0.75em 0;
+}
+
+.form__field-container > label{
+    display: inline;
+}
+
+/* MAIN SECTION STYLING ------------------------------------------------ */
+
+#main{
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+/* MAIN > CONTENT STYLING ------------------------------------------------ */
+
+#content{
+    flex: 0.8;
+    height: 100%;
+}
+
+.content__page{
+    height: 100%;
+}
+/* FOOTER STYLING ------------------------------------------------ */
+
+footer{
+    background: var(--trueBlue);
+    color: var(--snow);
+}
+
+footer > * {
+    margin: 0 auto;
+}
+
+.footer__list{
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}

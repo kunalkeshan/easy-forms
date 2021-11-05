@@ -55,6 +55,26 @@ const handleCreateForm = async (e) => {
     }
 }
 
+const getAllForms = async () => {
+    const formsCount = {
+        active: 0,
+        archived: 0
+    }
+    try {
+        let userForms = await axios.get("/forms");
+        userForms = userForms.data;
+        userForms.forEach((form, index) => {
+            if(form.is_disabled) formsCount.archived++;
+            else formsCount.active++;
+        });
+
+        activeFormsPage.innerHTML += "You have " + formsCount.active + " active forms";
+        archivedFormsPage.innerHTML += "You have " + formsCount.archived + " archived forms";
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 const hideAllPages = () => {
     for(let page in pages){
         pages[page].style.display = "none";
@@ -80,4 +100,5 @@ document.addEventListener("DOMContentLoaded", () => {
     pages["createFormPage"].style.display = "block";
 
     createForm.addEventListener("submit", (e) => handleCreateForm(e));
+    getAllForms();
 })

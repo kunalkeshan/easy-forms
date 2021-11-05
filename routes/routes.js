@@ -42,7 +42,7 @@ Router.get("/dashboard", auth, (req, res) => {
         link: "dashboard",
         title: "Dashboard | Easy-Forms",
     }
-    res.render("dashboard", {page, user: req.user})
+    res.render("dashboard", {page, user: req.user});
 })
 
 Router.get("/form/create", auth, (req, res) => {

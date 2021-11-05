@@ -32,11 +32,11 @@ Router.get("/forms", auth, async (req, res) => {
         }
       });
     } else {
-      res.status(200).json({ msg: "No forms created" });
+      res.status(200).json({ message: "No forms created" });
     }
   } catch (error) {
     console.log({ getAllFormsRouter: error });
-    res.status(400).json({ msg: "An error has occured!" });
+    res.status(400).json({ message: "An error has occured!" });
   }
 });
 
@@ -95,7 +95,7 @@ Router.get("/form/:id", async (req, res) => {
     } else throw new Error();
   } catch (error) {
     console.log({ getSingleFormRoute: error });
-    res.status(400).json({ msg: "An error has occured!" });
+    res.status(400).json({ message: "An error has occured!" });
   }
 });
 
