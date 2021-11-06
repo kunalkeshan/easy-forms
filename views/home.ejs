@@ -1,10 +1,12 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
-<div id="home">
+<div id="home flex flex-col items-center">
     <div class="home__header">
         <h1>Welcome back, <%= user.name %> </h1>
     </div>
-    <div class="home__body"></div>
+    <div class="home__body">
+        <div id="home__root"></div>
+    </div>
 </div>
 
 <%- include ("./partials/footer.ejs") %>

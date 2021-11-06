@@ -1,8 +1,22 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
     <div id="profile">
-        <h1><%- user.name %></h1>
-        <img src="<%-user.image_path%>" alt="Image of <%-user.name%>" />
+        <h1 class="profile__title">Hey there, <%- user.name %>.</h1>
+        <hr />
+        <div class="profile__container">
+            <img src="<%- user.image_path %> " alt="Image of <%- user.name %> " class="profile__image" />
+            <div class="profile__toggle">
+                <p class="profile__details">Change Details</p>
+                <p class="profile__password">Change Password</p>
+            </div>
+            <hr />
+            <div id="profile-details">
+                <form id="profile__details-form"></form>
+            </div>
+            <div id="profile-password">
+                <form id="profile__password-form"></form>
+            </div>
+        </div>
     </div>
 
 <%- include ("./partials/footer.ejs") %>

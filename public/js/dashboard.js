@@ -1,3 +1,5 @@
+import { getAllForms } from "./common.js";
+
 const createFormBtn = document.getElementById("create-form") || null;
 const activeFormsBtn = document.getElementById("active-forms") || null;
 const archivedFormsBtn = document.getElementById("archived-forms") || null;
@@ -55,26 +57,6 @@ const handleCreateForm = async (e) => {
     }
 }
 
-const getAllForms = async () => {
-    const formsCount = {
-        active: 0,
-        archived: 0
-    }
-    try {
-        let userForms = await axios.get("/forms");
-        userForms = userForms.data;
-        userForms.forEach((form, index) => {
-            if(form.is_disabled) formsCount.archived++;
-            else formsCount.active++;
-        });
-
-        activeFormsPage.innerHTML += "You have " + formsCount.active + " active forms";
-        archivedFormsPage.innerHTML += "You have " + formsCount.archived + " archived forms";
-    } catch (error) {
-        console.log(error);
-    }
-}
-
 const hideAllPages = () => {
     for(let page in pages){
         pages[page].style.display = "none";
@@ -94,11 +76,11 @@ const changeMainContent = (currentPage) => {
     pages[currentPage].style.display = "block";
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     hideAllPages();
     buttonFunc();
     pages["createFormPage"].style.display = "block";
 
     createForm.addEventListener("submit", (e) => handleCreateForm(e));
-    getAllForms();
+    console.log(await getAllForms());
 })

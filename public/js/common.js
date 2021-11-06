@@ -36,8 +36,21 @@ const callMessageModal = (type, title, message) => {
 
 }
 
+
+const getAllForms = async () => {
+
+    try {
+        let userForms = await axios.get("/forms");
+        userForms = userForms.data;
+        return userForms;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 export {
-    callMessageModal, durationTime
+    callMessageModal, durationTime, getAllForms
 }
 
 
