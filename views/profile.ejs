@@ -1,20 +1,30 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
     <div id="profile">
-        <h1 class="profile__title">Hey there, <%- user.name %>.</h1>
+        <h1 class="profile__title text-xl text-center">Hey there, <%- user.name %>.</h1>
         <hr />
         <div class="profile__container">
             <img src="<%- user.image_path %> " alt="Image of <%- user.name %> " class="profile__image" />
-            <div class="profile__toggle">
-                <p class="profile__details">Change Details</p>
-                <p class="profile__password">Change Password</p>
+            <div class="profile__toggle flex items-center justify-around">
+                <span class="profile__details">
+                    Change Details
+                    <div class="profile__active"></div>
+                </span>
+            <span class="profile__password">
+                    Change Password
+                    <div class="profile__active"></div>
+                </span>
             </div>
             <hr />
-            <div id="profile-details">
-                <form id="profile__details-form"></form>
+            <div id="profile-details" class="text-center">
+                <form id="profile__details-form">
+                    This is the edit details section.
+                </form>
             </div>
-            <div id="profile-password">
-                <form id="profile__password-form"></form>
+            <div id="profile-password" class="text-center">
+                <form id="profile__password-form">
+                    This is the edit Password Section. 
+                </form>
             </div>
         </div>
     </div>

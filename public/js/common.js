@@ -1,32 +1,49 @@
-
 const modal = document.getElementById("modal");
 const modalTitle = modal.querySelector(".modal__title");
 const modalMessage = modal.querySelector(".modal__message");
 const overlay = document.getElementById("overlay");
 const loader = document.getElementById("loader")
 
-const durationTime = 4;
+const durationTime = 3;
+
+class Loader{
+    constructor(loaderElement, overlayElement){
+        this.loader = loaderElement;
+        this.overlay = overlayElement;
+    }
+
+    showLoader(){
+        this.loader.style.display = "block";
+        this.overlay.style.display = "block";
+    }
+
+    hideLoader(){
+        this.loader.style.display = "none";
+        this.overlay.style.display = "none";
+    }
+}
+
+const loadLoader = new Loader(loader, overlay);
 
 const callMessageModal = (type, title, message) => {
+
+    loadLoader.showLoader();
+
     const removeAllClass = () => {
         modal.classList.remove("modal-error");
         modal.classList.remove("modal-success");
     }
     removeAllClass();
 
-    overlay.style.display = "block";
-    loader.style.display = "block";
+    modal.classList.add(type);
+    modalTitle.innerHTML = title;
+    modalMessage.innerHTML = message;
+
 
     setTimeout(() => {
-
-        overlay.style.display = "none";
-        loader.style.display = "none";
-
         modal.style.animation = `modal-animation ${durationTime}s ease 1 backwards`;
-        modal.classList.add(type);
-        modalTitle.innerHTML = title;
-        modalMessage.innerHTML = message;
-    }, 1000);
+        loadLoader.hideLoader();
+    }, 500);
 
 
     setTimeout(() => {
@@ -50,7 +67,10 @@ const getAllForms = async () => {
 }
 
 export {
-    callMessageModal, durationTime, getAllForms
+    callMessageModal, 
+    loadLoader, 
+    durationTime, 
+    getAllForms
 }
 
 

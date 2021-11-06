@@ -1,4 +1,4 @@
-import { callMessageModal, durationTime } from "./common.js";
+import { callMessageModal, loadLoader, durationTime } from "./common.js";
 
 const signInForm = document.getElementById("index__signin") || null;
 const signUpForm = document.getElementById("index__signup") || null;
@@ -45,11 +45,11 @@ const handleSignIn = async (event) => {
         else body.type = 1;
 
         try {
-            
-            const signin = await axios.post("/signin", body)
+
+            const signin = await axios.post("/signin", body);
             console.log(signin)
             if(signin.status = 200){
-                callMessageModal("modal-success", "Sign In Success", "Redirecting you to home now.")
+                callMessageModal("modal-success", "Sign In Success", "Redirecting you to home now.");
                 setTimeout(() => {
                     window.location.replace("/home")
                 }, durationTime*1000);
