@@ -1,7 +1,7 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
-    <div id="profile">
-        <h1 class="profile__title text-xl text-center">Hey there, <%- user.name %>.</h1>
+    <div id="profile" class="h-full max-w-screen-sm">
+        <h1 class="profile__title text-xl text-center mt-3">Hey there, <%- user.name %>.</h1>
         <hr />
         <div class="profile__container">
             <img src="<%- user.image_path %> " alt="Image of <%- user.name %> " class="profile__image" />
@@ -17,13 +17,41 @@
             </div>
             <hr />
             <div id="profile-details" class="text-center">
-                <form id="profile__details-form">
-                    This is the edit details section.
+                <form id="profile__details-form" class="index__form flex flex-col justify-center items-center">
+                    <h2 class="index__heading mt-4">Edit Details</h2>
+                    <hr class="mx-auto w-40">
+                    <div>
+                        <label for="details__username" class="index__label">Username</label>
+                        <input type="text" id="details__username" class="index__input" value="<%= user.username %>" />
+                    </div>
+                    <div>
+                        <label for="details__name" class="index__label">Name</label>
+                        <input type="text" id="details__name" class="index__input" value="<%= user.name %> "/>
+                    </div>
+                    <div>
+                        <label for="details__email" class="index__label">Email</label>
+                        <input type="email" id="details__email" class="index__input" value="<%= user.email %>"/>
+                    </div>
+                    <div>
+                        <label for="details__password" class="index__label">Password</label>
+                        <input type="password" id="details__password" class="index__input"/>
+                    </div>
+                    <button type="submit" id="details__button" class="index__button">Edit</button>
                 </form>
             </div>
             <div id="profile-password" class="text-center">
                 <form id="profile__password-form">
-                    This is the edit Password Section. 
+                    <h2 class="index__heading mt-4">Change Password</h2>
+                    <hr class="mx-auto w-40">
+                    <div class="my-4">
+                        <label for="password__old-password" class="index__label">Old Password</label>
+                        <input type="password" id="details__old-password" class="index__input"/>
+                    </div>
+                    <div class="mb-4">
+                        <label for="password__new-password" class="index__label">New Password</label>
+                        <input type="password" id="details__new-password" class="index__input"/>
+                    </div>
+                    <button type="submit" id="password__button" class="index__button">Edit</button>
                 </form>
             </div>
         </div>

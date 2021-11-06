@@ -13,8 +13,8 @@ const hideAllForms = () => {
 }
 
 const addAnimation = (type) => {
-    if(type === "rise") return "rise 1s ease-in-out forwards";
-    else if(type === "sink") return "sink 1s ease-in-out forwards";
+    if(type === "rise") return "rise 500ms ease-in-out forwards";
+    else if(type === "sink") return "sink 500ms ease-in-out forwards";
     else return "";
 }
 
