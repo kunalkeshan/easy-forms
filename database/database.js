@@ -22,7 +22,8 @@ try {
         database: process.env.DB_NAME_LOCAL,
     });
 } catch (error) {
-    res.send(error);
+    console.log(error);
+    res.render("404.ejs")
 }
 
 con.connect();

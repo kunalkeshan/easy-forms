@@ -1,4 +1,4 @@
-import { getAllForms } from "./common.js";
+import { getAllForms, loadLoader } from "./common.js";
 
 google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
@@ -17,7 +17,7 @@ google.charts.load("current", {packages:["corechart"]});
             if(index === forms.length -1){
                 const data = google.visualization.arrayToDataTable([
                     ["Type", "Count"],
-                    ["Active", formCount.active],
+                    ["Active", formCount.active + 5],
                     ["Archived", formCount.archived]
                 ])
 

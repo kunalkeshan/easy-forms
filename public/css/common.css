@@ -47,6 +47,16 @@ nav{
     color: var(--snow);
 }
 
+.nav__link{
+    cursor: pointer;
+    transition: all 250ms;
+}
+
+.nav__link:hover{
+    transform: scale(1.01);
+    color: #b1aeae;
+}
+
 /* FORMS STYLING */
 
 .index__heading{

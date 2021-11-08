@@ -1,3 +1,5 @@
+import {loadLoader} from "./common.js"
+
 const sidebar = document.getElementById("sidebar")
 const sidebarItems = document.querySelectorAll(".sidebar__box") || null;
 const sidebarToggle = document.querySelector(".sidebar__toggle");
@@ -37,10 +39,14 @@ if(sidebar){
     });
 
     editProfileBtn.onclick = () => {
-        editProfileCta.classList.toggle("visible")
+        editProfileCta.classList.toggle("visible");
     }
     editProfile.onclick = () => {
-        window.location.replace("/profile");
+        loadLoader.showLoader();
+        setTimeout(() => {
+            window.location.replace("/profile");
+            loadLoader.hideLoader();
+        }, 500)
     }
 
 }

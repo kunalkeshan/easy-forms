@@ -48,12 +48,20 @@ Router.get("/dashboard", auth, (req, res) => {
 Router.get("/form/create", auth, (req, res) => {
     const {formid, sectionid} = req.query;
     const page = {
-        link: "create-edit",
+        link: "create",
         title: "Create | Easy-Forms",
         formid,
         sectionid
     }
-    res.render("create-edit", {page, user: req.user});
+    res.render("edit", {page, user: req.user});
+});
+
+Router.get("/form/edit", auth, (req, res) => {
+    const page = {
+        link: "edit",
+        title: "Edit | Easy-Forms"
+    }
+    res.render("edit", {page, user: req.user})
 })
 
 module.exports = Router;
