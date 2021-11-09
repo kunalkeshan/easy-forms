@@ -1,7 +1,7 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
     <div id="profile" class="h-full max-w-screen-sm">
-        <h1 class="profile__title text-xl text-center mt-3">Hey there, <%- user.name %>.</h1>
+        <h1 class="profile__title text-xl text-center mt-3">Hey there, <span id="username"><%- user.name %>.</span></h1>
         <hr />
         <div class="profile__container">
             <img src="<%- user.image_path %> " alt="Image of <%- user.name %> " class="profile__image" />
@@ -22,7 +22,7 @@
                     <hr class="mx-auto w-40">
                     <div class="input__container">
                         <label for="details__username" class="index__label">Username</label>
-                        <input type="text" id="details__username" class="index__input" value="<%= user.username %>" name="username" />
+                        <input type="text" id="details__username" class="index__input" value="<%= user.username %>" name="username" required/>
                         <div class="input__error" id="username-error">
                             <div class="error-container">
                                 <i class="fas fa-caret-left"></i>
@@ -32,11 +32,11 @@
                     </div>
                     <div>
                         <label for="details__name" class="index__label">Name</label>
-                        <input type="text" id="details__name" class="index__input" value="<%= user.name %>" name="name" />
+                        <input type="text" id="details__name" class="index__input" value="<%= user.name %>" name="name" required/>
                     </div>
                     <div class="input__container">
                         <label for="details__email" class="index__label">Email</label>
-                        <input type="email" id="details__email" class="index__input" value="<%= user.email %>" name="email"/>
+                        <input type="email" id="details__email" class="index__input" value="<%= user.email %>" name="email" required/>
                         <div class="input__error" id="email-error">
                             <div class="error-container">
                                 <i class="fas fa-caret-left"></i>
@@ -46,7 +46,7 @@
                     </div>
                     <div>
                         <label for="details__password" class="index__label">Password</label>
-                        <input type="password" id="details__password" class="index__input" name="password"/>
+                        <input type="password" id="details__password" class="index__input" name="password" required/>
                     </div>
                     <button type="submit" id="details__button" class="index__button">Edit</button>
                 </form>
@@ -57,11 +57,11 @@
                     <hr class="mx-auto w-40">
                     <div class="my-4">
                         <label for="password__old-password" class="index__label">Old Password</label>
-                        <input type="password" id="password__old-password" class="index__input"/>
+                        <input type="password" id="password__old-password" class="index__input" name="old-password" required/>
                     </div>
                     <div class="mb-4 input__container">
                         <label for="password__new-password" class="index__label">New Password</label>
-                        <input type="password" id="password__new-password" class="index__input"/>
+                        <input type="password" id="password__new-password" class="index__input" name="new-password" required/>
                         <div class="input__error" id="password-error">
                             <div class="error-container">
                                 <i class="fas fa-caret-left"></i>

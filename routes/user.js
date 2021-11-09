@@ -63,9 +63,9 @@ Router.post("/profile/edit", auth, async (req, res) => {
             const updateUserDetails = `UPDATE user_details SET name='${name}', username='${username}', email='${email}' WHERE userid='${userid}'`;
             const updatedUser = await query(updateUserDetails);
             if(updatedUser.affectedRows > 0){
-              res.status(200).json({msg: "Details Updated"});
+              res.status(200).json({message: "Details Updated"});
             } else throw new Error();
-          } else res.status(400).json({msg: "Wrong Password!"});
+          } else res.status(400).json({message: "Wrong Password!"});
         } else res.status(200).json({detailsExist});
 
       } else {
@@ -78,15 +78,15 @@ Router.post("/profile/edit", auth, async (req, res) => {
             const updateUserPassword = `UPDATE user_details SET password = '${hashPassword}' WHERE userid='${userid}'`;
             const updatedPassword = await query(updateUserPassword);
             if(updatedPassword.affectedRows > 0){
-              res.status(200).json({msg: "Password Updated"});
+              res.status(200).json({message: "Password Updated"});
             } else throw new Error();
-          } else res.status(400).json({msg: "Wrong Password!"});
+          } else res.status(400).json({message: "Wrong Password!"});
         } else res.status(200).json({detailsExist});
       }
 
     } catch (error) {
       console.log({editUserProfileRoute: error});
-      res.status(400).json({msg: "An error has occured!"});
+      res.status(400).json({message: "An error has occured!"});
     }
 
 });

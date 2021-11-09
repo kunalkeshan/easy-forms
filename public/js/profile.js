@@ -86,11 +86,13 @@ const showForm = (form) => {
         profileDetailsForm.style.display = "block";
         profileDetailsActive.style.animation = addAnimation("rise");
         profilePasswordActive.style.animation = addAnimation("sink");
+        detailsUsername.focus();
     }
     else {
         profilePasswordForm.style.display = "block";
         profileDetailsActive.style.animation = addAnimation("sink");
         profilePasswordActive.style.animation = addAnimation("rise");
+        passwordOld.focus();
     }
 }
 
@@ -110,7 +112,6 @@ allInputs.forEach((input, index) => {
                 try {
                     const response = await axios.post(`/profile/edit`, body);
                     let check = response.data.detailsExist;
-                    console.log(check);
 
                     hideInputErrors();
                     if(check.username) showUsernameError();
@@ -129,12 +130,81 @@ allInputs.forEach((input, index) => {
 const handleEditDetails = async (e) => {
     e.preventDefault();
     const data = new FormData(profileDetailsForm);
-    console.log(data.get("name"))
+    const name = data.get("name");
+    const email = data.get("email");
+    const username = data.get("username");
+    const password = data.get("password");
+    const newPassword = "";
+    isSaved = 1;
+
+    const body = {
+        name, email, username, password, newPassword, changeFor, isSaved
+    }
+    
+
+    try {
+        
+        const response = await axios.post("/profile/edit", body);
+        loadLoader.showLoader();
+        if(response.status === 200){
+            setTimeout(() => {
+                loadLoader.hideLoader();
+                callMessageModal("modal-success", "Success", "Detials Edited Successfully");
+
+                detailsUsername.value = username;
+                detailsEmail.value = email;
+                detailsName.value = name;
+                document.getElementById("username").innerHTML = name;
+                
+            }, 500);
+        }
+    } catch (error) {
+        loadLoader.hideLoader();
+        callMessageModal("modal-error", "Error", "Some error has occured");
+        console.log(error);
+    }
+    
     
 }
 
 const handleChangePassword = async (e) => {
     e.preventDefault();
+    const data = new FormData(profilePasswordForm);
+    const password = data.get("old-password");
+    const newPassword = data.get("new-password");
+    let name, email, username;
+    name = email = username = "";
+    changeFor = 1;
+    isSaved = 1;
+
+    const body = {
+        name, email, username, password, newPassword, changeFor, isSaved
+    }
+
+    try {
+        
+        const response = await axios.post("/profile/edit", body);
+        console.log(response);
+        loadLoader.showLoader();
+        if(response.status === 200 && !response.data.detailsExist){
+            setTimeout(() => {
+                loadLoader.hideLoader();
+                callMessageModal("modal-success", "Success", response.data.message);
+                passwordOld.value = "";
+                passwordNew.value = "";
+
+            }, 500);
+        } else {
+            loadLoader.hideLoader();
+            callMessageModal("modal-error", "Try Again", "New password cannot be same as old Password")
+            passwordNew.value = "";
+        }
+
+
+    } catch (error) {
+        loadLoader.hideLoader();
+        callMessageModal("modal-error", "Error", "Incorrect Password");
+    }
 }
 
 profileDetailsToggle.onclick = () => showForm("details");
@@ -144,5 +214,6 @@ document.addEventListener("DOMContentLoaded", () => {
     showForm("details");
     hideInputErrors();
     profileDetailsForm.addEventListener("submit", (e) => handleEditDetails(e) );
+    profilePasswordForm.addEventListener("submit", (e) => handleChangePassword(e));
 })
 

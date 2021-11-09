@@ -23,7 +23,11 @@ try {
     });
 } catch (error) {
     console.log(error);
-    res.render("404.ejs")
+    const page = {
+        link: "404",
+        title: "404 | Easy Forms"
+    }
+    res.render("404.ejs", page);
 }
 
 con.connect();
