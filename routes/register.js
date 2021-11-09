@@ -83,7 +83,6 @@ Router.post("/signin",  async (req, res) => {
             //Username Sign In
             const usernameSignIn = `SELECT * FROM user_details WHERE username='${user}'`;
             const response  = await query(usernameSignIn);
-            console.log(response);
             let user_details = app_functions.parseData(response);
             user_details = user_details[0]
 

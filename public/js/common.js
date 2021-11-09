@@ -2,7 +2,7 @@ const modal = document.getElementById("modal");
 const modalTitle = modal.querySelector(".modal__title");
 const modalMessage = modal.querySelector(".modal__message");
 const overlay = document.getElementById("overlay");
-const loader = document.getElementById("loader")
+const loader = document.getElementById("loader");
 
 const durationTime = 3;
 
@@ -66,12 +66,31 @@ const getAllForms = async () => {
     }
 }
 
+const callLoader = (destination) => {
+    loadLoader.showLoader();
+    setTimeout(() => {
+        window.location.replace(`/${destination}`)
+        loadLoader.hideLoader();
+    }, 500);    
+    
+}
+
+const destinations = ["home", "dashboard", "profile", "signout"]
+const navLinks = document.querySelectorAll(".nav__link") || null;
+navLinks.forEach((link, index) => {
+    link.onclick = function(){
+        callLoader(destinations[index]);
+    }
+});
+
+
 export {
     callMessageModal, 
     loadLoader, 
     durationTime, 
     getAllForms
 }
+
 
 
 

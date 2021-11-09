@@ -25,7 +25,6 @@ const auth = async (req, res, next) => {
     if (userImage.length > 0) {
       const image = app_functions.parseData(userImage);
       req.user.image_path = image[0].image_path;
-      console.log(req.user);
     } else throw new Error();
 
     return next();
