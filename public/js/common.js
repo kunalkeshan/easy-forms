@@ -6,6 +6,10 @@ const loader = document.getElementById("loader");
 
 const durationTime = 3;
 
+
+/* 
+* Class to create loader
+*/
 class Loader{
     constructor(loaderElement, overlayElement){
         this.loader = loaderElement;
@@ -23,8 +27,16 @@ class Loader{
     }
 }
 
+// Loader created from class and exported
 const loadLoader = new Loader(loader, overlay);
 
+
+/* 
+* Global common message modal.
+* @params{string} type
+* @params{string} title
+* @params{string} message
+*/
 const callMessageModal = (type, title, message) => {
 
     loadLoader.showLoader();
@@ -53,7 +65,34 @@ const callMessageModal = (type, title, message) => {
 
 }
 
+/* 
+* Create a card function for the dashboard
+* @params {string} formid
+* @params {string} title
+* @params {string} description
+* @params {string} created_at
+*/
 
+const createFormCard = ({formid, title, description, created_at}) => {
+    const formCard = `
+        <a class="form__card flex items-center mx-auto w-3/5 text-sm rounded p-1 m-3" href="/form/edit?formid=${formid}">
+            <i class="fas fa-sticky-note text-xl mx-5 form-icon block"></i>
+            <div class="card-details flex items-center justify-between w-full">
+                <div class="card__text">
+                    <p class="card__title text-lg overflow-ellipsis overflow-hidden whitespace-nowrap">${title}</p>
+                    <p class="card__description overflow-ellipsis overflow-hidden whitespace-nowrap">${description}</p>
+                </div>
+                <p class="card__created text-xs"><strong>Created on: </strong>${created_at}</p>
+            </div>
+        </a>
+    `;
+
+    return formCard;
+}
+
+/* 
+* Gets all forms of that specific user.
+*/
 const getAllForms = async () => {
 
     try {
@@ -65,6 +104,17 @@ const getAllForms = async () => {
         console.log(error);
     }
 }
+
+
+export {
+    callMessageModal, 
+    loadLoader, 
+    durationTime, 
+    getAllForms,
+    createFormCard,
+}
+
+// Common Functions that are not exported.
 
 const callLoader = (destination) => {
     loadLoader.showLoader();
@@ -84,12 +134,6 @@ navLinks.forEach((link, index) => {
 });
 
 
-export {
-    callMessageModal, 
-    loadLoader, 
-    durationTime, 
-    getAllForms
-}
 
 
 

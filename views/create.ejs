@@ -1,5 +1,21 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
-<h1>This is to create form</h1>
+<script>
+    const formId = '<%= Form.formid %>';
+</script>
+<main id="form" class="w-4/5 h-full m-8 p-2 mx-auto bg-white rounded">
+    <div class="form__header text-center rounded p-2 flex-col flex items-center">
+        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-lg" id="form__title"/>
+        <textarea name="description" rows="2" class="text-center resize-none text-sm" id="form__description"><%= Form.description %></textarea>
+    </div>
+    <div class="form__body p-2 rounded m-2 text-sm">
+        <% Sections.forEach(section => { %>
+            <div class="form__section flex flex-col">
+                <input type="text" value="<%= section.title%>"/>
+                <input type="text" value="<%= section.description%>" />
+            </div>
+        <% }) %>
+    </div>
+</main>
 
 <%- include ("./partials/footer.ejs") %>

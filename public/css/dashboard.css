@@ -24,3 +24,37 @@
 #create-form-submit{
     margin: 1em auto;
 }
+
+.form-container{
+    padding: 1em;
+    height: 100%;
+    overflow: scroll;
+}
+
+.form__card{
+    background: var(--trueBlueLight);
+    transition: all 250ms;
+    max-width: 400px;
+}
+
+.form__card:hover{
+    transform: scale(1.05);
+}
+
+.form-icon{
+    transition: all 250ms;
+}
+
+.form__card:hover .form-icon{
+    color: var(--snow);
+    transform: rotate(360deg);
+}
+
+.card__description , .card__title{
+    max-width:200px;
+}
+
+.card__created{
+    width: clamp(25px, 100%, 75px);
+}
+
