@@ -1,19 +1,32 @@
-import { getAllForms } from "./common.js";
+import { getAllForms, createFormCard} from "./common.js";
 
 const createFormBtn = document.getElementById("create-form") || null;
 const activeFormsBtn = document.getElementById("active-forms") || null;
 const archivedFormsBtn = document.getElementById("archived-forms") || null;
+const savedFormsBtn = document.getElementById("saved-forms") || null;
 
 const createFormPage = document.getElementById("create-form-page") || null;
 const activeFormsPage = document.getElementById("active-forms-page") || null;
 const archivedFormsPage = document.getElementById("archived-forms-page") || null;
+const savedFormsPage = document.getElementById("saved-forms-page") || null;
 
 const createForm = document.getElementById("create-form-form") || null;
+
+const activeFormsContainer = document.getElementById("active-forms-container") || null;
+const archivedFormsContainer = document.getElementById("archived-forms-container") || null;
+const savedFormsContainer = document.getElementById("saved-forms-container") || null;
 
 const pages = {
     createFormPage,
     activeFormsPage,
+    savedFormsPage,
     archivedFormsPage
+}
+
+const formsContainer = {
+    activeFormsContainer,
+    savedFormsContainer, 
+    archivedFormsContainer,
 }
 
 const buttons = [{
@@ -27,6 +40,10 @@ const buttons = [{
 {
     btn: archivedFormsBtn,
     page: "archivedFormsPage",
+},
+{
+    btn: savedFormsBtn,
+    page: "savedFormsPage"
 }];
 
 const handleCreateForm = async (e) => {
@@ -48,8 +65,8 @@ const handleCreateForm = async (e) => {
         
         const newForm = await axios.post("/form/create", body);
         if(newForm.status === 200){
-            const {formid, sectionid} = newForm.data.form;
-            window.location.replace(`/form/create?formid=${formid}&sectionid=${sectionid}`)
+            const {formid} = newForm.data.form;
+            window.location.replace(`/form/create?formid=${formid}`)
         } else throw new Error();
 
     } catch (error) {
@@ -76,11 +93,26 @@ const changeMainContent = (currentPage) => {
     pages[currentPage].style.display = "block";
 }
 
-document.addEventListener("DOMContentLoaded", async () => {
+const updateFormsContainer = async () => {
+    const allForms = await getAllForms();
+    console.log(allForms)
+    allForms.forEach((form) => {
+        if(form.is_published == "true" && form.is_disabled == "false"){
+            activeFormsContainer.append(createFormCard(form));
+        }
+        if(form.is_published == "false" && form.is_disabled == "false"){
+            savedFormsContainer.append(createFormCard(form));
+        }
+        if(form.is_published == "false" && form.is_disabled == "true"){
+            archivedFormsContainer.append(createFormCard(form));
+        }
+    })
+}
+
+document.addEventListener("DOMContentLoaded", () => {
     hideAllPages();
     buttonFunc();
     pages["createFormPage"].style.display = "block";
-
     createForm.addEventListener("submit", (e) => handleCreateForm(e));
-    console.log(await getAllForms());
+    updateFormsContainer()
 })

@@ -15,12 +15,13 @@ const auth = require("../middleware/auth");
 const query = util.promisify(con.query).bind(con);
 
 //Delete Form route
-Router.post("/form/delete/:id", auth, async (req, res) => {
-    const formid = req.params.id;
+Router.delete("/form/delete", auth, async (req, res) => {
+    const {formid} = req.query;
+    const {userid} = req.user;
     
     //Queries
-    const getForm = `SELECT * FROM form_details WHERE formid='${formid} AND userid='${userid}'`;
-    const setDeleteForm = `DELETE * FROM form_details WHERE formid='${formid}'`;
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}' AND userid='${userid}'`;
+    const setDeleteForm = `DELETE FROM form_details WHERE formid='${formid}'`;
     
     try {
         

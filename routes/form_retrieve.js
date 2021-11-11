@@ -19,7 +19,7 @@ Router.get("/forms", auth, async (req, res) => {
   const userid = req.user.userid;
 
   //Queries
-  const getForm = `SELECT * FROM form_details WHERE userid='${userid}'`;
+  const getForm = `SELECT * FROM form_details WHERE userid='${userid}' ORDER BY created_at DESC`;
 
   try {
     const allForms = await query(getForm);

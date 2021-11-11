@@ -31,7 +31,7 @@ Router.post("/form/create", auth, async (req, res) => {
             const createSection = await query(setCreateSection);
             if(createSection.affectedRows > 0){
                 const form = {
-                    formid, sectionid
+                    formid
                 }
                 res.status(200).json({message: "Form created successfully", form})
             } else throw new Error();

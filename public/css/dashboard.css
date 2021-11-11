@@ -24,3 +24,51 @@
 #create-form-submit{
     margin: 1em auto;
 }
+
+.form-container{
+    padding: 2em;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+}
+
+.card{
+    border: 1px solid var(--tureBlue);
+    background: var(--trueBlueLight);
+    transition: all 250ms;
+  }
+  
+  .card:hover{
+    transform: scale(1.05);
+  }
+  
+  .form-icon{
+    transition: all 500ms;
+  }
+  
+  .card:hover .form-icon{
+    color: var(--snow);
+    transform: rotate(360deg);
+  }
+  
+  .edit-icon, .response-icon, .delete-icon{
+    transition: all 500ms;
+  }
+  
+  .edit-icon:hover{
+    color: rgb(144, 238, 144);
+    transform: rotate(-10deg);
+  }
+  
+  .response-icon:hover{
+    color: rgb(39, 39, 170);
+    transform: rotate(-10deg);
+  }
+
+
+  .delete-icon:hover{
+      color: rgb(236, 26, 26);
+      transform: rotate(-10deg);
+  }

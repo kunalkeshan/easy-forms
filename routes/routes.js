@@ -45,23 +45,58 @@ Router.get("/dashboard", auth, (req, res) => {
     res.render("dashboard", {page, user: req.user});
 })
 
-Router.get("/form/create", auth, (req, res) => {
-    const {formid, sectionid} = req.query;
-    const page = {
-        link: "create",
-        title: "Create | Easy-Forms",
-        formid,
-        sectionid
+Router.get("/form/create", auth, async (req, res) => {
+    const {formid} = req.query;
+
+    //Queries
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`
+
+    try {
+
+        let Form = await query(getForm);
+        let Sections = await query(getSections);
+
+        Form = app_functions.parseData(Form)[0];
+        Sections = app_functions.parseData(Sections)
+
+        const page = {
+            link: "create",
+            title: "Create | Easy-Forms",
+        }
+        res.render("create", {page, user: req.user, Form, Sections});
+        
+    } catch (error) {
+        console.log(error);
     }
-    res.render("edit", {page, user: req.user});
+
 });
 
-Router.get("/form/edit", auth, (req, res) => {
-    const page = {
-        link: "edit",
-        title: "Edit | Easy-Forms"
+Router.get("/form/edit", auth, async (req, res) => {
+    const {formid} = req.query;
+
+    //Queries
+    const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`
+
+
+   try {
+
+        let Form = await query(getForm);
+        let Sections = await query(getSections);
+
+        Form = app_functions.parseData(Form)[0];
+        Sections = app_functions.parseData(Sections)
+
+        const page = {
+            link: "create",
+            title: "Edit | Easy-Forms",
+        }
+        res.render("create", {page, user: req.user, Form, Sections});
+        
+    } catch (error) {
+        console.log(error);
     }
-    res.render("edit", {page, user: req.user})
 })
 
 module.exports = Router;
