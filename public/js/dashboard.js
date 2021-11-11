@@ -1,4 +1,4 @@
-import { getAllForms, createFormCard } from "./common.js";
+import { getAllForms, createFormCard} from "./common.js";
 
 const createFormBtn = document.getElementById("create-form") || null;
 const activeFormsBtn = document.getElementById("active-forms") || null;
@@ -98,13 +98,13 @@ const updateFormsContainer = async () => {
     console.log(allForms)
     allForms.forEach((form) => {
         if(form.is_published == "true" && form.is_disabled == "false"){
-            activeFormsContainer.innerHTML += createFormCard(form);
+            activeFormsContainer.append(createFormCard(form));
         }
         if(form.is_published == "false" && form.is_disabled == "false"){
-            savedFormsContainer.innerHTML += createFormCard(form);
+            savedFormsContainer.append(createFormCard(form));
         }
         if(form.is_published == "false" && form.is_disabled == "true"){
-            archivedFormsContainer.innerHTML += createFormCard(form);
+            archivedFormsContainer.append(createFormCard(form));
         }
     })
 }
