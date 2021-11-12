@@ -50,13 +50,18 @@ Router.get("/form/create", auth, async (req, res) => {
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
-    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`;
+    const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}' ORDER BY created_at DESC`;
+    const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}'`;
 
     try {
 
         let Form = await query(getForm);
         let Sections = await query(getSections);
+        let Questions = await query(getQuestions);
+        let QuestionsAndOptions = await query(getQuestionsAndOptions);
 
+        console.log(Questions, QuestionsAndOptions);
         Form = app_functions.parseData(Form)[0];
         Sections = app_functions.parseData(Sections)
 
