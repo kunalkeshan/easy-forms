@@ -42,13 +42,13 @@ Router.delete("/form/delete", auth, async (req, res) => {
 });
 
 //Delete section route
-Router.post("/form/delete/section/:sectionid/:formid", auth, async (req, res) => {
+Router.delete("/form/delete/section/:sectionid/:formid", auth, async (req, res) => {
     const {formid, sectionid} = req.params;
 
     //Queries
     const getSection = `SELECT * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
     const getQuestionsFromSection = `SELECT * FROM form_questions WHERE sectionid='${sectionid}' AND formid='${formid}'`;
-    const setDeleteSection = `DELETE * FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
+    const setDeleteSection = `DELETE FROM form_sections WHERE sectionid='${sectionid}' AND formid='${formid}'`;
 
     try {
 

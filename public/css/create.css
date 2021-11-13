@@ -6,6 +6,23 @@ body{
     border: 1px solid var(--trueBlue)
 }
 
-.form__body{
-    border: 1px solid var(--trueBlue)
+.form__section{
+    border: 1px solid var(--trueBlue);
+}
+
+div.last-section{
+    position: relative;
+}
+
+#add-section-btn{
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transition: all 250ms;
+
+}
+
+#add-section-btn:hover{
+    transform: scale(1.05) rotate(-5deg);
+    bottom: -32px;
 }

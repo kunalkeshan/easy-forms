@@ -3,16 +3,27 @@
 <script>
     const formId = '<%= Form.formid %>';
 </script>
-<main id="form" class="w-4/5 h-full m-8 p-2 mx-auto bg-white rounded">
+<main id="form" class="w-4/5 md:w-3/5 m-8 p-2 mx-auto bg-white rounded">
     <div class="form__header text-center rounded p-2 flex-col flex items-center">
-        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-lg" id="form__title"/>
-        <textarea name="description" rows="2" class="text-center resize-none text-sm" id="form__description"><%= Form.description %></textarea>
+        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-lg w-full" id="form__title"/>
+        <textarea name="description" rows="2" class="text-center resize-none text-sm w-full" id="form__description"><%= Form.description %></textarea>
     </div>
     <div class="form__body p-2 rounded m-2 text-sm">
-        <% Sections.forEach(section => { %>
-            <div class="form__section flex flex-col">
-                <input type="text" value="<%= section.title%>"/>
-                <input type="text" value="<%= section.description%>" />
+        <% Sections.forEach((section, index) => { %>
+            <div class="form__section last-section flex flex-col rounded my-2 p-1" id="<%= section.sectionid%>">
+                <input type="text" value="<%= section.title%>" class="mb-2"/>
+                <input type="text" value="<%= section.description%>" class="mb-2"/>
+                <div class="section__cta flex items-center justify-between">
+                    <% if (index > 0) { %>
+                        <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Section"></i>
+                    <% } else { %>
+                        <div></div>
+                    <% } %>
+                    <i class="far fa-plus-square new-question-btn text-sm text-bold cursor-pointer text-green-300" title="Add new Question"></i>
+                </div>
+                <% if (index === Sections.length - 1) { %>
+                    <i class="far fa-plus-square text-lg text-bold cursor-pointer" id="add-section-btn" title="Add new Section"></i>
+                <% } %>
             </div>
         <% }) %>
     </div>

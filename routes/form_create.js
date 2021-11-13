@@ -50,11 +50,16 @@ Router.post("/form/create/section/:id", auth, async (req, res) => {
 
     //Queries
     const setNewSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${newSectionID}', '${formid}')`;
+    const getNewSection = `SELECT * FROM form_sections WHERE sectionid='${newSectionID}'`;
     try {
         const newSection = await query(setNewSection);
         if(newSection.affectedRows > 0){
-            res.status(200).json({newSectionID});
-        }
+            let Section = await query(getNewSection);
+            if(Section.length){
+                Section = app_functions.parseData(Section)[0];
+                res.status(200).json({Section});
+            } else throw new Error();
+        } else throw new Error();
     } catch (error) {
         console.log({newSectionRoute: error});
         res.status(400).json({msg: "An error has Occured"});

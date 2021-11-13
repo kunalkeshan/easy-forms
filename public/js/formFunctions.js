@@ -121,9 +121,69 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
     return formCard;
 }
 
+const sectionCard = ({sectionid, title, description}) => {
+    // const card = `
+    // <div class="form__section flex flex-col rounded my-2 p-1" id="${sectionid}">
+    //     <input type="text" value="${title}" class="mb-2"/>
+    //     <input type="text" value="${description} class="mb-2" />
+    //     <div class="section__cta flex items-center justify-between">
+    //         <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Section"></i>
+    //         <i class="far fa-plus-square new-question-btn text-sm text-bold cursor-pointer text-green-300" title="Add new Question"></i>
+    //     </div>
+    // </div>
+    // `
+
+    const section = document.createElement("div");
+    const sectionTitle = document.createElement("input");
+    const sectionDescription = document.createElement("input");
+    const sectionCta = document.createElement("div");
+    const deleteIcon = document.createElement("i");
+    const addIcon = document.createElement("i")
+
+    addIcon.className = "far fa-plus-square new-question-btn text-sm text-bold cursor-pointer text-green-300";
+    addIcon.title = "Add New Question";
+    deleteIcon.className = "fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300";
+    deleteIcon.title = "Delete Section";
+
+    deleteIcon.onclick = () => doDelete();
+
+    sectionCta.className = "section__cta flex items-center justify-between";
+    sectionCta.append(deleteIcon, addIcon);
+
+    sectionDescription.value = description;
+    sectionDescription.type = "text";
+    sectionDescription.className = "mb-2";
+
+    sectionTitle.value = title;
+    sectionTitle.type = "text";
+    sectionTitle.className = "mb-2";
+
+    section.className = "form__section flex flex-col rounded my-2 p-1";
+    section.id = sectionid;
+    section.append(sectionTitle, sectionDescription, sectionCta);
+
+    const doDelete = async () => {
+        try {
+            
+            const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
+            if(deleteSection.status === 200){
+            callMessageModal("modal-success", "Success", "Section deleted successfully");
+            section.style.display = "none";
+            section.remove();
+        }
+
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    return section;
+}
+
 /* 
 * Gets all forms of that specific user.
 */
+
 const getAllForms = async () => {
 
     try {
@@ -138,5 +198,6 @@ const getAllForms = async () => {
 
 export{
     createFormCard, 
+    sectionCard,
     getAllForms,
 }
