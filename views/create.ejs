@@ -11,8 +11,8 @@
     <div class="form__body p-2 rounded m-2 text-sm">
         <% Sections.forEach((section, index) => { %>
             <div class="form__section last-section flex flex-col rounded my-2 p-1" id="<%= section.sectionid%>">
-                <input type="text" value="<%= section.title%>" class="mb-2"/>
-                <input type="text" value="<%= section.description%>" class="mb-2"/>
+                <input type="text" value="<%= section.title%>" class="section-title mb-2"/>
+                <input type="text" value="<%= section.description%>" class="section-description mb-2"/>
                 <div class="section__cta flex items-center justify-between">
                     <% if (index > 0) { %>
                         <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Section"></i>

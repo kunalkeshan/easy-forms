@@ -15,7 +15,7 @@ const auth = require("../middleware/auth");
 const query = util.promisify(con.query).bind(con);
 
 //Edit an Already Existing Form.
-Router.post("/form/edit/:id", auth, async (req, res) => {
+Router.patch("/form/edit/:id", auth, async (req, res) => {
     const userid = req.user.userid;
     const formid = req.params.id;
     const {title, description} = req.body;
@@ -40,7 +40,7 @@ Router.post("/form/edit/:id", auth, async (req, res) => {
 
 
 //Edit a section of an Already Existing Form.
-Router.post("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
+Router.patch("/form/edit/section/:sectionid/:formid", auth, async (req, res) => {
     const userid = req.user.userid;
     const {formid, sectionid} = req.params;
     const {title, description} = req.body;

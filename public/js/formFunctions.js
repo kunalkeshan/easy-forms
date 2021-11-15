@@ -1,5 +1,7 @@
 import { loadLoader, callMessageModal, durationTime } from "./common.js";
 
+let timeout = null;
+
 /* 
 * Create a card function for the dashboard
 * @params {string} formid
@@ -121,7 +123,7 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
     return formCard;
 }
 
-const sectionCard = ({sectionid, title, description}) => {
+const sectionCard = ({sectionid, title, description, formid}) => {
     // const card = `
     // <div class="form__section flex flex-col rounded my-2 p-1" id="${sectionid}">
     //     <input type="text" value="${title}" class="mb-2"/>
@@ -152,30 +154,64 @@ const sectionCard = ({sectionid, title, description}) => {
 
     sectionDescription.value = description;
     sectionDescription.type = "text";
-    sectionDescription.className = "mb-2";
+    sectionDescription.className = "section-description mb-2";
 
     sectionTitle.value = title;
     sectionTitle.type = "text";
-    sectionTitle.className = "mb-2";
+    sectionTitle.className = "section-title mb-2";
 
+    
     section.className = "form__section flex flex-col rounded my-2 p-1";
     section.id = sectionid;
     section.append(sectionTitle, sectionDescription, sectionCta);
-
+    
     const doDelete = async () => {
         try {
             
             const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
             if(deleteSection.status === 200){
-            callMessageModal("modal-success", "Success", "Section deleted successfully");
-            section.style.display = "none";
-            section.remove();
-        }
-
+                const allSections = document.querySelectorAll(".form__section");
+                const  lastId = allSections[allSections.length - 1].id;
+                if(lastId === sectionid){
+                    const addSectionBtn = document.getElementById("add-section-btn") || null;
+                    addSectionBtn.style.display = "none";
+                    addSectionBtn.remove();
+                    allSections.forEach((sec, index) => {
+                        sec.classList.remove("last-section");
+                        if(index === allSections.length - 2){
+                            sec.classList.add("last-section");
+                            sec.append(addSectionBtn);
+                            addSectionBtn.style.display = "block";
+                        }
+                    });
+                }
+                callMessageModal("modal-success", "Success", "Section deleted successfully");
+                section.style.display = "none";
+                section.remove();
+            }
+            
         } catch (error) {
             console.log(error);
         }
     }
+    
+    const updateSectionDetails = async ()  => {
+        const title = sectionTitle.value;
+        const description = sectionDescription.value;
+        const body = {title, description}
+        console.log(body);
+        try {
+            clearTimeout(timeout);
+            timeout = setTimeout(async () => {
+                await axios.patch(`/form/edit/section/${sectionid}/${formid}`, body);
+            }, 800);
+        } catch (error) {
+            console.log(error);
+        }
+    }
+    
+    sectionTitle.addEventListener("keyup", updateSectionDetails);
+    sectionDescription.addEventListener("keyup", updateSectionDetails);
 
     return section;
 }
@@ -185,12 +221,12 @@ const sectionCard = ({sectionid, title, description}) => {
 */
 
 const getAllForms = async () => {
-
+    
     try {
         let userForms = await axios.get("/forms");
         userForms = userForms.data;
         return userForms;
-
+        
     } catch (error) {
         console.log(error);
     }
