@@ -209,12 +209,33 @@ const sectionCard = ({sectionid, title, description, formid}) => {
             console.log(error);
         }
     }
+
+    const questionsModal = document.getElementById("questions__modal") || null;
+    const handleQuestionsModal = (method) => {
+        switch (method) {
+            case "open": {
+                questionsModal.classList.remove("slide-left")
+                questionsModal.classList.add("slide-right");
+                break;
+            }
+            default: {
+                questionsModal.classList.remove("slide-right")
+                questionsModal.classList.add("slide-left");
+                break;
+            }
+        }
+    }
     
     sectionTitle.addEventListener("keyup", updateSectionDetails);
     sectionDescription.addEventListener("keyup", updateSectionDetails);
+    addIcon.addEventListener("click", () => {
+        handleQuestionsModal("open");
+    })
 
     return section;
 }
+
+
 
 /* 
 * Gets all forms of that specific user.

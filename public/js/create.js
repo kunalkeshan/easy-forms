@@ -12,6 +12,10 @@ const sectionDescriptions = document.querySelectorAll("section-description") || 
 const addSectionBtn = document.getElementById("add-section-btn") || null;
 const deleteSectionBtns = document.querySelectorAll(".delete-section-btn") || null;
 
+const newQuestionBtns = document.querySelectorAll(".new-question-btn") || null;
+const questionsModal = document.getElementById("questions__modal") || null;
+const closeQuestionModalBtn = document.getElementById("add-question-close-btn") || null;
+
 const updateFormDetails = () => {
     const title = formTitle.value;
     const description = formDescription.value;
@@ -100,6 +104,21 @@ const deleteSection = async (e) => {
     }
 }
 
+const handleQuestionsModal = (method) => {
+    switch (method) {
+        case "open": {
+            questionsModal.classList.remove("slide-left")
+            questionsModal.classList.add("slide-right");
+            break;
+        }
+        default: {
+            questionsModal.classList.remove("slide-right")
+            questionsModal.classList.add("slide-left");
+            break;
+        }
+    }
+}
+
 const createQuestion = () => {
 
 }
@@ -120,4 +139,11 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteSectionBtns.forEach((deleteBtn, index) => {
         deleteBtn.addEventListener("click", (e) => deleteSection(e))
     });
+
+    newQuestionBtns.forEach((newBtn, index) => {
+        newBtn.addEventListener("click", () => {
+            handleQuestionsModal("open");
+        })
+    })
+    closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal())
 })

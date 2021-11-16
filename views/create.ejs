@@ -28,5 +28,34 @@
         <% }) %>
     </div>
 </main>
+<div id="questions__modal" class="absolute flex p-2 rounded">
+    <div class="questions__container p-2">
+        <p class="questions__title">Question Type</p>
+        <div class="questions__card" id="add-question-short-btn">
+            <i class="fas fa-paragraph" title="Small Text"></i>
+            <p>Small Text</p>
+        </div>
+        <div class="questions__card" id="add-question-long-btn">
+            <i class="fas fa-align-justify" title="Long Text"></i>
+            <p>Long Text</p>
+        </div>
+        <div class="questions__card" id="add-question-single-btn">
+            <i class="fas fa-check-circle" title="Single Option"></i>
+            <p>Single Option</p>
+        </div>
+        <div class="questions__card" id="add-question-multiple-btn">
+            <i class="fas fa-check-square" title="Multiple Option"></i>
+            <p>Multiple Option</p>
+        </div>
+        <div class="questions__card" id="add-question-img-btn">
+            <i class="fas fa-image" title="Image Upload"></i>
+            <p>Image Upload</p>
+        </div>
+        <div class="questions__card" id="add-question-close-btn">
+            <i class="fas fa-times"></i>
+            <p>Cancel</p>
+        </div>
+    </div>
+</div>
 
 <%- include ("./partials/footer.ejs") %>
