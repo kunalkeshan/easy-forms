@@ -7,8 +7,8 @@ const formDescription = document.getElementById("form__description") || null;
 const formBody = document.querySelector(".form__body")
 
 const allSections = document.querySelectorAll(".form__section") || null;
-const sectionTitles = document.querySelectorAll("section-title") || null;
-const sectionDescriptions = document.querySelectorAll("section-description") || null;
+const sectionTitles = document.querySelectorAll(".section-title") || null;
+const sectionDescriptions = document.querySelectorAll(".section-description") || null;
 const addSectionBtn = document.getElementById("add-section-btn") || null;
 const deleteSectionBtns = document.querySelectorAll(".delete-section-btn") || null;
 
@@ -33,8 +33,7 @@ const updateFormDetails = () => {
     }
 }
 
-const updateSectionDetails = (section, index, e)  => {
-    console.log(e.target.value)
+const updateSectionDetails = (section, index)  => {
     loadMiniLoader.showLoader();
     const sectionid = section.parentElement.id;
     const title = allSections[index].children[0].value;
@@ -74,35 +73,39 @@ const createSection = async () => {
     }
 }
 
-const deleteSection = async (e) => {
+const deleteSection = (e) => {
+    loadMiniLoader.showLoader();
     const section = e.target.parentElement.parentElement;
     const sectionid = section.id;
 
     try {
         
-        const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
-        if(deleteSection.status === 200){
-            const allSections = document.querySelectorAll(".form__section");
-                const  lastId = allSections[allSections.length - 1].id;
-                if(lastId === sectionid){
-                    const addSectionBtn = document.getElementById("add-section-btn") || null;
-                    addSectionBtn.style.display = "none";
-                    addSectionBtn.remove();
-                    allSections.forEach((sec, index) => {
-                        sec.classList.remove("last-section");
-                        if(index === allSections.length - 2){
-                            sec.classList.add("last-section");
-                            sec.append(addSectionBtn);
-                            addSectionBtn.style.display = "block";
-                        }
-                    });
-                }
-            callMessageModal("modal-success", "Success", "Section deleted successfully");
-            section.style.display = "none";
-            section.remove();
-        }
+        setTimeout(async () => {
+            const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
+            if(deleteSection.status === 200){
+                const allSections = document.querySelectorAll(".form__section");
+                    const  lastId = allSections[allSections.length - 1].id;
+                    if(lastId === sectionid){
+                        const addSectionBtn = document.getElementById("add-section-btn") || null;
+                        addSectionBtn.style.display = "none";
+                        addSectionBtn.remove();
+                        allSections.forEach((sec, index) => {
+                            sec.classList.remove("last-section");
+                            if(index === allSections.length - 2){
+                                sec.classList.add("last-section");
+                                sec.append(addSectionBtn);
+                                addSectionBtn.style.display = "block";
+                            }
+                        });
+                    }
+                section.style.display = "none";
+                section.remove();
+                loadMiniLoader.hideLoader();
+            }
+        }, 800)
 
     } catch (error) {
+        loadMiniLoader.hideLoader();
         callMessageModal("modal-error", "Error", "Some error has Occured");
         console.log(error);
     }
@@ -134,7 +137,7 @@ document.addEventListener("DOMContentLoaded", () => {
     
     addSectionBtn.addEventListener("click", createSection);
     sectionTitles.forEach((section, index) => {
-        section.addEventListener("keyup", (e) => updateSectionDetails(section, index,  e));
+        section.addEventListener("keyup", () => updateSectionDetails(section, index));
     })
     sectionDescriptions.forEach((section, index) => {
         section.addEventListener("keyup", () => updateSectionDetails(section, index));

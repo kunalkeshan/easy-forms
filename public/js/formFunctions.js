@@ -1,4 +1,4 @@
-import { loadLoader, callMessageModal, durationTime } from "./common.js";
+import { loadLoader, loadMiniLoader, callMessageModal, durationTime } from "./common.js";
 
 let timeout = null;
 
@@ -101,11 +101,11 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
     formCard.append(formIcon, cardText, cardContainer);
 
     const doDelete = async (id) => {
-        loadLoader.showLoader();
+        loadMiniLoader.showLoader();
         try {
             const response = await axios.delete(`form/delete?formid=${id}`);
             if(response.status === 200){
-                loadLoader.hideLoader();
+                loadMiniLoader.hideLoader();
                 callMessageModal("modal-success", "Success", `${title} deleted successfully`)
                 setTimeout(() => {
                     const card = document.getElementById(formid);
@@ -114,7 +114,7 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
                 }, durationTime * 1000);
             }
         } catch (error) {
-            loadLoader.hideLoader();
+            loadMiniLoader.hideLoader();
             callMessageModal("modal-error", "Error", "something wrong has happened")
             console.log(error)
         }
@@ -167,37 +167,41 @@ const sectionCard = ({sectionid, title, description, formid}) => {
     section.id = sectionid;
     section.append(sectionTitle, sectionDescription, sectionLine, sectionCta);
     
-    const doDelete = async () => {
+    const doDelete = () => {
+        loadMiniLoader.showLoader();
         try {
-            
-            const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
-            if(deleteSection.status === 200){
-                const allSections = document.querySelectorAll(".form__section");
-                const  lastId = allSections[allSections.length - 1].id;
-                if(lastId === sectionid){
-                    const addSectionBtn = document.getElementById("add-section-btn") || null;
-                    addSectionBtn.style.display = "none";
-                    addSectionBtn.remove();
-                    allSections.forEach((sec, index) => {
-                        sec.classList.remove("last-section");
-                        if(index === allSections.length - 2){
-                            sec.classList.add("last-section");
-                            sec.append(addSectionBtn);
-                            addSectionBtn.style.display = "block";
-                        }
-                    });
+            setTimeout(async () => {
+                const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
+                if(deleteSection.status === 200){
+                    const allSections = document.querySelectorAll(".form__section");
+                    const  lastId = allSections[allSections.length - 1].id;
+                    if(lastId === sectionid){
+                        const addSectionBtn = document.getElementById("add-section-btn") || null;
+                        addSectionBtn.style.display = "none";
+                        addSectionBtn.remove();
+                        allSections.forEach((sec, index) => {
+                            sec.classList.remove("last-section");
+                            if(index === allSections.length - 2){
+                                sec.classList.add("last-section");
+                                sec.append(addSectionBtn);
+                                addSectionBtn.style.display = "block";
+                            }
+                        });
+                    }
+                    section.style.display = "none";
+                    section.remove();
+                    loadMiniLoader.hideLoader();
                 }
-                callMessageModal("modal-success", "Success", "Section deleted successfully");
-                section.style.display = "none";
-                section.remove();
-            }
+            }, 800)
             
         } catch (error) {
+            loadMiniLoader.hideLoader();
             console.log(error);
         }
     }
     
     const updateSectionDetails = async ()  => {
+        loadMiniLoader.showLoader();
         const title = sectionTitle.value;
         const description = sectionDescription.value;
         const body = {title, description}
@@ -206,8 +210,10 @@ const sectionCard = ({sectionid, title, description, formid}) => {
             clearTimeout(timeout);
             timeout = setTimeout(async () => {
                 await axios.patch(`/form/edit/section/${sectionid}/${formid}`, body);
+                loadMiniLoader.hideLoader();
             }, 800);
         } catch (error) {
+            loadMiniLoader.hideLoader();
             console.log(error);
         }
     }

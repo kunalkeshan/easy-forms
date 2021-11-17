@@ -14,7 +14,7 @@
                 <input type="text" value="<%= section.title%>" class="section-title mb-2 text-lg"/>
                 <input type="text" value="<%= section.description%>" class="section-description mb-2 text-lg"/>
                 <hr class="mb-2" />
-                <div class="form__question">
+                <div class="form__question mb-2">
                     <% Questions.forEach((question, index) => { %>
                         <% if (section.sectionid === question.sectionid) { %>
                             <div class="question__container mb-1" id="<%= question.questionid%>">
@@ -30,6 +30,9 @@
                                     <% } %>    
                                         
                                 <% } %>
+                                <div class="question__cta flex justify-end">
+                                    <i class="fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300" title="Delete Question"></i>    
+                                </div>
                             </div>
                         <% } %>
                     <% }) %>
