@@ -1,4 +1,5 @@
-import { getAllForms, createFormCard} from "./common.js";
+import { callMessageModal, loadLoader } from "./common.js";
+import { getAllForms, createFormCard} from "./formFunctions.js";
 
 const createFormBtn = document.getElementById("create-form") || null;
 const activeFormsBtn = document.getElementById("active-forms") || null;
@@ -24,9 +25,18 @@ const pages = {
 }
 
 const formsContainer = {
-    activeFormsContainer,
-    savedFormsContainer, 
-    archivedFormsContainer,
+    active: {
+        name: "Active",
+        container: activeFormsContainer,
+    },
+    saved: {
+        name: "Saved",
+        container: savedFormsContainer,
+    },
+    archived: {
+        name: "Archived",
+        container: archivedFormsContainer,
+    }
 }
 
 const buttons = [{
@@ -48,6 +58,7 @@ const buttons = [{
 
 const handleCreateForm = async (e) => {
     e.preventDefault();
+    loadLoader.showLoader();
     const formTitle = document.getElementById("create-form-title") || null;
     const formDesc = document.getElementById("create-form-desc") || null;
 
@@ -57,7 +68,8 @@ const handleCreateForm = async (e) => {
     }
 
     if(body.title === "" || body.description === ""){
-        alert("Title and Descrition is required!");
+        loadLoader.hideLoader();
+        callMessageModal("modal-error", "Try again!", "Title and Description is required");
         return;
     }
 
@@ -65,12 +77,17 @@ const handleCreateForm = async (e) => {
         
         const newForm = await axios.post("/form/create", body);
         if(newForm.status === 200){
-            const {formid} = newForm.data.form;
-            window.location.replace(`/form/create?formid=${formid}`)
-        } else throw new Error();
-
+            loadLoader.hideLoader();
+            callMessageModal("modal-success", "Success", "Form created, redirecting you to edit your form");
+            setTimeout(() => {
+                const {formid} = newForm.data.form;
+                window.location.replace(`/form/create?formid=${formid}`)
+            }, 2000);
+        } else throw new Error("Some error occured");
     } catch (error) {
-        console.log(error);
+        loadLoader.hideLoader();
+        callMessageModal("modal-success", "Error", "Something bad has happened, please try again");
+        console.log(error.message);
     }
 }
 
@@ -95,18 +112,23 @@ const changeMainContent = (currentPage) => {
 
 const updateFormsContainer = async () => {
     const allForms = await getAllForms();
-    console.log(allForms)
-    allForms.forEach((form) => {
-        if(form.is_published == "true" && form.is_disabled == "false"){
-            activeFormsContainer.append(createFormCard(form));
+    if(allForms.length){
+        allForms.forEach((form) => {
+            if(form.is_published == "true" && form.is_disabled == "false"){
+                activeFormsContainer.append(createFormCard(form));
+            }
+            if(form.is_published == "false" && form.is_disabled == "false"){
+                savedFormsContainer.append(createFormCard(form));
+            }
+            if(form.is_published == "false" && form.is_disabled == "true"){
+                archivedFormsContainer.append(createFormCard(form));
+            }
+        })
+    } else {
+        for(let container in formsContainer){
+            formsContainer[container].container.innerHTML = `<center>You have no ${formsContainer[container].name} forms.</center>`;
         }
-        if(form.is_published == "false" && form.is_disabled == "false"){
-            savedFormsContainer.append(createFormCard(form));
-        }
-        if(form.is_published == "false" && form.is_disabled == "true"){
-            archivedFormsContainer.append(createFormCard(form));
-        }
-    })
+    }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

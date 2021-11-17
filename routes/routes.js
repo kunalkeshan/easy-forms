@@ -50,7 +50,7 @@ Router.get("/form/create", auth, async (req, res) => {
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
-    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at ASC`;
 
     try {
 
@@ -77,22 +77,30 @@ Router.get("/form/edit", auth, async (req, res) => {
 
     //Queries
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
-    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at DESC`
-
+    const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at ASC`
+    const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}' ORDER BY created_at ASC`;
+    const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' ORDER BY form_questions.created_at ASC`;
 
    try {
 
         let Form = await query(getForm);
         let Sections = await query(getSections);
+        let Questions = await query(getQuestions);
+        let QuestionsAndOptions = await query(getQuestionsAndOptions);
 
+        
         Form = app_functions.parseData(Form)[0];
         Sections = app_functions.parseData(Sections)
+        Questions = app_functions.parseData(Questions);
+        QuestionsAndOptions = app_functions.parseData(QuestionsAndOptions);
+
+        console.log(Form, Sections, Questions)
 
         const page = {
             link: "create",
             title: "Edit | Easy-Forms",
         }
-        res.render("create", {page, user: req.user, Form, Sections});
+        res.render("create", {page, user: req.user, Form, Sections, Questions});
         
     } catch (error) {
         console.log(error);

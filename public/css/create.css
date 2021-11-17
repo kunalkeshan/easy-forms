@@ -1,0 +1,86 @@
+body{
+    background: var(--trueBlueLight);
+    overflow-x: hidden;
+}
+
+.form__header{
+    border: 1px solid var(--trueBlue)
+}
+
+.form__section{
+    border: 1px solid var(--trueBlue);
+}
+
+div.last-section{
+    position: relative;
+}
+
+#add-section-btn{
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transition: all 250ms;
+
+}
+
+#add-section-btn:hover{
+    transform: scale(1.05) rotate(-5deg);
+    bottom: -32px;
+}
+
+#questions__modal{
+    width: 150px;
+    top: 100px;
+    left: 100%;
+    background: var(--snow);
+}
+
+.questions__card{
+    text-align: center;
+    padding: .5em .2em;
+    margin: .3em auto;
+    border-radius: 10px;
+    background: var(--trueBlueLight);
+    transition: all 250ms;
+    cursor: pointer;
+}
+
+.questions__card:hover{
+    background: var(--trueBlue);
+    color: var(--snow);
+}
+
+.questions__card i{
+    font-size: 1.5rem;
+}
+
+.questions__card p{
+    font-size: .5rem;
+}
+
+.slide-right{
+    animation: slide-right 500ms ease-in forwards;
+}
+
+.slide-left{
+    animation: slide-left 500ms ease-in forwards;
+}
+
+@keyframes slide-right {
+    0%{
+        left: 100%;
+    }
+
+    100%{
+        left: calc(100% - 150px);
+    }
+}
+
+@keyframes slide-left {
+    0%{
+        left: calc(100% - 150px);
+    }
+    100%{
+        left: 100%;
+    }
+}

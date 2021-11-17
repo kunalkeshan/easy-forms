@@ -3,19 +3,92 @@
 <script>
     const formId = '<%= Form.formid %>';
 </script>
-<main id="form" class="w-4/5 h-full m-8 p-2 mx-auto bg-white rounded">
+<main id="form" class="w-4/5 md:w-3/5 m-8 p-2 mx-auto bg-white rounded">
     <div class="form__header text-center rounded p-2 flex-col flex items-center">
-        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-lg" id="form__title"/>
-        <textarea name="description" rows="2" class="text-center resize-none text-sm" id="form__description"><%= Form.description %></textarea>
+        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-xl w-full" id="form__title"/>
+        <textarea name="description" rows="2" class="text-center resize-none text-lg w-full" id="form__description"><%= Form.description %></textarea>
     </div>
     <div class="form__body p-2 rounded m-2 text-sm">
-        <% Sections.forEach(section => { %>
-            <div class="form__section flex flex-col">
-                <input type="text" value="<%= section.title%>"/>
-                <input type="text" value="<%= section.description%>" />
+        <% Sections.forEach((section, index) => { %>
+            <div class="form__section last-section flex flex-col rounded my-2 p-1" id="<%= section.sectionid%>">
+                <input type="text" value="<%= section.title%>" class="section-title mb-2 text-lg"/>
+                <input type="text" value="<%= section.description%>" class="section-description mb-2 text-lg"/>
+                <hr class="mb-2" />
+                <div class="form__question mb-2">
+                    <% Questions.forEach((question, index) => { %>
+                        <% if (section.sectionid === question.sectionid) { %>
+                            <div class="question__card mb-1" id="<%= question.questionid%>">
+                                <input type="text" value="<%= question.question_description%>" class="question-description mb-2"/>
+                                <% if (question.type === 'mcq' || question.type === 'box') { %>
+                                    <% QuestionsAndOptions.forEach((option, opIndex) => { %>
+                                        <% if (option.type === "mcq") { %>
+                                         
+                                        <% } else { %>
+
+                                        <% } %>
+                                    <% }) %>
+                                <% } else {%>
+                                    <% if (question.type === "text") { %>
+                                        <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2"/>
+                                    <% } %>
+                                    <% if (question.type === "descriptive") { %>
+                                        <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2"></textarea>
+                                    <% } %>    
+                                        
+                                <% } %>
+                                <div class="question__cta flex justify-end">
+                                    <i class="fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300" title="Delete Question"></i>    
+                                </div>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
+                <div class="section__cta flex items-center justify-between">
+                    <% if (index > 0) { %>
+                        <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Section"></i>
+                    <% } else { %>
+                        <div></div>
+                    <% } %>
+                    <i class="far fa-plus-square new-question-btn text-sm text-bold cursor-pointer text-green-300" title="Add new Question"></i>
+                </div>
+                <% if (index === Sections.length - 1) { %>
+                    <i class="far fa-plus-square text-lg text-bold cursor-pointer" id="add-section-btn" title="Add new Section"></i>
+                <% } %>
             </div>
         <% }) %>
     </div>
 </main>
+<div id="questions__modal" class="absolute flex p-2 rounded">
+    <div class="questions__container p-2">
+        <p class="questions__title">Question Type</p>
+        <div class="questions__card" id="add-question-short-btn">
+            <i class="fas fa-paragraph" title="Small Text"></i>
+            <p>Small Text</p>
+        </div>
+        <div class="questions__card" id="add-question-long-btn">
+            <i class="fas fa-align-justify" title="Long Text"></i>
+            <p>Long Text</p>
+        </div>
+        <div class="questions__card" id="add-question-single-btn">
+            <i class="fas fa-check-circle" title="Single Option"></i>
+            <p>Single Option</p>
+        </div>
+        <div class="questions__card" id="add-question-multiple-btn">
+            <i class="fas fa-check-square" title="Multiple Option"></i>
+            <p>Multiple Option</p>
+        </div>
+        <div class="questions__card" id="add-question-img-btn">
+            <i class="fas fa-image" title="Image Upload"></i>
+            <p>Image Upload</p>
+        </div>
+        <div class="questions__card" id="add-question-close-btn">
+            <i class="fas fa-times"></i>
+            <p>Cancel</p>
+        </div>
+    </div>
+</div>
+
+
+
 
 <%- include ("./partials/footer.ejs") %>
