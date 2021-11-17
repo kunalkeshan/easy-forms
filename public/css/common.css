@@ -204,6 +204,17 @@ footer > * {
     z-index: 100;
 }
 
+#mini-loader{
+    display: none;
+    width: 50px;
+    height: auto;
+    position: fixed;
+    top: 5px;
+    left: 5px;
+    border-radius: 50%;
+    z-index: 100;
+}
+
 @keyframes modal-animation {
     0%{
         opacity: 0;

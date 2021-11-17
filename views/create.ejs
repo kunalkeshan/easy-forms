@@ -5,14 +5,35 @@
 </script>
 <main id="form" class="w-4/5 md:w-3/5 m-8 p-2 mx-auto bg-white rounded">
     <div class="form__header text-center rounded p-2 flex-col flex items-center">
-        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-lg w-full" id="form__title"/>
-        <textarea name="description" rows="2" class="text-center resize-none text-sm w-full" id="form__description"><%= Form.description %></textarea>
+        <input type="text" value="<%= Form.title %>" class="text-center mb-1 text-xl w-full" id="form__title"/>
+        <textarea name="description" rows="2" class="text-center resize-none text-lg w-full" id="form__description"><%= Form.description %></textarea>
     </div>
     <div class="form__body p-2 rounded m-2 text-sm">
         <% Sections.forEach((section, index) => { %>
             <div class="form__section last-section flex flex-col rounded my-2 p-1" id="<%= section.sectionid%>">
-                <input type="text" value="<%= section.title%>" class="section-title mb-2"/>
-                <input type="text" value="<%= section.description%>" class="section-description mb-2"/>
+                <input type="text" value="<%= section.title%>" class="section-title mb-2 text-lg"/>
+                <input type="text" value="<%= section.description%>" class="section-description mb-2 text-lg"/>
+                <hr class="mb-2" />
+                <div class="form__question">
+                    <% Questions.forEach((question, index) => { %>
+                        <% if (section.sectionid === question.sectionid) { %>
+                            <div class="question__container mb-1" id="<%= question.questionid%>">
+                                <input type="text" value="<%= question.question_description%>" class="question-description mb-2"/>
+                                <% if (question.type === 'mcq' || question.type === 'box') { %>
+
+                                <% } else {%>
+                                    <% if (question.type === "text") { %>
+                                        <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2"/>
+                                    <% } %>
+                                    <% if (question.type === "descriptive") { %>
+                                        <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2"></textarea>
+                                    <% } %>    
+                                        
+                                <% } %>
+                            </div>
+                        <% } %>
+                    <% }) %>
+                </div>
                 <div class="section__cta flex items-center justify-between">
                     <% if (index > 0) { %>
                         <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Section"></i>

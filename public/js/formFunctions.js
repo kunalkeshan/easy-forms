@@ -140,8 +140,10 @@ const sectionCard = ({sectionid, title, description, formid}) => {
     const sectionDescription = document.createElement("input");
     const sectionCta = document.createElement("div");
     const deleteIcon = document.createElement("i");
-    const addIcon = document.createElement("i")
+    const addIcon = document.createElement("i");
+    const sectionLine = document.createElement("hr");
 
+    sectionLine.className = "mb-2";
     addIcon.className = "far fa-plus-square new-question-btn text-sm text-bold cursor-pointer text-green-300";
     addIcon.title = "Add New Question";
     deleteIcon.className = "fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300";
@@ -154,16 +156,16 @@ const sectionCard = ({sectionid, title, description, formid}) => {
 
     sectionDescription.value = description;
     sectionDescription.type = "text";
-    sectionDescription.className = "section-description mb-2";
+    sectionDescription.className = "section-description text-lg mb-2";
 
     sectionTitle.value = title;
     sectionTitle.type = "text";
-    sectionTitle.className = "section-title mb-2";
+    sectionTitle.className = "section-title text-lg mb-2";
 
     
     section.className = "form__section flex flex-col rounded my-2 p-1";
     section.id = sectionid;
-    section.append(sectionTitle, sectionDescription, sectionCta);
+    section.append(sectionTitle, sectionDescription, sectionLine, sectionCta);
     
     const doDelete = async () => {
         try {

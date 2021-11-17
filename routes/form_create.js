@@ -85,7 +85,7 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
                 let OPTN = {};
                 MCQ_OPTIONS.forEach(async (option, index) => {
                     const optionid = shortid.generate();
-                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type})`;
+                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type}')`;
                     const newOption = await query(setNewOption);
                     if(newOption.affectedRows > 0){
                         OPTN[index] = optionid;

@@ -1,4 +1,4 @@
-import {loadLoader, callMessageModal} from "./common.js";
+import {loadLoader, loadMiniLoader,  callMessageModal} from "./common.js";
 import {sectionCard} from "./formFunctions.js";
 
 let timeout = null;
@@ -17,6 +17,7 @@ const questionsModal = document.getElementById("questions__modal") || null;
 const closeQuestionModalBtn = document.getElementById("add-question-close-btn") || null;
 
 const updateFormDetails = () => {
+    loadMiniLoader.showLoader();
     const title = formTitle.value;
     const description = formDescription.value;
     const body = {title, description}
@@ -24,26 +25,29 @@ const updateFormDetails = () => {
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             await axios.patch(`/form/edit/${formId}`, body);
+            loadMiniLoader.hideLoader();
         }, 800);
     } catch (error) {
+        loadMiniLoader.hideLoader();
         console.log(error);
     }
 }
 
-const updateSectionDetails = (section, index)  => {
-    console.log("callin")
+const updateSectionDetails = (section, index, e)  => {
+    console.log(e.target.value)
+    loadMiniLoader.showLoader();
     const sectionid = section.parentElement.id;
     const title = allSections[index].children[0].value;
     const description = allSections[index].children[1].value;
-    // const title = section.children[0].value;
-    // const description = section.children[1].value;
     const body = {title, description}
     try {
         clearTimeout(timeout);
         timeout = setTimeout(async () => {
             await axios.patch(`/form/edit/section/${sectionid}/${formId}`, body);
+            loadMiniLoader.hideLoader();
         }, 800);
     } catch (error) {
+        loadMiniLoader.hideLoader();
         console.log(error);
     }
 }
@@ -124,17 +128,16 @@ const createQuestion = () => {
 }
 
 
-
 document.addEventListener("DOMContentLoaded", () => {
     formTitle.addEventListener("keyup", updateFormDetails);
     formDescription.addEventListener("keyup", updateFormDetails);
-
+    
     addSectionBtn.addEventListener("click", createSection);
     sectionTitles.forEach((section, index) => {
-        section.addEventListener("keyup", updateSectionDetails(section, index));
+        section.addEventListener("keyup", (e) => updateSectionDetails(section, index,  e));
     })
     sectionDescriptions.forEach((section, index) => {
-        section.addEventListener("keyup", updateSectionDetails(section, index));
+        section.addEventListener("keyup", () => updateSectionDetails(section, index));
     })
     deleteSectionBtns.forEach((deleteBtn, index) => {
         deleteBtn.addEventListener("click", (e) => deleteSection(e))

@@ -1,6 +1,6 @@
 body{
     background: var(--trueBlueLight);
-    overflow: hidden;
+    overflow-x: hidden;
 }
 
 .form__header{

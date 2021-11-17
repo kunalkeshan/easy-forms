@@ -1,8 +1,9 @@
-const modal = document.getElementById("modal");
-const modalTitle = modal.querySelector(".modal__title");
-const modalMessage = modal.querySelector(".modal__message");
-const overlay = document.getElementById("overlay");
-const loader = document.getElementById("loader");
+const modal = document.getElementById("modal") || null;
+const modalTitle = modal.querySelector(".modal__title") || null;
+const modalMessage = modal.querySelector(".modal__message") || null;
+const overlay = document.getElementById("overlay") || null;
+const loader = document.getElementById("loader") || null;
+const miniLoader = document.getElementById("mini-loader") || null;
 
 const durationTime = 3;
 
@@ -18,18 +19,18 @@ class Loader{
 
     showLoader(){
         this.loader.style.display = "block";
-        this.overlay.style.display = "block";
+        if(this.overlay) this.overlay.style.display = "block";
     }
 
     hideLoader(){
         this.loader.style.display = "none";
-        this.overlay.style.display = "none";
+        if(this.overlay) this.overlay.style.display = "none";
     }
 }
 
 // Loader created from class and exported
 const loadLoader = new Loader(loader, overlay);
-
+const loadMiniLoader = new Loader(miniLoader);
 
 /* 
 * Global common message modal.
@@ -67,7 +68,8 @@ const callMessageModal = (type, title, message) => {
 
 export {
     callMessageModal, 
-    loadLoader, 
+    loadLoader,
+    loadMiniLoader, 
     durationTime, 
 }
 
