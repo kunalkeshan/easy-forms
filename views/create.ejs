@@ -17,10 +17,16 @@
                 <div class="form__question mb-2">
                     <% Questions.forEach((question, index) => { %>
                         <% if (section.sectionid === question.sectionid) { %>
-                            <div class="question__container mb-1" id="<%= question.questionid%>">
+                            <div class="question__card mb-1" id="<%= question.questionid%>">
                                 <input type="text" value="<%= question.question_description%>" class="question-description mb-2"/>
                                 <% if (question.type === 'mcq' || question.type === 'box') { %>
+                                    <% QuestionsAndOptions.forEach((option, opIndex) => { %>
+                                        <% if (option.type === "mcq") { %>
+                                         
+                                        <% } else { %>
 
+                                        <% } %>
+                                    <% }) %>
                                 <% } else {%>
                                     <% if (question.type === "text") { %>
                                         <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2"/>
@@ -81,5 +87,8 @@
         </div>
     </div>
 </div>
+
+
+
 
 <%- include ("./partials/footer.ejs") %>

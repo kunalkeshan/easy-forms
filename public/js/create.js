@@ -111,11 +111,39 @@ const deleteSection = (e) => {
     }
 }
 
-const handleQuestionsModal = (method) => {
+const handleQuestionsModal = (method, container) => {
     switch (method) {
         case "open": {
-            questionsModal.classList.remove("slide-left")
+            questionsModal.classList.remove("slide-left");
             questionsModal.classList.add("slide-right");
+
+            const questionsBtns = document.querySelectorAll(".questions__card") || null;
+            questionsBtns.forEach((btn, index) => {
+                let type = null;
+                switch (index) {
+                    case 0:
+                        type = "text"
+                        break;
+                    case 1:
+                        type = "descriptive"
+                        break;
+                    case 2:
+                        type = "mcq"
+                        break;
+                    case 3:
+                        type = "box"
+                        break;
+                    case 4: 
+                        type = "image"
+                        break;
+                    default:
+                        break;
+                }
+                btn.addEventListener("click", () => {
+                    createQuestion(container, type)
+                })
+            })
+
             break;
         }
         default: {
@@ -126,8 +154,9 @@ const handleQuestionsModal = (method) => {
     }
 }
 
-const createQuestion = () => {
-
+const createQuestion = (container, type) => {
+    const questionid = container.id;
+    
 }
 
 
@@ -147,8 +176,9 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     newQuestionBtns.forEach((newBtn, index) => {
+        const container = newBtn.parentElement.parentElement;
         newBtn.addEventListener("click", () => {
-            handleQuestionsModal("open");
+            handleQuestionsModal("open", container);
         })
     })
     closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal())

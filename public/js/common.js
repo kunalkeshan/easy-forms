@@ -37,10 +37,11 @@ const loadMiniLoader = new Loader(miniLoader);
 * @params{string} type
 * @params{string} title
 * @params{string} message
+* @params{boolean} noLoader
 */
-const callMessageModal = (type, title, message) => {
+const callMessageModal = (type, title, message, noLoader) => {
 
-    loadLoader.showLoader();
+    if(!noLoader) loadLoader.showLoader();
 
     const removeAllClass = () => {
         modal.classList.remove("modal-error");
@@ -55,15 +56,13 @@ const callMessageModal = (type, title, message) => {
 
     setTimeout(() => {
         modal.style.animation = `modal-animation ${durationTime}s ease 1 backwards`;
-        loadLoader.hideLoader();
+        if(!noLoader) loadLoader.hideLoader();
     }, 500);
 
 
     setTimeout(() => {
         modal.style.animation = "";
     }, durationTime * 1000);
-
-
 }
 
 export {

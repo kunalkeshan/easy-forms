@@ -106,7 +106,7 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
             const response = await axios.delete(`form/delete?formid=${id}`);
             if(response.status === 200){
                 loadMiniLoader.hideLoader();
-                callMessageModal("modal-success", "Success", `${title} deleted successfully`)
+                callMessageModal("modal-success", "Success", `${title} deleted successfully`, true)
                 setTimeout(() => {
                     const card = document.getElementById(formid);
                     card.style.display = "none";
@@ -241,6 +241,12 @@ const sectionCard = ({sectionid, title, description, formid}) => {
     })
 
     return section;
+}
+
+const createQuestionCard = ({questionid, sectionid, formid, question_description, type}, options) => {
+    const questionCard = document.createElement("div");
+
+    return questionCard
 }
 
 
