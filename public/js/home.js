@@ -1,4 +1,5 @@
-import { getAllForms, loadLoader } from "./common.js";
+import { loadLoader } from "./common.js";
+import { getAllForms } from "./formFunctions.js";
 
 google.charts.load("current", {packages:["corechart"]});
       google.charts.setOnLoadCallback(drawChart);
@@ -7,17 +8,27 @@ google.charts.load("current", {packages:["corechart"]});
         getAllForms().then(forms => {
             const formCount = {
                 active: 0,
+                saved: 0,
                 archived: 0,
             }
             forms.forEach((form, index) => {
-                if(form.is_disabled) formCount.archived++;
-                else formCount.active++;
+
+                if(form.is_published == "true" && form.is_disabled == "false"){
+                    formCount.active++;
+                }
+                if(form.is_published == "false" && form.is_disabled == "false"){
+                    formCount.saved++;
+                }
+                if(form.is_published == "false" && form.is_disabled == "true"){
+                    // formCount.archived++;
+                }
 
                 
-            if(index === forms.length -1){
+            if(index === forms.length - 1){
                 const data = google.visualization.arrayToDataTable([
                     ["Type", "Count"],
-                    ["Active", formCount.active + 5],
+                    ["Active", formCount.active],
+                    ["Saved", formCount.saved],
                     ["Archived", formCount.archived]
                 ])
 

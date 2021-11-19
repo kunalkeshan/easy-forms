@@ -1,7 +1,9 @@
 <%- include ("./partials/headerLoggedIn.ejs") %> 
 
 <script>
-    const formId = '<%= Form.formid %>';
+    
+    const formId = '<%= Form ? Form.formid : "" %>';
+    
 </script>
 <main id="form" class="w-4/5 md:w-3/5 m-8 p-2 mx-auto bg-white rounded">
     <div class="form__header text-center rounded p-2 flex-col flex items-center">
@@ -92,6 +94,5 @@
     <input type="text" id="qcta__description" placeholder="Question Description" />
     <button>Create Question</button>
 </div>
-
 
 <%- include ("./partials/footer.ejs") %>
