@@ -28,9 +28,39 @@ class Loader{
     }
 }
 
+class Overlay{
+    constructor(overlayElement){
+        this.overlay = overlayElement;
+    }
+
+    showOverlay(){
+        this.overlay.style.display = "block";
+    }
+
+    hideOverlay(){
+        this.overlay.style.display = "none";
+    }
+
+    addClick(siblingElement){
+        this.overlay.addEventListener("click", () => {
+            const display = this.overlay.style.display;
+            if(display === "block"){
+                this.hideOverlay();
+                if(siblingElement) siblingElement.style.display = "none";
+            } else {
+                this.showOverlay();
+                if(siblingElement) siblingElement.style.display = "flex";
+            }
+        })
+    }
+
+}
+
 // Loader created from class and exported
 const loadLoader = new Loader(loader, overlay);
 const loadMiniLoader = new Loader(miniLoader);
+
+const loadOverlay = new Overlay(overlay);
 
 /* 
 * Global common message modal.
@@ -68,7 +98,8 @@ const callMessageModal = (type, title, message, noLoader) => {
 export {
     callMessageModal, 
     loadLoader,
-    loadMiniLoader, 
+    loadMiniLoader,
+    loadOverlay, 
     durationTime, 
 }
 

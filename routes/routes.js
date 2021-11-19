@@ -103,7 +103,7 @@ Router.get("/form/edit", auth, async (req, res) => {
                 link: "create",
                 title: "Edit | Easy-Forms",
             }
-            res.render("create", {page, user: req.user, Form, Sections, Questions});
+            res.render("create", {page, user: req.user, Form, Sections, Questions, QuestionsAndOptions});
 
         } else throw new Error("Form does not exist!")
 

@@ -1,4 +1,4 @@
-import {loadLoader, loadMiniLoader,  callMessageModal} from "./common.js";
+import {loadLoader, loadMiniLoader,  callMessageModal, loadOverlay} from "./common.js";
 import {sectionCard} from "./formFunctions.js";
 
 let timeout = null;
@@ -15,6 +15,8 @@ const deleteSectionBtns = document.querySelectorAll(".delete-section-btn") || nu
 const newQuestionBtns = document.querySelectorAll(".new-question-btn") || null;
 const questionsModal = document.getElementById("questions__modal") || null;
 const closeQuestionModalBtn = document.getElementById("add-question-close-btn") || null;
+const createQuestionModal = document.getElementById("question-cta") || null;
+const closeCreateQuestionModal = document.getElementById("close-new-question") || null;
 
 const updateFormDetails = () => {
     loadMiniLoader.showLoader();
@@ -112,14 +114,14 @@ const deleteSection = (e) => {
 }
 
 const handleQuestionsModal = (method, container) => {
-    switch (method) {
-        case "open": {
+    if(method === "open"){
             questionsModal.classList.remove("slide-left");
             questionsModal.classList.add("slide-right");
 
             const questionsBtns = document.querySelectorAll(".questions__card") || null;
             questionsBtns.forEach((btn, index) => {
                 let type = null;
+                
                 switch (index) {
                     case 0:
                         type = "text"
@@ -140,23 +142,48 @@ const handleQuestionsModal = (method, container) => {
                         break;
                 }
                 btn.addEventListener("click", () => {
-                    createQuestion(container, type)
+                    createQuestion(container, type);
+                    questionsModal.classList.remove("slide-right")
+                    questionsModal.classList.add("slide-left");
                 })
             })
-
-            break;
-        }
-        default: {
-            questionsModal.classList.remove("slide-right")
+        } else{
+            questionsModal.classList.remove("slide-right");
             questionsModal.classList.add("slide-left");
-            break;
-        }
-    }
+            loadLoader.hideLoader();
+            createQuestionModal.style.display="none";
+            }
 }
 
 const createQuestion = (container, type) => {
     const questionid = container.id;
-    
+    const createQuestionBtn = document.getElementById("create-new-question") || null;
+    const typeDivs = Array.from(createQuestionModal.getElementsByTagName("div"));
+    loadOverlay.addClick(createQuestionModal)
+    const hideAll = () => {
+        typeDivs.forEach((div) => {
+            div.style.display = "none"
+        })
+    }
+
+    const finishCreateQuestion = () => {
+        createQuestionModal.style.display = "none";
+        loadOverlay.hideOverlay();
+    }
+
+    hideAll();
+
+    typeDivs.forEach((div) => {
+        if(Array.from(div.classList).includes(type)){
+            div.style.display = "flex";
+        }
+    });
+    loadOverlay.showOverlay();
+    createQuestionModal.style.display = "flex";
+    createQuestionBtn.addEventListener("click", () => {
+        
+        finishCreateQuestion();
+    })
 }
 
 
@@ -181,5 +208,6 @@ document.addEventListener("DOMContentLoaded", () => {
             handleQuestionsModal("open", container);
         })
     })
-    closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal())
+    closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal());
+    closeCreateQuestionModal.addEventListener("click", () => handleQuestionsModal())
 })

@@ -20,7 +20,7 @@
                     <% Questions.forEach((question, index) => { %>
                         <% if (section.sectionid === question.sectionid) { %>
                             <div class="question__card mb-1" id="<%= question.questionid%>">
-                                <input type="text" value="<%= question.question_description%>" class="question-description mb-2"/>
+                                <input type="text" value="<%= question.question_description%>" class="question-description mb-2 w-full"/>
                                 <% if (question.type === 'mcq' || question.type === 'box') { %>
                                     <% QuestionsAndOptions.forEach((option, opIndex) => { %>
                                         <% if (option.type === "mcq") { %>
@@ -31,10 +31,10 @@
                                     <% }) %>
                                 <% } else {%>
                                     <% if (question.type === "text") { %>
-                                        <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2"/>
+                                        <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2" disabled/>
                                     <% } %>
                                     <% if (question.type === "descriptive") { %>
-                                        <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2"></textarea>
+                                        <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2" disabled></textarea>
                                     <% } %>    
                                         
                                 <% } %>
@@ -60,7 +60,7 @@
         <% }) %>
     </div>
 </main>
-<div id="questions__modal" class="absolute flex p-2 rounded">
+<div id="questions__modal" class="fixed flex p-2 rounded">
     <div class="questions__container p-2">
         <p class="questions__title">Question Type</p>
         <div class="questions__card" id="add-question-short-btn">
@@ -83,16 +83,29 @@
             <i class="fas fa-image" title="Image Upload"></i>
             <p>Image Upload</p>
         </div>
-        <div class="questions__card" id="add-question-close-btn">
+        <div class="questions__card-close" id="add-question-close-btn">
             <i class="fas fa-times"></i>
             <p>Cancel</p>
         </div>
     </div>
 </div>
 
-<div id="question-cta" class="hidden">
-    <input type="text" id="qcta__description" placeholder="Question Description" />
-    <button>Create Question</button>
+<div id="question-cta" class="hidden z-10 fixed w-4/5 md:w-3/5 mx-auto flex flex-col p-3 rounded top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-2 border-solid border-gray-300">
+    <input type="text" id="qcta__description" placeholder="Type your Question here" class="mt-2 block w-full px-1"/>
+    <div class="text mt-2 hidden ">
+        <input type="text" class="mt-2 text-xl w-full rounded border-solid border-2" disabled/>
+    </div>
+    <div class="descriptive mt-2 hidden ">
+        <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2" disabled></textarea>
+    </div>
+    <div class="image flex items-center justify-center text-4xl text-gray-300 rounded p-2 border-2 border-solid border-gray mt-2 w-min mx-auto hidden ">
+        <i class="fas fa-upload"></i>
+    </div>
+    <div class="mcq box mt-2 hidden "></div>
+    <span class="flex items-center justify-between">
+        <button class="rounded border-2 border-solid border-gray-300 mx-auto mt-2 block py-1 px-2 text-sm" id="create-new-question">Create Question</button>
+        <button class="rounded border-2 border-solid border-gray-300 mx-auto mt-2 block py-1 px-2 text-sm bg-red-300 hover:bg-red-600 transition-all duration-500" id="close-new-question">Cancel</button>
+    </span>
 </div>
 
 <%- include ("./partials/footer.ejs") %>

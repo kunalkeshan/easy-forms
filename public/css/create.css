@@ -35,7 +35,7 @@ div.last-section{
     background: var(--snow);
 }
 
-.questions__card{
+.questions__card, .questions__card-close{
     text-align: center;
     padding: .5em .2em;
     margin: .3em auto;
@@ -50,12 +50,17 @@ div.last-section{
     color: var(--snow);
 }
 
-.questions__card i{
+.questions__card i, .questions__card-close i{
     font-size: 1.5rem;
 }
 
-.questions__card p{
+.questions__card p, .questions__card-close p{
     font-size: .5rem;
+}
+
+.questions__card-close:hover{
+    background-color: lightcoral;
+    color: var(--snow);
 }
 
 .slide-right{
@@ -64,6 +69,19 @@ div.last-section{
 
 .slide-left{
     animation: slide-left 500ms ease-in forwards;
+}
+
+#question-cta{
+    background: var(--snow)
+}
+
+#create-new-question{
+    transition: all 250ms;
+}
+
+#create-new-question:hover{
+    background: var(--trueBlue);
+    color: var(--snow);
 }
 
 @keyframes slide-right {
