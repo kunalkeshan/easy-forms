@@ -245,8 +245,53 @@ const sectionCard = ({sectionid, title, description, formid}) => {
 
 const createQuestionCard = ({questionid, sectionid, formid, question_description, type}, options) => {
     const questionCard = document.createElement("div");
+    const questionDescription = document.createElement("input");
 
-    return questionCard
+    const questionCta = document.createElement("div");
+    const deleteQuestionIcon = document.createElement("i");
+
+    deleteQuestionIcon.className = "fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300";
+    deleteQuestionIcon.title = "Delete Question";
+    questionCta.className = "question__cta flex justify-end";
+    questionCta.append(deleteQuestionIcon);
+
+    questionDescription.className = "question-description mb-2 w-full";
+    questionDescription.type = "text";
+    questionDescription.value = question_description;
+
+    questionCard.className = "question__card mb-1";
+    questionCard.id = questionid;
+
+    questionCard.append(questionDescription, questionCta);
+
+    /* 
+        <div class="question__card mb-1" id="<%= question.questionid%>">
+            <input type="text" value="<%= question.question_description%>" class="question-description mb-2 w-full"/>
+            <% if (question.type === 'mcq' || question.type === 'box') { %>
+                <% QuestionsAndOptions.forEach((option, opIndex) => { %>
+                    <% if (option.type === "mcq") { %>
+                        
+                    <% } else { %>
+
+                    <% } %>
+                <% }) %>
+            <% } else {%>
+                <% if (question.type === "text") { %>
+                    <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2" disabled/>
+                <% } %>
+                <% if (question.type === "descriptive") { %>
+                    <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2" disabled></textarea>
+                <% } %>    
+                    
+            <% } %>
+            <div class="question__cta flex justify-end">
+                <i class="fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300" title="Delete Question"></i>    
+            </div>
+        </div>
+    */
+
+
+    return questionCard;
 }
 
 

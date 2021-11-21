@@ -101,9 +101,21 @@
     <div class="image flex items-center justify-center text-4xl text-gray-300 rounded p-2 border-2 border-solid border-gray mt-2 w-min mx-auto hidden ">
         <i class="fas fa-upload"></i>
     </div>
-    <div class="mcq box mt-2 hidden "></div>
-    <span class="flex items-center justify-between">
+    <div class="mcq box mt-2 hidden flex flex-col justify-center">
+        <button class="mcq-box-cta flex items-center justify-end" id="add-option">
+            <p class="text-sm">Add new option</p>
+            <i class="far fa-plus-square ml-2 text-sm text-bold cursor-pointer text-green-300" title="Add new Option"></i>
+        </button>
+    </div>
+    <span class="flex items-center justify-between w-full">
         <button class="rounded border-2 border-solid border-gray-300 mx-auto mt-2 block py-1 px-2 text-sm" id="create-new-question">Create Question</button>
+        <span class="flex flex-col items-center justify-center">
+            <p>Is required?</p>
+            <label class="switch relative" for="is_required">
+                <input type="checkbox" id="is_required" class="w-0 h-0 opacity-0">
+                <span class="slider absolute transition-all duration-500 inset-0"></span>
+            </label>
+        </span>
         <button class="rounded border-2 border-solid border-gray-300 mx-auto mt-2 block py-1 px-2 text-sm bg-red-300 hover:bg-red-600 transition-all duration-500" id="close-new-question">Cancel</button>
     </span>
 </div>

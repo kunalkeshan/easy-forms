@@ -74,12 +74,12 @@ Router.delete("/form/delete/section/:sectionid/:formid", auth, async (req, res) 
 });
 
 //Delete Question route
-Router.post("/form/delete/question/:questionid/:formid", auth, async (req, res) => {
+Router.delete("/form/delete/question/:questionid/:formid", auth, async (req, res) => {
     const {formid, questionid} = req.params;
 
     //Queries
     const getQuestion = `SELECT * FROM form_questions WHERE questionid='${questionid}' AND formid='${formid}'`;
-    const setDeleteQuestion = `DELETE * FROM form_questions WHERE questionid='${questionid}' AND formid='${formid}'`
+    const setDeleteQuestion = `DELETE FROM form_questions WHERE questionid='${questionid}' AND formid='${formid}'`
 
     try {
         let question = await query(getQuestion);
@@ -97,7 +97,7 @@ Router.post("/form/delete/question/:questionid/:formid", auth, async (req, res) 
 });
 
 //Delete An Option Route
-Router.post("/form/delete/option/:optionid/:questionid", auth, async (req, res) => {
+Router.delete("/form/delete/option/:optionid/:questionid", auth, async (req, res) => {
     const {optionid, questionid} = req.params;
 
     //Queries

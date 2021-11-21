@@ -13,6 +13,7 @@ const addSectionBtn = document.getElementById("add-section-btn") || null;
 const deleteSectionBtns = document.querySelectorAll(".delete-section-btn") || null;
 
 const newQuestionBtns = document.querySelectorAll(".new-question-btn") || null;
+const deleteQuestionBtns = document.querySelectorAll(".delete-question-btn") || null;
 const questionsModal = document.getElementById("questions__modal") || null;
 const closeQuestionModalBtn = document.getElementById("add-question-close-btn") || null;
 const createQuestionModal = document.getElementById("question-cta") || null;
@@ -113,11 +114,13 @@ const deleteSection = (e) => {
     }
 }
 
+/* 
+FIXME: after first question created, modal is not opening again! Look into it. 
+*/
+
 const handleQuestionsModal = (method, container) => {
     if(method === "open"){
-            questionsModal.classList.remove("slide-left");
-            questionsModal.classList.add("slide-right");
-
+            questionsModal.classList.add("slide-right")
             const questionsBtns = document.querySelectorAll(".questions__card") || null;
             questionsBtns.forEach((btn, index) => {
                 let type = null;
@@ -156,8 +159,11 @@ const handleQuestionsModal = (method, container) => {
 }
 
 const createQuestion = (container, type) => {
-    const questionid = container.id;
+    createQuestionModal.style.display = "flex";
+    const sectionid = container.id;
     const createQuestionBtn = document.getElementById("create-new-question") || null;
+    const question_description = document.getElementById("qcta__description") || null;
+    const is_required = document.getElementById("is_required");
     const typeDivs = Array.from(createQuestionModal.getElementsByTagName("div"));
     loadOverlay.addClick(createQuestionModal)
     const hideAll = () => {
@@ -167,11 +173,16 @@ const createQuestion = (container, type) => {
     }
 
     const finishCreateQuestion = () => {
+        questionsModal.classList.remove("slide-right");
+        questionsModal.classList.add("slide-left");
         createQuestionModal.style.display = "none";
         loadOverlay.hideOverlay();
     }
 
     hideAll();
+    question_description.value = ""
+    is_required.checked = false;
+    question_description.focus();
 
     typeDivs.forEach((div) => {
         if(Array.from(div.classList).includes(type)){
@@ -179,11 +190,57 @@ const createQuestion = (container, type) => {
         }
     });
     loadOverlay.showOverlay();
-    createQuestionModal.style.display = "flex";
-    createQuestionBtn.addEventListener("click", () => {
-        
-        finishCreateQuestion();
+    createQuestionBtn.addEventListener("click", async () => {
+        loadMiniLoader.showLoader();
+        if(question_description.value.length > 0){
+            const body = {
+                question_description: question_description.value,
+                is_required: is_required.checked,
+                type,
+            }
+
+            try {
+                const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body)
+                if(newQuestion.status === 200){
+                    clearTimeout(timeout)
+                    timeout = setTimeout( () => {
+                        loadMiniLoader.hideLoader();
+                        finishCreateQuestion();
+                    }, 800)
+                } else throw new Error("Something went wrong")
+            } catch (error) {
+                callMessageModal("modal-error", "error", error.message)
+                loadMiniLoader.hideLoader();
+            }
+        } else {
+            loadMiniLoader.hideLoader();
+            callMessageModal("modal-error", "Question Required", "A question description is requied!");
+            question_description.value = "";
+            question_description.focus();
+        }
     })
+}
+
+const deleteQuestion = (questionCard) => {
+    loadMiniLoader.showLoader();
+    const questionid = questionCard.id;
+
+    try {
+        
+        setTimeout(async () => {
+            const deleteQuestion = await axios.delete(`/form/delete/question/${questionid}/${formId}`);
+            if(deleteQuestion.status === 200){
+                questionCard.style.display = "none";
+                questionCard.remove();
+                loadMiniLoader.hideLoader();
+            }
+        }, 800);
+
+    } catch (error) {
+        loadMiniLoader.hideLoader();
+        callMessageModal("modal-error", "Error", "Some error has Occured");
+        console.log(error);
+    }
 }
 
 
@@ -194,18 +251,24 @@ document.addEventListener("DOMContentLoaded", () => {
     addSectionBtn.addEventListener("click", createSection);
     sectionTitles.forEach((section, index) => {
         section.addEventListener("keyup", () => updateSectionDetails(section, index));
-    })
+    });
     sectionDescriptions.forEach((section, index) => {
         section.addEventListener("keyup", () => updateSectionDetails(section, index));
-    })
-    deleteSectionBtns.forEach((deleteBtn, index) => {
+    });
+    deleteSectionBtns.forEach((deleteBtn) => {
         deleteBtn.addEventListener("click", (e) => deleteSection(e))
     });
-
     newQuestionBtns.forEach((newBtn, index) => {
         const container = newBtn.parentElement.parentElement;
         newBtn.addEventListener("click", () => {
             handleQuestionsModal("open", container);
+            console.log("works")
+        });
+    });
+    deleteQuestionBtns.forEach((deleteBtn) => {
+        deleteBtn.addEventListener("click", () => {
+            const questionCard = deleteBtn.parentElement.parentElement;
+            deleteQuestion(questionCard);
         })
     })
     closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal());
