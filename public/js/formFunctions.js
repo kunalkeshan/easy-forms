@@ -294,6 +294,49 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
     return questionCard;
 }
 
+const createNewOption = (type) => {
+    /* 
+            <label for="insert id" class="w-full">
+                <input type="radio" value="Option" id="id" disabled/>
+                <span class="option__value">Option Value</span>
+                <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+            </label>
+            <label for="insert id" class="w-full">
+                <input type="checkbox" value="checkbox" id="id" disabled/>
+                <span class="option__value">Checkbox value</span>
+                <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+            </label>
+    
+    */
+
+    const optionContainer = document.createElement("label");
+    const option = document.createElement("input");
+    const optionValue = document.createElement("input");
+    const deleteOptionIcon = document.createElement("i");
+
+    deleteOptionIcon.className = "fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300";
+    deleteOptionIcon.title = "Delete Option";
+    deleteOptionIcon.onclick = () => deleteOption();
+
+    optionValue.placeholder = "Type your option here";
+    optionValue.value = "";
+    optionValue.type = "text";
+    optionValue.className = "option__value mx-2";
+
+    option.type = type;
+    option.disabled = true;
+
+    optionContainer.className = "w-full my-1";
+    optionContainer.append(option, optionValue, deleteOptionIcon);
+
+    const deleteOption = () => {
+        optionContainer.style.display = "none";
+        optionContainer.remove();
+    }
+
+    return optionContainer;
+}
+
 
 
 /* 
@@ -315,5 +358,6 @@ const getAllForms = async () => {
 export{
     createFormCard, 
     sectionCard,
+    createNewOption,
     getAllForms,
 }

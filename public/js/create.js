@@ -1,5 +1,5 @@
 import {loadLoader, loadMiniLoader,  callMessageModal, loadOverlay} from "./common.js";
-import {sectionCard} from "./formFunctions.js";
+import {sectionCard,  createNewOption} from "./formFunctions.js";
 
 let timeout = null;
 const formTitle = document.getElementById("form__title") || null;
@@ -18,6 +18,10 @@ const questionsModal = document.getElementById("questions__modal") || null;
 const closeQuestionModalBtn = document.getElementById("add-question-close-btn") || null;
 const createQuestionModal = document.getElementById("question-cta") || null;
 const closeCreateQuestionModal = document.getElementById("close-new-question") || null;
+
+const createOptionBtn = document.getElementById("add-option") || null;
+const optionsContainer = document.getElementById("options-container") || null;
+
 
 const updateFormDetails = () => {
     loadMiniLoader.showLoader();
@@ -114,12 +118,9 @@ const deleteSection = (e) => {
     }
 }
 
-/* 
-FIXME: after first question created, modal is not opening again! Look into it. 
-*/
-
 const handleQuestionsModal = (method, container) => {
     if(method === "open"){
+            questionsModal.classList.remove("slide-left")
             questionsModal.classList.add("slide-right")
             const questionsBtns = document.querySelectorAll(".questions__card") || null;
             questionsBtns.forEach((btn, index) => {
@@ -148,6 +149,7 @@ const handleQuestionsModal = (method, container) => {
                     createQuestion(container, type);
                     questionsModal.classList.remove("slide-right")
                     questionsModal.classList.add("slide-left");
+                    optionsContainer.innerHTML = "";
                 })
             })
         } else{
@@ -155,7 +157,7 @@ const handleQuestionsModal = (method, container) => {
             questionsModal.classList.add("slide-left");
             loadLoader.hideLoader();
             createQuestionModal.style.display="none";
-            }
+        }
 }
 
 const createQuestion = (container, type) => {
@@ -166,6 +168,7 @@ const createQuestion = (container, type) => {
     const is_required = document.getElementById("is_required");
     const typeDivs = Array.from(createQuestionModal.getElementsByTagName("div"));
     loadOverlay.addClick(createQuestionModal)
+
     const hideAll = () => {
         typeDivs.forEach((div) => {
             div.style.display = "none"
@@ -176,6 +179,7 @@ const createQuestion = (container, type) => {
         questionsModal.classList.remove("slide-right");
         questionsModal.classList.add("slide-left");
         createQuestionModal.style.display = "none";
+        optionsContainer.innerHTML = "";
         loadOverlay.hideOverlay();
     }
 
@@ -190,13 +194,23 @@ const createQuestion = (container, type) => {
         }
     });
     loadOverlay.showOverlay();
+    if(type === "box" || type === "mcq"){
+        createOptionBtn.addEventListener("click", () => createOption(type));
+    }
     createQuestionBtn.addEventListener("click", async () => {
         loadMiniLoader.showLoader();
         if(question_description.value.length > 0){
-            const body = {
+            let body = {
                 question_description: question_description.value,
                 is_required: is_required.checked,
                 type,
+            }
+
+            const optionValues = Array.from(document.querySelectorAll(".option__value")) || null;
+            if(optionValues.length){
+                const options = optionValues.map(option => option.value);
+                console.log(JSON.stringify(options))
+                body.options = options;
             }
 
             try {
@@ -206,6 +220,7 @@ const createQuestion = (container, type) => {
                     timeout = setTimeout( () => {
                         loadMiniLoader.hideLoader();
                         finishCreateQuestion();
+                        return;
                     }, 800)
                 } else throw new Error("Something went wrong")
             } catch (error) {
@@ -243,6 +258,20 @@ const deleteQuestion = (questionCard) => {
     }
 }
 
+const createOption = (type) => {
+    let optionType = null;
+    if(type === "box"){
+        optionType = "checkbox";
+    } else {
+        optionType = "radio";
+    }
+    optionsContainer.append(createNewOption(optionType))
+}
+
+const deleteOption = () => {
+
+}
+
 
 document.addEventListener("DOMContentLoaded", () => {
     formTitle.addEventListener("keyup", updateFormDetails);
@@ -262,7 +291,6 @@ document.addEventListener("DOMContentLoaded", () => {
         const container = newBtn.parentElement.parentElement;
         newBtn.addEventListener("click", () => {
             handleQuestionsModal("open", container);
-            console.log("works")
         });
     });
     deleteQuestionBtns.forEach((deleteBtn) => {
@@ -272,5 +300,5 @@ document.addEventListener("DOMContentLoaded", () => {
         })
     })
     closeQuestionModalBtn.addEventListener("click", () => handleQuestionsModal());
-    closeCreateQuestionModal.addEventListener("click", () => handleQuestionsModal())
+    closeCreateQuestionModal.addEventListener("click", () => handleQuestionsModal());
 })
