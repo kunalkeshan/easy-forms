@@ -85,7 +85,8 @@ Router.get("/form/edit", auth, async (req, res) => {
     const getForm = `SELECT * FROM form_details WHERE formid='${formid}'`
     const getSections = `SELECT * FROM form_sections WHERE formid='${formid}' ORDER BY created_at ASC`
     const getQuestions = `SELECT * FROM form_questions WHERE formid='${formid}' ORDER BY created_at ASC`;
-    const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.* FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' ORDER BY form_questions.created_at ASC`;
+    // const getQuestionsAndOptions = `SELECT form_question_mcqs.*,form_questions.questionid FROM form_question_mcqs LEFT JOIN form_questions ON form_question_mcqs.formid = form_questions.formid WHERE form_questions.formid = '${formid}' ORDER BY form_questions.created_at ASC`;
+    const getQuestionsAndOptions = `SELECT * FROM form_question_mcqs WHERE formid='${formid}';`;
     
     try {
         let Form = await query(getForm);

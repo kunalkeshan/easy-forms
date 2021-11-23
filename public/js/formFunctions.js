@@ -123,7 +123,7 @@ const createFormCard = ({formid, title, description, created_at, is_disabled, is
     return formCard;
 }
 
-const sectionCard = ({sectionid, title, description, formid}) => {
+const sectionCard = ({sectionid, title, description, formid}, createQuestion) => {
     // const card = `
     // <div class="form__section flex flex-col rounded my-2 p-1" id="${sectionid}">
     //     <input type="text" value="${title}" class="mb-2"/>
@@ -220,17 +220,46 @@ const sectionCard = ({sectionid, title, description, formid}) => {
 
     const questionsModal = document.getElementById("questions__modal") || null;
     const handleQuestionsModal = (method) => {
-        switch (method) {
-            case "open": {
-                questionsModal.classList.remove("slide-left")
-                questionsModal.classList.add("slide-right");
-                break;
-            }
-            default: {
-                questionsModal.classList.remove("slide-right")
-                questionsModal.classList.add("slide-left");
-                break;
-            }
+        const createQuestionModal = document.getElementById("question-cta") || null;
+        const optionsContainer = document.getElementById("options-container") || null;
+        if(method === "open"){
+            questionsModal.classList.remove("slide-left")
+            questionsModal.classList.add("slide-right")
+            const questionsBtns = document.querySelectorAll(".questions__card") || null;
+            questionsBtns.forEach((btn, index) => {
+                let type = null;
+                
+                switch (index) {
+                    case 0:
+                        type = "text"
+                        break;
+                    case 1:
+                        type = "descriptive"
+                        break;
+                    case 2:
+                        type = "mcq"
+                        break;
+                    case 3:
+                        type = "box"
+                        break;
+                    case 4: 
+                        type = "image"
+                        break;
+                    default:
+                        break;
+                }
+                btn.addEventListener("click", () => {
+                    createQuestion(section, type);
+                    questionsModal.classList.remove("slide-right")
+                    questionsModal.classList.add("slide-left");
+                    optionsContainer.innerHTML = "";
+                })
+            })
+        } else {
+            questionsModal.classList.remove("slide-right");
+            questionsModal.classList.add("slide-left");
+            loadLoader.hideLoader();
+            createQuestionModal.style.display="none";
         }
     }
     
@@ -250,10 +279,30 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
     const questionCta = document.createElement("div");
     const deleteQuestionIcon = document.createElement("i");
 
+    const optionContainer = document.createElement("label");
+    const option = document.createElement("input");
+    const optionValue = document.createElement("input");
+    const deleteOptionIcon = document.createElement("i");
+
+
     deleteQuestionIcon.className = "fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300";
     deleteQuestionIcon.title = "Delete Question";
     questionCta.className = "question__cta flex justify-end";
     questionCta.append(deleteQuestionIcon);
+
+    deleteOptionIcon.className = "fas fa-trash-alt text-sm text-bold cursor-pointer text-red-300";
+    deleteOptionIcon.title = "Delete Option";
+
+    optionValue.placeholder = // Option value, pass in arguments;
+    optionValue.value = "";
+    optionValue.type = "text";
+    optionValue.className = "option__value mx-2";
+
+    option.type = type;
+    option.disabled = true;
+
+    optionContainer.className = "w-full my-1";
+    optionContainer.append(option, optionValue, deleteOptionIcon);
 
     questionDescription.className = "question-description mb-2 w-full";
     questionDescription.type = "text";
@@ -269,11 +318,18 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
             <input type="text" value="<%= question.question_description%>" class="question-description mb-2 w-full"/>
             <% if (question.type === 'mcq' || question.type === 'box') { %>
                 <% QuestionsAndOptions.forEach((option, opIndex) => { %>
-                    <% if (option.type === "mcq") { %>
-                        
-                    <% } else { %>
-
-                    <% } %>
+                    <label for="<%=option.optionid%>" class="w-full block">
+                        <% if (option.questionid === question.questionid) { %>
+                            <% if (option.type === "mcq") { %>
+                                    <input type="radio" value="<%=option.option_value%>" id="id" disabled/>
+                            <% } %>
+                            <% if(option.type === "box") { %>
+                                    <input type="checkbox" value="<%=option.option_value%>" id="id" disabled/>
+                            <% } %>
+                                    <span class="option__value"><%=option.option_value%></span>
+                                    <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+                            <% } %>
+                    </label>
                 <% }) %>
             <% } else {%>
                 <% if (question.type === "text") { %>
@@ -299,12 +355,12 @@ const createNewOption = (type) => {
             <label for="insert id" class="w-full">
                 <input type="radio" value="Option" id="id" disabled/>
                 <span class="option__value">Option Value</span>
-                <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+                <i class="fas fa-trash-alt text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
             </label>
             <label for="insert id" class="w-full">
                 <input type="checkbox" value="checkbox" id="id" disabled/>
                 <span class="option__value">Checkbox value</span>
-                <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+                <i class="fas fa-trash-alt text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
             </label>
     
     */
@@ -314,14 +370,14 @@ const createNewOption = (type) => {
     const optionValue = document.createElement("input");
     const deleteOptionIcon = document.createElement("i");
 
-    deleteOptionIcon.className = "fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300";
+    deleteOptionIcon.className = "fas fa-trash-alt text-sm text-bold cursor-pointer text-red-300";
     deleteOptionIcon.title = "Delete Option";
     deleteOptionIcon.onclick = () => deleteOption();
 
     optionValue.placeholder = "Type your option here";
     optionValue.value = "";
     optionValue.type = "text";
-    optionValue.className = "option__value mx-2";
+    optionValue.className = "option__value-new mx-2";
 
     option.type = type;
     option.disabled = true;

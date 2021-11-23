@@ -24,13 +24,20 @@
                                     <span class="text-red-900">*<span class="text-xs"> required</span></span> 
                                 <% } %>
                                 <input type="text" value="<%=question.question_description%>" class="question-description mb-2 w-full"/>
-                                <% if (question.type === 'mcq' || question.type === 'box') { %>
+                                <% if ((question.type === 'mcq' || question.type === 'box')) { %>
                                     <% QuestionsAndOptions.forEach((option, opIndex) => { %>
-                                        <% if (option.type === "mcq") { %>
-                                         
-                                        <% } else { %>
-
-                                        <% } %>
+                                        <label for="<%=option.optionid%>" class="w-full block">
+                                            <% if (option.questionid === question.questionid) { %>
+                                                <% if (option.type === "mcq") { %>
+                                                        <input type="radio" value="<%=option.option_value%>" id="id" disabled/>
+                                                <% } %>
+                                                <% if(option.type === "box") { %>
+                                                        <input type="checkbox" value="<%=option.option_value%>" id="id" disabled/>
+                                                <% } %>
+                                                        <span class="option__value"><%=option.option_value%></span>
+                                                        <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+                                                <% } %>
+                                        </label>
                                     <% }) %>
                                 <% } else {%>
                                     <% if (question.type === "text") { %>

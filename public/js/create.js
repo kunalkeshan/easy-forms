@@ -62,7 +62,7 @@ const createSection = async () => {
     try {
         const newSection = await axios.post(`/form/create/section/${formId}`);
         if(newSection.status === 200){
-            formBody.append(sectionCard(newSection.data.Section));
+            formBody.append(sectionCard(newSection.data.Section, createQuestion));
             addSectionBtn.style.display = "none";
             addSectionBtn.remove();
             const allSections = document.querySelectorAll(".form__section");
@@ -152,7 +152,7 @@ const handleQuestionsModal = (method, container) => {
                     optionsContainer.innerHTML = "";
                 })
             })
-        } else{
+        } else {
             questionsModal.classList.remove("slide-right");
             questionsModal.classList.add("slide-left");
             loadLoader.hideLoader();
@@ -206,15 +206,18 @@ const createQuestion = (container, type) => {
                 type,
             }
 
-            const optionValues = Array.from(document.querySelectorAll(".option__value")) || null;
+            const optionValues = Array.from(document.querySelectorAll(".option__value-new")) || null;
             if(optionValues.length){
                 const options = optionValues.map(option => option.value);
                 console.log(JSON.stringify(options))
                 body.options = options;
+            } else {
+                callMessageModal("modal-error", "Options Required", "Atleast one option is required for an mcq type.")
+                return;
             }
 
             try {
-                const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body)
+                const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body);
                 if(newQuestion.status === 200){
                     clearTimeout(timeout)
                     timeout = setTimeout( () => {
