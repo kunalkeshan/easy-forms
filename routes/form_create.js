@@ -50,11 +50,16 @@ Router.post("/form/create/section/:id", auth, async (req, res) => {
 
     //Queries
     const setNewSection = `INSERT INTO form_sections(sectionid, formid) VALUES('${newSectionID}', '${formid}')`;
+    const getNewSection = `SELECT * FROM form_sections WHERE sectionid='${newSectionID}'`;
     try {
         const newSection = await query(setNewSection);
         if(newSection.affectedRows > 0){
-            res.status(200).json({newSectionID});
-        }
+            let Section = await query(getNewSection);
+            if(Section.length){
+                Section = app_functions.parseData(Section)[0];
+                res.status(200).json({Section});
+            } else throw new Error();
+        } else throw new Error();
     } catch (error) {
         console.log({newSectionRoute: error});
         res.status(400).json({msg: "An error has Occured"});
@@ -74,13 +79,14 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
     try {
         if(type === "mcq" || type === "box"){
             const {options} = req.body;
-            const MCQ_OPTIONS = JSON.parse(options);
+            console.log(options)
+            const MCQ_OPTIONS = options;
             const newQuestion = await query(setNewQuestion);
             if(newQuestion.affectedRows > 0){
                 let OPTN = {};
                 MCQ_OPTIONS.forEach(async (option, index) => {
                     const optionid = shortid.generate();
-                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type})`;
+                    const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type}')`;
                     const newOption = await query(setNewOption);
                     if(newOption.affectedRows > 0){
                         OPTN[index] = optionid;

@@ -1,0 +1,133 @@
+body{
+    background: var(--trueBlueLight);
+    overflow-x: hidden;
+}
+
+.form__header{
+    border: 1px solid var(--trueBlue)
+}
+
+.form__section{
+    border: 1px solid var(--trueBlue);
+}
+
+div.last-section{
+    position: relative;
+}
+
+#add-section-btn{
+    position: absolute;
+    bottom: -30px;
+    left: 50%;
+    transition: all 250ms;
+
+}
+
+#add-section-btn:hover{
+    transform: scale(1.05) rotate(-5deg);
+    bottom: -32px;
+}
+
+#questions__modal{
+    width: 150px;
+    top: 100px;
+    left: 100%;
+    background: var(--snow);
+}
+
+.questions__card, .questions__card-close{
+    text-align: center;
+    padding: .5em .2em;
+    margin: .3em auto;
+    border-radius: 10px;
+    background: var(--trueBlueLight);
+    transition: all 250ms;
+    cursor: pointer;
+}
+
+.questions__card:hover{
+    background: var(--trueBlue);
+    color: var(--snow);
+}
+
+.questions__card i, .questions__card-close i{
+    font-size: 1.5rem;
+}
+
+.questions__card p, .questions__card-close p{
+    font-size: .5rem;
+}
+
+.questions__card-close:hover{
+    background-color: lightcoral;
+    color: var(--snow);
+}
+
+#question-cta{
+    background: var(--snow)
+}
+
+#create-new-question{
+    transition: all 250ms;
+}
+
+#create-new-question:hover{
+    background: var(--trueBlue);
+    color: var(--snow);
+}
+
+.switch{
+    width: 60px;
+    height: 24px;
+}
+
+.slider{
+    background-color: var(--trueBlueLight);
+}
+
+.slider::before{
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 4px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: var(--snow);
+    transition: all 500ms;
+}
+
+input:checked + .slider{
+    background-color: var(--trueBlue);
+}
+
+input:checked + .slider::before{
+    transform: translate(32px, -50%);
+}
+
+.slide-right{
+    animation: slide-right 500ms ease-in forwards;
+}
+
+.slide-left{
+    animation: slide-left 500ms ease-in forwards;
+}
+
+@keyframes slide-right {
+    0%{
+        left: 100%;
+    }
+
+    100%{
+        left: calc(100% - 150px);
+    }
+}
+
+@keyframes slide-left {
+    0%{
+        left: calc(100% - 150px);
+    }
+    100%{
+        left: 100%;
+    }
+}

@@ -40,8 +40,18 @@ const calculateDateDifference = (datetime) => {
   else return Math.floor(diffDays / 7) + "w";
 };
 
+const renderError = (res) => {
+  const page = {
+    link: "404",
+    title: "404 | Easy-Forms"
+  }
+
+  res.render("404", {page})
+}
+
 module.exports = {
   parseData,
   convertDate,
   calculateDateDifference,
+  renderError
 };
