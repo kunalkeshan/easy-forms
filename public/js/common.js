@@ -7,9 +7,11 @@ const miniLoader = document.getElementById("mini-loader") || null;
 
 const durationTime = 3;
 
-
 /* 
-* Class to create loader
+* Class to create loader component with show and hide functionality.
+* @params (element) loaderElement - a loader gif or image.
+* @params (element) overlayElement - a overlay box.
+* @returns (object) (Loader) - can call the loader with {showLoader()} and hide the loader with {hideLoader()} methods.
 */
 class Loader{
     constructor(loaderElement, overlayElement){
@@ -28,6 +30,13 @@ class Loader{
     }
 }
 
+/* 
+* Class to create an Overlay component, with show and hide functionality.
+* @params (element) overlayElement.
+* @returns (object) (Overlay) with three functionalities, {showOverlay()} to display the overlay.
+*                                                         {hideOverlay()} to hide the overlay.
+*                                                         {addClick()} to hide/display the overlay and any element associated with the element.
+*/
 class Overlay{
     constructor(overlayElement){
         this.overlay = overlayElement;
@@ -42,6 +51,7 @@ class Overlay{
     }
 
     addClick(siblingElement){
+        if(siblingElement) return;
         this.overlay.addEventListener("click", () => {
             const display = this.overlay.style.display;
             if(display === "block"){
@@ -63,11 +73,11 @@ const loadMiniLoader = new Loader(miniLoader);
 const loadOverlay = new Overlay(overlay);
 
 /* 
-* Global common message modal.
-* @params{string} type
-* @params{string} title
-* @params{string} message
-* @params{boolean} noLoader
+* Global common message modal component.
+* @params{string} type - type of modal - modal-error, modal-success.
+* @params{string} title - title of modal.
+* @params{string} message - message content of modal.
+* @params{boolean} noLoader - checks whether to call loader along with modal, true - loader is not called, false/no argument - loader is called.
 */
 const callMessageModal = (type, title, message, noLoader) => {
 
@@ -83,12 +93,10 @@ const callMessageModal = (type, title, message, noLoader) => {
     modalTitle.innerHTML = title;
     modalMessage.innerHTML = message;
 
-
     setTimeout(() => {
         modal.style.animation = `modal-animation ${durationTime}s ease 1 backwards`;
         if(!noLoader) loadLoader.hideLoader();
     }, 500);
-
 
     setTimeout(() => {
         modal.style.animation = "";
@@ -103,7 +111,12 @@ export {
     durationTime, 
 }
 
-// Common Functions that are not exported.
+// => Common Functions that are not exported.
+
+/* 
+* Function to redirect to a different page, while calling the loader.
+* @params (string) destination - location of where the website should be directed to.
+*/
 
 const callLoader = (destination) => {
     loadLoader.showLoader();
@@ -114,11 +127,11 @@ const callLoader = (destination) => {
     
 }
 
-const destinations = ["home", "dashboard", "profile", "signout"]
+const destinations = ["home", "dashboard", "profile", "signout"] //Collection all pages to redirect to. 
 const navLinks = document.querySelectorAll(".nav__link") || null;
 navLinks.forEach((link, index) => {
     link.onclick = function(){
-        callLoader(destinations[index]);
+        callLoader(destinations[index]); //Calling @function callLoader for each destination collection in reference to their placements
     }
 });
 
