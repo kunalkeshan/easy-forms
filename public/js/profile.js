@@ -12,15 +12,17 @@ const profilePasswordActive = document.querySelector(".profile__password .profil
 const profileDetailsForm = document.getElementById("profile__details-form") || null;
 const profilePasswordForm = document.getElementById("profile__password-form") || null;
 
-//input fields
+//input fields - user edit details input
 const detailsName = document.getElementById("details__name") || null;
 const detailsUsername = document.getElementById("details__username") || null;;
 const detailsEmail = document.getElementById("details__email") || null;;
 const detailsPassword = document.getElementById("details__password") || null;;
 
+//input fields - user password editing inputs
 const passwordOld = document.getElementById("password__old-password") || null;;
 const passwordNew = document.getElementById("password__new-password") || null;;
 
+//all input fields
 const allInputs = document.querySelectorAll(".index__input");
 
 //error modals
@@ -29,7 +31,8 @@ const emailError = document.getElementById("email-error") || null;
 const passwordError = document.getElementById("password-error") || null;
 
 let timeout = null;
-//backend checking for existing username or email
+
+// backend variables for existing username or email
 let changeFor = 0;
 let isSaved = 0;
 
