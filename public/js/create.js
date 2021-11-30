@@ -211,10 +211,10 @@ const createQuestion = (container, type) => {
                 const options = optionValues.map(option => option.value);
                 console.log(JSON.stringify(options))
                 body.options = options;
-            } else {
-                callMessageModal("modal-error", "Options Required", "Atleast one option is required for an mcq type.")
-                return;
-            }
+                if(type === "box" || type === "mcq"){
+                    callMessageModal("modal-error", "Options Required", "Atleast one option is required for an mcq type.")
+                }
+            } 
 
             try {
                 const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body);

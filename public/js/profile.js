@@ -23,7 +23,7 @@ const passwordOld = document.getElementById("password__old-password") || null;;
 const passwordNew = document.getElementById("password__new-password") || null;;
 
 //all input fields
-const allInputs = document.querySelectorAll(".index__input");
+const allInputs = document.querySelectorAll(".index__input") || null;
 
 //error modals
 const usernameError = document.getElementById("username-error") || null;
@@ -36,11 +36,18 @@ let timeout = null;
 let changeFor = 0;
 let isSaved = 0;
 
+/* 
+* Hide all the forms when the function is called.
+*/
 
 const hideAllForms = () => {
     profileDetailsForm.style.display = "none";
     profilePasswordForm.style.display = "none";
 }
+
+/* 
+* Hide all input error styles when the function is called.
+*/
 
 const hideInputErrors = () => {
     detailsUsername.style.border = "";
@@ -55,16 +62,28 @@ const hideInputErrors = () => {
     passwordError.style.display = "none";
 }
 
+/* 
+* Error associated with {username} then show error styles.
+*/
+
 const showUsernameError = () => {
     detailsUsername.style.border = "1px solid red"
     usernameError.style.display = "block";
     usernameError.style.animation = "slideOut 1.5s ease-in-out forwards";
 }
 
+/* 
+* If no error associated with {username} then remove error styles.
+*/
+
 const removeUsernameError = () => {
     usernameError.style.animation = "slideIn 1.5s ease-in-out forwards";
     usernameError.style.display = "block";
 }
+
+/* 
+* Error associated with {email} then show error styles.
+*/
 
 const showEmailError = () => {
     detailsEmail.style.border = "solid 2px red";
@@ -72,63 +91,90 @@ const showEmailError = () => {
     emailError.style.animation = "slideOut 1.5s ease-in-out forwards";
 }
 
+/*
+* If no error associated with {email} then remove error styles.
+*/
+
 const removeEmailError = () => {
     emailError.style.animation = "slideIn 1.5s ease-in-out forwards";
     emailError.style.display = "block";
 }
 
-const addAnimation = (type) => {
+/* 
+* Add animation to the toggle buttons when toggling between forms. 
+* @params (string) type - name of the animation.
+* @returns (string) animation value to add to animation property. 
+*/
+
+const addToggleAnimation = (type) => {
     if(type === "rise") return "rise 500ms ease-in-out forwards";
     else if(type === "sink") return "sink 500ms ease-in-out forwards";
     else return "";
 }
 
+/* 
+* Switch between forms when the toggle is clicked.
+* @params (string) form - which form to display based on toggle clicked.
+*/
+
 const showForm = (form) => {
     hideAllForms();
     if(form === "details"){
         profileDetailsForm.style.display = "block";
-        profileDetailsActive.style.animation = addAnimation("rise");
-        profilePasswordActive.style.animation = addAnimation("sink");
+        profileDetailsActive.style.animation = addToggleAnimation("rise");
+        profilePasswordActive.style.animation = addToggleAnimation("sink");
         detailsUsername.focus();
     }
     else {
         profilePasswordForm.style.display = "block";
-        profileDetailsActive.style.animation = addAnimation("sink");
-        profilePasswordActive.style.animation = addAnimation("rise");
+        profileDetailsActive.style.animation = addToggleAnimation("sink");
+        profilePasswordActive.style.animation = addToggleAnimation("rise");
         passwordOld.focus();
     }
 }
 
-allInputs.forEach((input, index) => {
-    
+/* 
+* Check asynchronously without reloading the page if username and email already exist in DB.
+* Function to be passed in for each input fields.
+* @params (HTMLElement) inputElement - to check for which input field.
+* @params (number) index - index of current input field.
+*/
+
+const checkInputWithDB = (inputElement, index) => {
     let name, username, email, password, newPassword;
-    name= username= email = password= newPassword = "";
-        input.addEventListener("keyup", () => {
-            clearTimeout(timeout);
-            timeout = setTimeout(async () => {
-                if(index == 0) username = input.value;
-                if(index == 1) name = input.value;
-                if(index == 2) email = input.value;
+    name = username = email = password = newPassword = "";
 
-                let body = {name, username, email, password, newPassword, changeFor, isSaved}
+    inputElement.addEventListener("keyup", () => {
+        clearTimeout(timeout);
+        timeout = setTimeout(async () => {
+            if(index == 0) username = inputElement.value;
+            if(index == 1) name = inputElement.value;
+            if(index == 2) email = inputElement.value;
 
-                try {
-                    const response = await axios.post(`/profile/edit`, body);
-                    let check = response.data.detailsExist;
+            let body = {name, username, email, password, newPassword, changeFor, isSaved}
 
-                    hideInputErrors();
-                    if(check.username) showUsernameError();
-                    else removeUsernameError();
+            try {
+                const response = await axios.post(`/profile/edit`, body);
+                let check = response.data.detailsExist;
+                hideInputErrors();
 
-                    if(check.email) showEmailError();
-                    else removeEmailError();
+                if(check.username) showUsernameError();
+                else removeUsernameError();
 
-                } catch (error) {
-                    console.log(error);
-                }
-            }, 300)
-        })
-})
+                if(check.email) showEmailError();
+                else removeEmailError();
+
+            } catch (error) {
+                console.log(error);
+            }
+        }, 300);
+    })
+}
+
+/* 
+* Handle edit details form submission.
+* @params (Event Object) e - event object passed into function, when submit event is called on the form.
+*/
 
 const handleEditDetails = async (e) => {
     e.preventDefault();
@@ -149,26 +195,28 @@ const handleEditDetails = async (e) => {
         
         const response = await axios.post("/profile/edit", body);
         loadLoader.showLoader();
-        if(response.status === 200){
+        if(response.status !== 200) throw new Error("Some error has occured");
             setTimeout(() => {
                 loadLoader.hideLoader();
                 callMessageModal("modal-success", "Success", "Detials Edited Successfully");
-
                 detailsUsername.value = username;
                 detailsEmail.value = email;
                 detailsName.value = name;
                 document.getElementById("username").innerHTML = name;
-                
             }, 500);
-        }
+        
     } catch (error) {
         loadLoader.hideLoader();
-        callMessageModal("modal-error", "Error", "Some error has occured");
+        callMessageModal("modal-error", "Error", error.message);
         console.log(error);
     }
     
-    
 }
+
+/* 
+* Handle Password form submission.
+* @params (Event Object) e - event object passed into function, when submit event is called on the form.
+*/
 
 const handleChangePassword = async (e) => {
     e.preventDefault();
@@ -210,13 +258,13 @@ const handleChangePassword = async (e) => {
     }
 }
 
-profileDetailsToggle.onclick = () => showForm("details");
-profilePasswordToggle.onclick = () => showForm();
-
 document.addEventListener("DOMContentLoaded", () => {
     showForm("details");
     hideInputErrors();
+    profileDetailsToggle.addEventListener("click", () => showForm("details"));
+    profilePasswordToggle.addEventListener("click", () => showForm());
     profileDetailsForm.addEventListener("submit", (e) => handleEditDetails(e) );
     profilePasswordForm.addEventListener("submit", (e) => handleChangePassword(e));
+    allInputs.forEach(checkInputWithDB);
 })
 
