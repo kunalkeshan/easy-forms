@@ -1,5 +1,5 @@
 import {loadLoader, loadMiniLoader,  callMessageModal, loadOverlay} from "./common.js";
-import {sectionCard,  createNewOption} from "./formFunctions.js";
+import {sectionCard,  createNewOption, createQuestionCard} from "./formFunctions.js";
 
 let timeout = null;
 const formTitle = document.getElementById("form__title") || null;
@@ -229,8 +229,16 @@ const createQuestion = (container, type) => {
         createOptionBtn.addEventListener("click", () => createOption(type));
     }
     createQuestionBtn.addEventListener("click", async () => {
-        loadMiniLoader.showLoader();
-        if(question_description.value.length > 0){
+        try {
+
+            loadMiniLoader.showLoader();
+            if(question_description.value.length <= 0) {
+                loadMiniLoader.hideLoader();
+                question_description.value = "";
+                question_description.focus();
+                throw new Error(JSON.stringify({title: "Question Required", message: "A question descriptin is required!"}))
+            }
+
             let body = {
                 question_description: question_description.value,
                 is_required: is_required.checked,
@@ -238,35 +246,37 @@ const createQuestion = (container, type) => {
             }
 
             const optionValues = Array.from(document.querySelectorAll(".option__value-new")) || null;
-            if(optionValues.length){
+
+            if(!optionValues.length){
+                if(type === "box" || type === "mcq"){
+                    throw new Error(JSON.stringify({title: "Options required", message: "At least one option is required for an mcq type."}))
+                }
+            }
+            
+            if(optionValues.length >  0){
                 const options = optionValues.map(option => option.value);
                 console.log(JSON.stringify(options))
                 body.options = options;
-                if(type === "box" || type === "mcq"){
-                    callMessageModal("modal-error", "Options Required", "Atleast one option is required for an mcq type.")
-                }
-            } 
-
-            try {
-                const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body);
-                if(newQuestion.status === 200){
-                    clearTimeout(timeout)
-                    timeout = setTimeout( () => {
-                        loadMiniLoader.hideLoader();
-                        finishCreateQuestion();
-                        return;
-                    }, 800)
-                } else throw new Error("Something went wrong")
-            } catch (error) {
-                callMessageModal("modal-error", "error", error.message)
-                loadMiniLoader.hideLoader();
             }
-        } else {
-            loadMiniLoader.hideLoader();
-            callMessageModal("modal-error", "Question Required", "A question description is requied!");
-            question_description.value = "";
-            question_description.focus();
-        }
+
+            const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body);
+            if(newQuestion.status !== 200) throw new Error("Something bad happened!")
+            console.log(newQuestion.data)
+            clearTimeout(timeout)
+            timeout = setTimeout( () => {
+                const questionsContainer = container.querySelector(".form__question");;
+                questionsContainer.append(createQuestionCard(newQuestion.data.question))
+                loadMiniLoader.hideLoader();
+                finishCreateQuestion();
+                return;
+            }, 800)
+
+            } catch (error) {
+                error.message = JSON.parse(error.message);
+                callMessageModal("modal-error", error.message.title, error.message.message)
+                loadMiniLoader.hideLoader();
+
+            }
     })
 }
 
@@ -282,12 +292,12 @@ const deleteQuestion = (questionCard) => {
         
         setTimeout(async () => {
             const deleteQuestion = await axios.delete(`/form/delete/question/${questionid}/${formId}`);
-            if(deleteQuestion.status === 200){
+            if(deleteQuestion.status !== 200) throw new Error("something bad happened!")
                 questionCard.style.display = "none";
                 questionCard.remove();
                 loadMiniLoader.hideLoader();
-            }
-        }, 800);
+            
+        }, 500);
 
     } catch (error) {
         loadMiniLoader.hideLoader();
@@ -308,10 +318,6 @@ const createOption = (type) => {
         optionType = "radio";
     }
     optionsContainer.append(createNewOption(optionType))
-}
-
-const deleteOption = () => {
-
 }
 
 

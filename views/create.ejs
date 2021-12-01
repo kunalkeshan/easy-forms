@@ -12,14 +12,14 @@
     </div>
     <div class="form__body p-2 rounded m-2 text-sm">
         <% Sections.forEach((section, index) => { %>
-            <div class="form__section last-section flex flex-col rounded my-2 p-1" id="<%= section.sectionid%>">
+            <div class="form__section last-section flex flex-col rounded my-2 p-2" id="<%= section.sectionid%>">
                 <input type="text" value="<%= section.title%>" class="section-title mb-2 text-lg"/>
                 <input type="text" value="<%= section.description%>" class="section-description mb-2 text-lg"/>
                 <hr class="mb-2" />
                 <div class="form__question mb-2">
                     <% Questions.forEach((question, index) => { %>
                         <% if (section.sectionid === question.sectionid) { %>
-                            <div class="question__card mb-1" id="<%= question.questionid%>">
+                            <div class="question__card mb-1 " id="<%= question.questionid%>">
                                 <% if (question.is_required == "true") { %>
                                     <span class="text-red-900">*<span class="text-xs"> required</span></span> 
                                 <% } %>
@@ -35,7 +35,6 @@
                                                         <input type="checkbox" value="<%=option.option_value%>" id="id" disabled/>
                                                 <% } %>
                                                         <span class="option__value"><%=option.option_value%></span>
-                                                        <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
                                                 <% } %>
                                         </label>
                                     <% }) %>

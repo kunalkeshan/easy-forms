@@ -83,16 +83,17 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
             const MCQ_OPTIONS = options;
             const newQuestion = await query(setNewQuestion);
             if(newQuestion.affectedRows > 0){
-                let OPTN = {};
+                let OPTN = [];
                 MCQ_OPTIONS.forEach(async (option, index) => {
                     const optionid = shortid.generate();
                     const setNewOption = `INSERT INTO form_question_mcqs(optionid, formid, questionid, option_value, type) VALUES('${optionid}', '${formid}', '${questionid}', '${option}', '${type}')`;
                     const newOption = await query(setNewOption);
                     if(newOption.affectedRows > 0){
-                        OPTN[index] = optionid;
+                        OPTN.push({optionid, option});
                         if(index === MCQ_OPTIONS.length - 1){
-                            const optionsid = JSON.stringify(OPTN);
-                            res.status(200).json({questionid, optionsid})
+                            const optionsWithId = JSON.stringify(OPTN);
+                            const question = {type, is_required, question_description, optionsWithId, questionid, formid, sectionid};
+                            res.status(200).json({question})
                         }
                     } else throw new Error();
 
@@ -101,7 +102,8 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
         } else {
             const newQuestion = await query(setNewQuestion);
             if(newQuestion.affectedRows > 0){
-                res.status(200).json({questionid});
+                const question = {type, is_required, question_description, questionid, formid, sectionid};
+                res.status(200).json({question});
             } else throw new Error();
         }
     } catch (error) {

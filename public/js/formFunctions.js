@@ -205,7 +205,6 @@ const sectionCard = ({sectionid, title, description, formid}, createQuestion) =>
         const title = sectionTitle.value;
         const description = sectionDescription.value;
         const body = {title, description}
-        console.log(body);
         try {
             clearTimeout(timeout);
             timeout = setTimeout(async () => {
@@ -272,7 +271,43 @@ const sectionCard = ({sectionid, title, description, formid}, createQuestion) =>
     return section;
 }
 
-const createQuestionCard = ({questionid, sectionid, formid, question_description, type}, options) => {
+const createQuestionCard = ({questionid, sectionid, formid, question_description, type, is_required, optionsWithId}) => {
+    console.log(questionid, formid, sectionid, question_description, type, is_required)
+
+    /* 
+    <div class="question__card mb-1" id="<%= question.questionid%>">
+        <input type="text" value="<%= question.question_description%>" class="question-description mb-2 w-full"/>
+        <% if (question.type === 'mcq' || question.type === 'box') { %>
+            <% QuestionsAndOptions.forEach((option, opIndex) => { %>
+                <label for="<%=option.optionid%>" class="w-full block">
+                    <% if (option.questionid === question.questionid) { %>
+                        <% if (option.type === "mcq") { %>
+                                <input type="radio" value="<%=option.option_value%>" id="id" disabled/>
+                        <% } %>
+                        <% if(option.type === "box") { %>
+                                <input type="checkbox" value="<%=option.option_value%>" id="id" disabled/>
+                        <% } %>
+                                <span class="option__value"><%=option.option_value%></span>
+                                <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
+                        <% } %>
+                </label>
+            <% }) %>
+        <% } else {%>
+            <% if (question.type === "text") { %>
+                <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2" disabled/>
+            <% } %>
+            <% if (question.type === "descriptive") { %>
+                <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2" disabled></textarea>
+            <% } %>    
+                
+        <% } %>
+        <div class="question__cta flex justify-end">
+            <i class="fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300" title="Delete Question"></i>    
+        </div>
+    </div>
+    */
+   
+    console.log(JSON.parse(optionsWithId))
     const questionCard = document.createElement("div");
     const questionDescription = document.createElement("input");
 
@@ -289,9 +324,6 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
     deleteQuestionIcon.title = "Delete Question";
     questionCta.className = "question__cta flex justify-end";
     questionCta.append(deleteQuestionIcon);
-
-    deleteOptionIcon.className = "fas fa-trash-alt text-sm text-bold cursor-pointer text-red-300";
-    deleteOptionIcon.title = "Delete Option";
 
     optionValue.placeholder = // Option value, pass in arguments;
     optionValue.value = "";
@@ -311,42 +343,29 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
     questionCard.className = "question__card mb-1";
     questionCard.id = questionid;
 
+    
+    const doDelete = (id) => {
+        loadMiniLoader.showLoader();
+        try {
+            clearTimeout(timeout);
+            timeout = setTimeout(async () => {
+            const deletedSection = await axios.delete(`/form/delete/question/${id}/${formid}`);
+            if(deletedSection.status !== 200) throw new Error ("Something bad Happened!");
+                loadMiniLoader.hideLoader();
+                questionCard.style.display = "none";
+                questionCard.remove();
+            }, 500)
+            
+        } catch (error) {
+            loadMiniLoader.hideLoader();
+            console.log(error);
+            callMessageModal("modal-error",  "Error", error.message)
+        }
+    }
+    
+    deleteQuestionIcon.addEventListener("click", () => doDelete(questionid))
+    
     questionCard.append(questionDescription, questionCta);
-
-    /* 
-        <div class="question__card mb-1" id="<%= question.questionid%>">
-            <input type="text" value="<%= question.question_description%>" class="question-description mb-2 w-full"/>
-            <% if (question.type === 'mcq' || question.type === 'box') { %>
-                <% QuestionsAndOptions.forEach((option, opIndex) => { %>
-                    <label for="<%=option.optionid%>" class="w-full block">
-                        <% if (option.questionid === question.questionid) { %>
-                            <% if (option.type === "mcq") { %>
-                                    <input type="radio" value="<%=option.option_value%>" id="id" disabled/>
-                            <% } %>
-                            <% if(option.type === "box") { %>
-                                    <input type="checkbox" value="<%=option.option_value%>" id="id" disabled/>
-                            <% } %>
-                                    <span class="option__value"><%=option.option_value%></span>
-                                    <i class="fas fa-trash-alt delete-section-btn text-sm text-bold cursor-pointer text-red-300" title="Delete Option"></i>
-                            <% } %>
-                    </label>
-                <% }) %>
-            <% } else {%>
-                <% if (question.type === "text") { %>
-                    <input type="text" class="mb-1 text-xl w-full rounded border-solid border-2" disabled/>
-                <% } %>
-                <% if (question.type === "descriptive") { %>
-                    <textarea name="description" rows="2" class="text-center resize-none w-full rounded border-solid border-2" disabled></textarea>
-                <% } %>    
-                    
-            <% } %>
-            <div class="question__cta flex justify-end">
-                <i class="fas fa-trash-alt delete-question-btn text-xs text-bold cursor-pointer text-red-300" title="Delete Question"></i>    
-            </div>
-        </div>
-    */
-
-
     return questionCard;
 }
 
@@ -415,5 +434,6 @@ export{
     createFormCard, 
     sectionCard,
     createNewOption,
+    createQuestionCard,
     getAllForms,
 }
