@@ -14,9 +14,6 @@ const query = util.promisify(con.query).bind(con);
 
 //Index Route
 Router.get("/", async (req, res) => {
-    // console.log(req.query);
-    //If req for "/?key=val&key2=val2"
-    // req.query = {key: val, key2: val2}
     const isAuthenticated = req.cookies.easy_forms_auth_token;
     if(isAuthenticated) {
         res.redirect("/home");

@@ -68,33 +68,35 @@ const updateSectionDetails = (section, index)  => {
 }
 
 /* 
-*
+* Function to create a new section asynchronously without reloading. 
 */
 
 const createSection = async () => {
     try {
         const newSection = await axios.post(`/form/create/section/${formId}`);
-        if(newSection.status === 200){
-            formBody.append(sectionCard(newSection.data.Section, createQuestion));
-            addSectionBtn.style.display = "none";
-            addSectionBtn.remove();
-            const allSections = document.querySelectorAll(".form__section");
-            allSections.forEach((section, index) => {
-                section.classList.remove("last-section");
-                if(index === allSections.length - 1){
-                    section.classList.add("last-section");
-                    section.append(addSectionBtn);
-                    addSectionBtn.style.display = "block";
-                }
-            });
-        }
+        if(newSection.status !== 200) throw new Error("Something bad happened")
+        formBody.append(sectionCard(newSection.data.Section, createQuestion));
+        addSectionBtn.style.display = "none";
+        addSectionBtn.remove();
+        const allSections = document.querySelectorAll(".form__section");
+
+        allSections.forEach((section, index) => {
+            section.classList.remove("last-section");
+            if(index === allSections.length - 1){
+                section.classList.add("last-section");
+                section.append(addSectionBtn);
+                addSectionBtn.style.display = "block";
+            }
+        });
+        
     } catch (error) {
         console.log(error);
     }
 }
 
 /* 
-*
+* Function to delete a specific section, when the delete section button is clicked.
+* @params (Event Object) e - the button that is clicked.
 */
 
 const deleteSection = (e) => {
@@ -106,26 +108,26 @@ const deleteSection = (e) => {
         
         setTimeout(async () => {
             const deleteSection = await axios.delete(`/form/delete/section/${sectionid}/${formId}`);
-            if(deleteSection.status === 200){
-                const allSections = document.querySelectorAll(".form__section");
-                    const  lastId = allSections[allSections.length - 1].id;
-                    if(lastId === sectionid){
-                        const addSectionBtn = document.getElementById("add-section-btn") || null;
-                        addSectionBtn.style.display = "none";
-                        addSectionBtn.remove();
-                        allSections.forEach((sec, index) => {
-                            sec.classList.remove("last-section");
-                            if(index === allSections.length - 2){
-                                sec.classList.add("last-section");
-                                sec.append(addSectionBtn);
-                                addSectionBtn.style.display = "block";
-                            }
-                        });
-                    }
-                section.style.display = "none";
-                section.remove();
-                loadMiniLoader.hideLoader();
-            }
+            if(deleteSection.status !== 200) throw new Error("Something bad happended!")
+            const allSections = document.querySelectorAll(".form__section");
+                const  lastId = allSections[allSections.length - 1].id;
+                if(lastId === sectionid){
+                    const addSectionBtn = document.getElementById("add-section-btn") || null;
+                    addSectionBtn.style.display = "none";
+                    addSectionBtn.remove();
+                    allSections.forEach((sec, index) => {
+                        sec.classList.remove("last-section");
+                        if(index === allSections.length - 2){
+                            sec.classList.add("last-section");
+                            sec.append(addSectionBtn);
+                            addSectionBtn.style.display = "block";
+                        }
+                    });
+                }
+            section.style.display = "none";
+            section.remove();
+            loadMiniLoader.hideLoader();
+            
         }, 800)
 
     } catch (error) {
@@ -136,7 +138,9 @@ const deleteSection = (e) => {
 }
 
 /* 
-*
+* Opens the question modal, when called, or closes it.
+* @params (string) method - whether to open or close the modal.
+* @params (HTMLElement) container - associated with which section the question should be added to. 
 */
 
 const handleQuestionsModal = (method, container) => {
@@ -182,7 +186,9 @@ const handleQuestionsModal = (method, container) => {
 }
 
 /* 
-*
+* Function to create a new question.
+* @params (HTMLElement) container - parent section container.
+* @params (string) type - type of question being created.
 */
 
 const createQuestion = (container, type) => {

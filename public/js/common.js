@@ -79,6 +79,7 @@ const loadOverlay = new Overlay(overlay);
 * @params{string} message - message content of modal.
 * @params{boolean} noLoader - checks whether to call loader along with modal, true - loader is not called, false/no argument - loader is called.
 */
+
 const callMessageModal = (type, title, message, noLoader) => {
 
     if(!noLoader) loadLoader.showLoader();
