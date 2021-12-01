@@ -17,6 +17,10 @@ const activeFormsContainer = document.getElementById("active-forms-container") |
 const archivedFormsContainer = document.getElementById("archived-forms-container") || null;
 const savedFormsContainer = document.getElementById("saved-forms-container") || null;
 
+/* 
+*
+*/
+
 const pages = {
     createFormPage,
     activeFormsPage,
@@ -56,6 +60,11 @@ const buttons = [{
     page: "savedFormsPage"
 }];
 
+/* 
+* Function to create a new form.
+* @params (Event Object) e - submit event object.
+*/
+
 const handleCreateForm = async (e) => {
     e.preventDefault();
     loadLoader.showLoader();
@@ -76,26 +85,35 @@ const handleCreateForm = async (e) => {
     try {
         
         const newForm = await axios.post("/form/create", body);
-        if(newForm.status === 200){
-            loadLoader.hideLoader();
-            callMessageModal("modal-success", "Success", "Form created, redirecting you to edit your form");
-            setTimeout(() => {
-                const {formid} = newForm.data.form;
-                window.location.replace(`/form/create?formid=${formid}`)
-            }, 2000);
-        } else throw new Error("Some error occured");
+        if(newForm.status !== 200) throw new Error("Something bad has happened, please try again");
+        loadLoader.hideLoader();
+        callMessageModal("modal-success", "Success", "Form created, redirecting you to edit your form");
+        setTimeout(() => {
+            const {formid} = newForm.data.form;
+            window.location.replace(`/form/create?formid=${formid}`)
+        }, 2000);
+
     } catch (error) {
         loadLoader.hideLoader();
-        callMessageModal("modal-success", "Error", "Something bad has happened, please try again");
+        callMessageModal("modal-success", "Error", error.message);
         console.log(error.message);
     }
 }
+
+/* 
+* Function that hides all the pages in the dashboard when called.
+*/
 
 const hideAllPages = () => {
     for(let page in pages){
         pages[page].style.display = "none";
     }
 }
+
+/* 
+* Add button functionality to the sidebar in the nav, 
+* Click to redirect the dashboard, without reloading the page.
+*/
 
 const buttonFunc = () => {
     buttons.forEach(button => {
@@ -105,10 +123,20 @@ const buttonFunc = () => {
     })
 }
 
+/* 
+* Function to change the dashboard content when a particular button is clicked
+* @params (string) currentPage - the page for which the main content is to be changed.
+*/
+
 const changeMainContent = (currentPage) => {
     hideAllPages();
     pages[currentPage].style.display = "block";
 }
+
+/* 
+* Function to update all the forms container, checks if the user has created forms before.
+* If no form created before, the create form message is prompted.
+*/
 
 const updateFormsContainer = async () => {
     const allForms = await getAllForms();

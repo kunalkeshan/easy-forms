@@ -9,8 +9,8 @@ const durationTime = 3;
 
 /* 
 * Class to create loader component with show and hide functionality.
-* @params (element) loaderElement - a loader gif or image.
-* @params (element) overlayElement - a overlay box.
+* @params (HTMLElement) loaderElement - a loader gif or image.
+* @params (HTMLElement) overlayElement - a overlay box.
 * @returns (object) (Loader) - can call the loader with {showLoader()} and hide the loader with {hideLoader()} methods.
 */
 class Loader{
@@ -32,7 +32,7 @@ class Loader{
 
 /* 
 * Class to create an Overlay component, with show and hide functionality.
-* @params (element) overlayElement.
+* @params (HTMLElement) overlayElement.
 * @returns (object) (Overlay) with three functionalities, {showOverlay()} to display the overlay.
 *                                                         {hideOverlay()} to hide the overlay.
 *                                                         {addClick()} to hide/display the overlay and any element associated with the element.

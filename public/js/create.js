@@ -22,6 +22,9 @@ const closeCreateQuestionModal = document.getElementById("close-new-question") |
 const createOptionBtn = document.getElementById("add-option") || null;
 const optionsContainer = document.getElementById("options-container") || null;
 
+/* 
+* Function to update Form title and description asynchronously without reloading the page. 
+*/
 
 const updateFormDetails = () => {
     loadMiniLoader.showLoader();
@@ -40,6 +43,12 @@ const updateFormDetails = () => {
     }
 }
 
+/* 
+* Function to update section title and description asynchronously without reloading the page.
+* @params (HTMLElement) section - The particular section to update.
+* @params (number) index - index associated with that section
+*/
+
 const updateSectionDetails = (section, index)  => {
     loadMiniLoader.showLoader();
     const sectionid = section.parentElement.id;
@@ -57,6 +66,10 @@ const updateSectionDetails = (section, index)  => {
         console.log(error);
     }
 }
+
+/* 
+*
+*/
 
 const createSection = async () => {
     try {
@@ -79,6 +92,10 @@ const createSection = async () => {
         console.log(error);
     }
 }
+
+/* 
+*
+*/
 
 const deleteSection = (e) => {
     loadMiniLoader.showLoader();
@@ -117,6 +134,10 @@ const deleteSection = (e) => {
         console.log(error);
     }
 }
+
+/* 
+*
+*/
 
 const handleQuestionsModal = (method, container) => {
     if(method === "open"){
@@ -159,6 +180,10 @@ const handleQuestionsModal = (method, container) => {
             createQuestionModal.style.display="none";
         }
 }
+
+/* 
+*
+*/
 
 const createQuestion = (container, type) => {
     createQuestionModal.style.display = "flex";
@@ -239,6 +264,10 @@ const createQuestion = (container, type) => {
     })
 }
 
+/* 
+*
+*/
+
 const deleteQuestion = (questionCard) => {
     loadMiniLoader.showLoader();
     const questionid = questionCard.id;
@@ -260,6 +289,10 @@ const deleteQuestion = (questionCard) => {
         console.log(error);
     }
 }
+
+/* 
+*
+*/
 
 const createOption = (type) => {
     let optionType = null;
