@@ -306,8 +306,8 @@ const createQuestionCard = ({questionid, sectionid, formid, question_description
         </div>
     </div>
     */
-   
-    console.log(JSON.parse(optionsWithId))
+            
+    console.log(optionsWithId && JSON.parse(optionsWithId))
     const questionCard = document.createElement("div");
     const questionDescription = document.createElement("input");
 

@@ -21,6 +21,9 @@ const closeCreateQuestionModal = document.getElementById("close-new-question") |
 
 const createOptionBtn = document.getElementById("add-option") || null;
 const optionsContainer = document.getElementById("options-container") || null;
+const typeOfQuestionsBtns = document.querySelectorAll(".questions__card") || null;
+
+let type = null;
 
 /* 
 * Function to update Form title and description asynchronously without reloading the page. 
@@ -145,12 +148,9 @@ const deleteSection = (e) => {
 
 const handleQuestionsModal = (method, container) => {
     if(method === "open"){
-            questionsModal.classList.remove("slide-left")
-            questionsModal.classList.add("slide-right")
-            const questionsBtns = document.querySelectorAll(".questions__card") || null;
-            questionsBtns.forEach((btn, index) => {
-                let type = null;
-                
+            questionsModal.classList.remove("slide-left");
+            questionsModal.classList.add("slide-right");
+            typeOfQuestionsBtns.forEach((btn, index) => {
                 switch (index) {
                     case 0:
                         type = "text"
@@ -178,10 +178,12 @@ const handleQuestionsModal = (method, container) => {
                 })
             })
         } else {
+            type = null;
             questionsModal.classList.remove("slide-right");
             questionsModal.classList.add("slide-left");
             loadLoader.hideLoader();
             createQuestionModal.style.display="none";
+            optionsContainer.innerHTML = "";
         }
 }
 
@@ -198,7 +200,9 @@ const createQuestion = (container, type) => {
     const question_description = document.getElementById("qcta__description") || null;
     const is_required = document.getElementById("is_required");
     const typeDivs = Array.from(createQuestionModal.getElementsByTagName("div"));
-    loadOverlay.addClick(createQuestionModal)
+    loadOverlay.addClick(createQuestionModal, () => {
+        finishCreateQuestion();
+    })
 
     const hideAll = () => {
         typeDivs.forEach((div) => {
@@ -207,6 +211,7 @@ const createQuestion = (container, type) => {
     }
 
     const finishCreateQuestion = () => {
+        type = null;
         questionsModal.classList.remove("slide-right");
         questionsModal.classList.add("slide-left");
         createQuestionModal.style.display = "none";
@@ -226,8 +231,10 @@ const createQuestion = (container, type) => {
     });
     loadOverlay.showOverlay();
     if(type === "box" || type === "mcq"){
+        optionsContainer.innerHTML = "";
         createOptionBtn.addEventListener("click", () => createOption(type));
     }
+
     createQuestionBtn.addEventListener("click", async () => {
         try {
 
@@ -236,7 +243,7 @@ const createQuestion = (container, type) => {
                 loadMiniLoader.hideLoader();
                 question_description.value = "";
                 question_description.focus();
-                throw new Error(JSON.stringify({title: "Question Required", message: "A question descriptin is required!"}))
+                throw new Error(JSON.stringify({title: "Question Required", message: "A question description is required!"}))
             }
 
             let body = {
@@ -251,9 +258,7 @@ const createQuestion = (container, type) => {
                 if(type === "box" || type === "mcq"){
                     throw new Error(JSON.stringify({title: "Options required", message: "At least one option is required for an mcq type."}))
                 }
-            }
-            
-            if(optionValues.length >  0){
+            } else {
                 const options = optionValues.map(option => option.value);
                 console.log(JSON.stringify(options))
                 body.options = options;
@@ -262,13 +267,12 @@ const createQuestion = (container, type) => {
             const newQuestion = await axios.post(`/form/create/question/${sectionid}/${formId}`, body);
             if(newQuestion.status !== 200) throw new Error("Something bad happened!")
             console.log(newQuestion.data)
+            const questionsContainer = container.querySelector(".form__question");
             clearTimeout(timeout)
             timeout = setTimeout( () => {
-                const questionsContainer = container.querySelector(".form__question");;
                 questionsContainer.append(createQuestionCard(newQuestion.data.question))
                 loadMiniLoader.hideLoader();
                 finishCreateQuestion();
-                return;
             }, 800)
 
             } catch (error) {
@@ -311,6 +315,7 @@ const deleteQuestion = (questionCard) => {
 */
 
 const createOption = (type) => {
+    console.log("here")
     let optionType = null;
     if(type === "box"){
         optionType = "checkbox";
@@ -335,7 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
     deleteSectionBtns.forEach((deleteBtn) => {
         deleteBtn.addEventListener("click", (e) => deleteSection(e))
     });
-    newQuestionBtns.forEach((newBtn, index) => {
+    newQuestionBtns.forEach((newBtn) => {
         const container = newBtn.parentElement.parentElement;
         newBtn.addEventListener("click", () => {
             handleQuestionsModal("open", container);

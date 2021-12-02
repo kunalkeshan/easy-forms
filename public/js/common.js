@@ -50,8 +50,8 @@ class Overlay{
         this.overlay.style.display = "none";
     }
 
-    addClick(siblingElement){
-        if(siblingElement) return;
+    addClick(siblingElement, callback){
+        if(!siblingElement) return;
         this.overlay.addEventListener("click", () => {
             const display = this.overlay.style.display;
             if(display === "block"){
@@ -61,6 +61,7 @@ class Overlay{
                 this.showOverlay();
                 if(siblingElement) siblingElement.style.display = "flex";
             }
+            callback();
         })
     }
 
