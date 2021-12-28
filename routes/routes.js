@@ -91,7 +91,7 @@ Router.get("/form/edit", auth, async (req, res) => {
     try {
         let Form = await query(getForm);
         if(Form.length){
-            console.log(Form)
+            
             
             Form = app_functions.parseData(Form)[0];
             let Sections = await query(getSections);
