@@ -60,7 +60,7 @@ Router.get("/form/:id", async (req, res) => {
     if (form.length > 0) {
       const sections = await query(getSections);
       const questions = await query(getQuestions);
-      console.log(sections, questions);
+      
 
       if (sections.length > 0 || questions.length > 0) {
         const AllQuestions = app_functions.parseData(questions);
