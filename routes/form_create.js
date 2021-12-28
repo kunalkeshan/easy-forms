@@ -79,7 +79,7 @@ Router.post("/form/create/question/:sectionid/:formid", auth, async (req, res) =
     try {
         if(type === "mcq" || type === "box"){
             const {options} = req.body;
-            console.log(options)
+            
             const MCQ_OPTIONS = options;
             const newQuestion = await query(setNewQuestion);
             if(newQuestion.affectedRows > 0){
