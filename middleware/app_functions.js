@@ -34,8 +34,7 @@ const calculateDateDifference = (datetime) => {
   const diffHrs = Math.floor(diffTime / (1000 * 60 * 60));
   const diffDays = Math.floor(diffTime / (1000 * 60 * 60 * 24));
   if (diffDays <= 1)
-    if (diffMin < 60) return diffMin + "m";
-    else return diffHrs + "h";
+    return diffMin < 60 ? diffMin + "m" : diffHrs + "h";
   else if (diffDays < 7) return diffDays + "d";
   else return Math.floor(diffDays / 7) + "w";
 };
